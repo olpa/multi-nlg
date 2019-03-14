@@ -1,4 +1,4 @@
-abstract Matrix = Lang, Extend ** {
+abstract Wrapper = Lang, Extend ** {
   flags
     startcat = Text ;
   fun

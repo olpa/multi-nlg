@@ -1,4 +1,4 @@
-concrete MatrixEng of Matrix =
+concrete WrapperEng of Wrapper =
   GrammarEng
   , LexiconEng
   , ConstructionEng
