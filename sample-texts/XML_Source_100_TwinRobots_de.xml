@@ -1,0 +1,1521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Book SYSTEM "file:///L:/bitplant.de/dtd/bitplant.de_2.0.dtd" [
+
+<!-- Begin Document Specific Declarations -->
+
+<!ENTITY figure1 SYSTEM "Bilder\100nn000.eps" NDATA epsi>
+<!ENTITY SafetyPicto3 SYSTEM "..\..\Schuck\XML_base\Bilder\ANSI000_explode.eps" NDATA epsi>
+<!ENTITY figure2 SYSTEM "Bilder\100nn008.eps" NDATA epsi>
+<!ENTITY figure3 SYSTEM "Bilder\100nn001.eps" NDATA epsi>
+<!ENTITY figure4 SYSTEM "Bilder\100nn002.eps" NDATA epsi>
+<!ENTITY figure5 SYSTEM "Bilder\100nn010.eps" NDATA epsi>
+<!ENTITY figure6 SYSTEM "Bilder\100nn009.eps" NDATA epsi>
+<!ENTITY figure7 SYSTEM "Bilder\100nn007.eps" NDATA epsi>
+<!ENTITY figure8 SYSTEM "Bilder\100nn017.eps" NDATA epsi>
+<!ENTITY figure9 SYSTEM "Bilder\100nn018.eps" NDATA epsi>
+<!ENTITY figure10 SYSTEM "Bilder\100nn005.eps" NDATA epsi>
+<!ENTITY figure11 SYSTEM "Bilder\300pp013_grey.eps" NDATA epsi>
+<!ENTITY figure12 SYSTEM "Bilder\icon_grey.eps" NDATA epsi>
+<!ENTITY figure13 SYSTEM "Bilder\300pp028.eps" NDATA epsi>
+<!ENTITY figure14 SYSTEM "Bilder\300pp009.eps" NDATA epsi>
+<!ENTITY figure15 SYSTEM "Bilder\300pp027.eps" NDATA epsi>
+<!ENTITY figure16 SYSTEM "Bilder\100nn012.eps" NDATA epsi>
+<!ENTITY figure17 SYSTEM "Bilder\100nn014.eps" NDATA epsi>
+<!ENTITY figure18 SYSTEM "Bilder\100nn016.eps" NDATA epsi>
+<!ENTITY figure19 SYSTEM "Bilder\100nn015.eps" NDATA epsi>
+
+<!-- End Document Specific Declarations -->
+
+]>
+<Book Document = "OperationManual" FG-Name = "TwinRobot"><OpeningPages>
+<FrontPage><MachineType>TwinRobot</MachineType><MachineType>Project
+documentation, Version 1.5</MachineType><Codeword>STANDARD</Codeword><SerialNo>Serial-Nº:
+000000X000</SerialNo><Graphic>
+<Figure entity = "figure1" impsize = "6.903in 4.736in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "6.903in" height = "4.736in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></FrontPage>
+<Preface></Preface>
+<TableOfContents></TableOfContents></OpeningPages><?Pub UDT _bookmark _target?>
+<?Pub UDT template _font?>
+<?Pub UDT instructions _comment FontColor="red"?>
+<?Pub Caret?>
+
+<Chapter id = "aaannxyz_ch01_de" file = "100aa001_de.xml">
+<Heading StartPosition = "TopOfPage">Zu dieser Betriebsanleitung</Heading>
+<Description><Bodytext>Die Betriebsanleitung verwendet Symbole und
+Zeichen, die Ihnen das schnelle Auffinden von Informationen erleichtern.
+Lesen Sie die Erläuterungen zu den Symbolen im folgenden Abschnitt.</Bodytext></Description>
+<SubChapter><Heading StartPosition = "Anywhere">Aufbau Betriebsanleitung</Heading>
+<Description>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "2" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.787in"/>
+<colspec colnum = "2" colname = "2" colwidth = "6.102in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Kapitel</Text></entry>
+<entry colname = "2"><Text>Inhalt</Text></entry>
+</row>
+</thead>
+<tbody>
+<row rowsep = "1">
+<entry colname = "1"><Text>–</Text></entry>
+<entry colname = "2"><Text>Register<?Pub _newline?><Linefeed/>Titelblatt<?Pub _newline?><Linefeed/>Kontrollblatt<?Pub _newline?><Linefeed/>Vorwort<?Pub _newline?><Linefeed/>Inhaltsverzeichnis<?Pub _newline¶?><Linefeed/>Abbildungsverzeichnis
+(optional)<?Pub _newline?><Linefeed/>Tabellenverzeichnis (optional)<?Pub _newline?><Linefeed/>Abkürzungsverzeichnis
+(optional)</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>1</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Zu dieser Betriebsanleitung</Emphasis></Text>
+<Text>Aufbau der Gesamtdokumentation<Linefeed/><?Pub _newline?>Aufbau der Betriebsanleitung<?Pub _newline?><Linefeed/>Erläuterung
+der Kapitelstruktur<Linefeed/><?Pub _newline?>Erläuterung der verwendeten Zeichen
+und Symbole</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>2</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Sicherheit</Emphasis></Text>
+<Text>Warnung vor allgemeinen Gefahren, die von der Maschine/Anlage
+ausgehen<Linefeed/><?Pub _newline?>Hinweise zum sicherheitsgerechten Umgang mit
+der Maschine/Anlage</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>3</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Technische
+Daten</Emphasis></Text>
+<Text>Zusammenfassung der Kenndaten der Maschine/Anlage</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>4</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Beschreibung</Emphasis></Text>
+<Text>Beschreibung der Maschine/Anlage und ihrer Komponenten</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>5</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Montage</Emphasis></Text>
+<Text>Informationen zur Montage der Maschine/Anlage</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>6</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Bedienung</Emphasis></Text>
+<Text>Informationen zum Standardbetrieb der Maschine/Anlage für
+das normale Bedienungspersonal</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>7</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Instandhaltung</Emphasis></Text>
+<Text>Beschreibung der Instandhaltungsarbeiten, die das Fachpersonal
+ausführt</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>8</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Zeichnungen
+und Schemata</Emphasis></Text>
+<Text>Liste aller mitgelieferten Zeichnungen und Schemata</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>9</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Anhang</Emphasis></Text>
+<Text>Liste aller mitgelieferten Zulieferdokumente<?Pub _newline?><Linefeed/>Liste
+aller mitgelieferten Voith Paper Werknormen<Linefeed/><?Pub _newline?>Liste aller
+zitierten Normen</Text></entry>
+</row>
+<row rowsep = "0">
+<entry colname = "1"><Text>10</Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Standardlisten
+(optional)</Emphasis></Text>
+<Text>Liste aller mitgelieferten Standardlisten</Text></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Aufbau Betriebsanleitung</Caption></table></Description></SubChapter></Chapter>
+<Chapter id = "aaannxyz_ch02_de" file = "100ab001_de.xml">
+<Heading StartPosition = "TopOfPage">Sicherheit</Heading>
+<Description><Bodytext>Alle in dieser Betriebsanleitung genannten
+Höchstwerte für Leistung, Belastung, Druck etc. sind Grenzwerte.</Bodytext>
+<Bodytext>Diese Werte sind Basis für die konstruktive Auslegung
+und Festigkeitsberechnung der Bauteile.</Bodytext>
+<SafetyAdvice Classification = "Danger">
+<SafetyBody>
+<SafetyRow>
+<SafetyPictoContent>
+<SafetyPicto entity = "SafetyPicto3" impsize = "0.792in 0.819in"
+    impby = "ref" sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "0.792in" height = "0.819in"
+    angle = "0.000" nsoffset = "0.000in"/></SafetyPictoContent>
+<SafetyContent><SourceOfDanger>Verletzungsgefahr durch berstende
+Maschinenteile!</SourceOfDanger>
+<Consequences>Werden zulässige Grenzwerte überschritten, können
+Teile der Maschine zerstört werden. In Folge davon können Personen
+verletzt oder getötet werden!</Consequences>
+<ActionStep ForcedNumbering = "None" StartPosition = "Anywhere"><Text>Maschine
+immer innerhalb der zulässigen Grenzwerte betreiben!</Text></ActionStep></SafetyContent>
+</SafetyRow>
+</SafetyBody>
+</SafetyAdvice>
+<Bodytext>Die Überschreitung/Nichtbeachtung der genannten Grenzwerte
+beim Betrieb der Anlage/Maschine stellt einen bestimmungswidrigen
+Gebrauch der Anlage/Maschine dar und schließt die Haftung seitens
+Voith Paper für daraus entstehende Schäden aus.</Bodytext></Description></Chapter>
+<Chapter id = "aaannxyz_ch03_de" file = "100ac001_de.xml">
+<Heading StartPosition = "TopOfPage">Technische Daten</Heading>
+<Description><Bodytext>Technical specifications of the system.</Bodytext>
+<Bodytext><Emphasis bold = "inactive" highlight = "active">All entries
+of the following table are filled via external data stored in Excel
+or exported XML from SAP.</Emphasis></Bodytext>
+<Bodytext><Emphasis bold = "inactive" highlight = "active">The number
+of possible entries is not limited.</Emphasis></Bodytext>
+<Variant Comment = "Steuerung Arduino Mega" KeySequence = "101nn021">
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "2" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "2.657in"/>
+<colspec colnum = "2" colname = "2" colwidth = "2.657in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Parameter</Text></entry>
+<entry colname = "2"><Text>Value</Text></entry>
+</row>
+</thead>
+<tbody>
+<row rowsep = "1">
+<entry colname = "1"><Text>Value 1</Text></entry>
+<entry colname = "2"><DataEntry sap-value = "Datensatz_1"></DataEntry></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>Value 2</Text></entry>
+<entry colname = "2"><DataEntry sap-value = "Datensatz_2"></DataEntry></entry>
+</row>
+<row rowsep = "0">
+<entry colname = "1"><Text>Value 3</Text></entry>
+<entry colname = "2"><DataEntry sap-value = "Datensatz_3"></DataEntry></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Technical specifications</Caption></table>
+</Variant>
+<Variant Comment = "Steuerung RoboTec" KeySequence = "101nn022">
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "2" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "2.657in"/>
+<colspec colnum = "2" colname = "2" colwidth = "2.657in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Parameter</Text></entry>
+<entry colname = "2"><Text>Value</Text></entry>
+</row>
+</thead>
+<tbody>
+<row rowsep = "1">
+<entry colname = "1"><Text>Value 5</Text></entry>
+<entry colname = "2"><Text>55</Text></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text>Value 6</Text></entry>
+<entry colname = "2"><Text>66</Text></entry>
+</row>
+<row rowsep = "0">
+<entry colname = "1"><Text>Value 7</Text></entry>
+<entry colname = "2"><Text>77</Text></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Technical specifications</Caption></table>
+<Graphic>
+<Figure entity = "figure2" impsize = "5.333in 3.264in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.264in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption></Caption></Graphic>
+</Variant></Description></Chapter>
+<Chapter id = "aaannxyz_ch04_de" file = "100ad001_de.xml">
+<Heading StartPosition = "TopOfPage">Beschreibung </Heading>
+<Description><i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>Die Aufgabe des Systems ist es, einzelne Holzscheite von
+einem Holzstapel aufzuheben und diese in einen bereitstehenden Korb
+zu legen.</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Components"></i-Head>
+<Graphic>
+<Figure entity = "figure3" impsize = "5.333in 5.528in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "5.528in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption>System Overview</Caption>
+<LegendTab><Legend><LegendPos/><LegendText>Gear with Cable Winch</LegendText></Legend>
+<Legend><LegendPos/><LegendText>MicroController with two MotorShields</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Carriage with Main Gear and Limit
+Scitch<Linefeed/></LegendText></Legend>
+<Legend><LegendPos/><LegendText>Rail System with Guiding Chain and
+ Position Magnets (Pos. 1 / Pos. 2)</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Gripper with Inclinometer and PressureSensor</LegendText></Legend></LegendTab></Graphic></Description>
+<SubChapter><Heading StartPosition = "TopOfPage">Carriage with Main
+Gear and LimitSwitch</Heading>
+<Description><i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The Carriage bears the components of the system. It moves
+forward horizontally on rails.</Bodytext>
+<Graphic>
+<Figure entity = "figure4" impsize = "5.333in 3.556in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.556in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption></Caption>
+<LegendTab><Legend><LegendPos/><LegendText>Mounting Plate (cross
+direction)</LegendText></Legend>
+<Legend><LegendPos/><LegendText>LimitSwitch "EndPosition" with holder </LegendText></Legend>
+<Legend><LegendPos/><LegendText>Wheel (non-powered)</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Main Gear with Gear-wheel</LegendText></Legend>
+<Legend><LegendPos/><LegendText>LimitSwitch "Garage" with holder </LegendText></Legend></LegendTab></Graphic>
+<i-Head StartPosition = "Anywhere" TransGuide = "Function"></i-Head>
+<Bodytext>The Carriage brings the Gripper into optimal position
+to grab the at time highest wood log.</Bodytext>
+<Bodytext>The horizontal position of the carriage is calculated
+by analyzing the time travelled over the entire length. </Bodytext>
+<Bodytext>StartPosition of the carriage (Pos.1, "Garage") and EndPosition
+(Pos. 2, "EndPosition") are defined via two LimitSwitches.</Bodytext></Description>
+<Section><Heading StartPosition = "TopOfPage">Main Gear</Heading>
+<Description><Bodytext>Energy Supply LiPo 3200mAh 3S 11.1V 20C</Bodytext>
+<List Type = "Bulleted"><ListHead>The used model is available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.conrad.de/ce/de/product/198411"/></Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure5" impsize = "5.333in 2.764in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "2.764in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section></SubChapter>
+<SubChapter><Heading StartPosition = "TopOfPage">Microcontroller
+Arduino Mega2560 – Carriage</Heading>
+<Description><i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The Microcontroller Arduino Mega2560 contains the Central
+Prosessing Unit, it controls all other elements which are connected
+to it. The program is loaded directly to the Arduino Mega2560.</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Overview"></i-Head>
+<Graphic>
+<Figure entity = "figure2" impsize = "5.333in 3.264in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.264in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption></Caption>
+<LegendTab><Legend><LegendPos/><LegendText><Emphasis bold = "active">THESE
+PINS ARE ACCESSIBLE ONLY VIA THE UPMOST 10 A DC SHIELD</Emphasis><Linefeed/></LegendText></Legend></LegendTab></Graphic>
+<i-Head StartPosition = "Anywhere" TransGuide = "Function"></i-Head>
+<List Type = "Bulleted"><ListHead>Controlled by the Arduino Mega2560
+installed <Emphasis bold = "active">on the carriage</Emphasis> are:</ListHead>
+<ListEntry><Bodytext>5 Volt power supply for sensors and secondary
+boards (excludes engines)</Bodytext></ListEntry>
+<ListEntry><Bodytext>10A DC Motor Driver Shield (2 units)</Bodytext>
+<List Type = "Bulleted"><ListEntry><Bodytext>first Shield controls
+the Main Gear</Bodytext></ListEntry>
+<ListEntry><Bodytext>second shield controls the four Winders (together
+with the Relay Board)</Bodytext></ListEntry></List></ListEntry>
+<ListEntry><Bodytext>Relay Board (1 unit)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Limit switches (2 units)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Inclinometer (2 units)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Pressure Sensors (4 units)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Control diodes (2 units)</Bodytext></ListEntry></List></Description>
+<Section><Heading StartPosition = "TopOfPage">Assigned PINs</Heading>
+<Description>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "5" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.472in"/>
+<colspec colnum = "2" colname = "2" colwidth = "1.142in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.689in"/>
+<colspec colnum = "4" colname = "4" colwidth = "0.650in"/>
+<colspec colnum = "5" colname = "5" colwidth = "3.937in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Unit</Text></entry>
+<entry colname = "2"><Text>Name</Text></entry>
+<entry colname = "3"><Text>Analog PIN</Text></entry>
+<entry colname = "4"><Text>Digital PIN</Text></entry>
+<entry colname = "5"><Text>Task</Text></entry>
+</row>
+</thead>
+<tfoot>
+<row rowsep = "0">
+<entry namest = "1" nameend = "5"><Counter>1 / 2</Counter></entry>
+</row>
+</tfoot>
+<tbody>
+<row rowsep = "1">
+<entry colname = "1" morerows = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2" morerows = "1"><Text><Emphasis bold = "active">Power
+Supply</Emphasis></Text></entry>
+<entry colname = "3"><Text>5 V</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>provides
+a stable 5.0 Volt output for needed sensor voltage</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "3"><Text>GND</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>provides
+grounding (0 Volt)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1" morerows = "1"><Text><Emphasis bold = "active">2</Emphasis></Text></entry>
+<entry colname = "2" morerows = "1"><Text><Emphasis bold = "active">10A
+DC Motor Driver Shield 1</Emphasis></Text></entry>
+<entry colname = "3" morerows = "1"><Text>–</Text></entry>
+<entry colname = "4"><Text>D_3</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port "PWM" (Pulse Width Modulation)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "4"><Text>D_7</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port "Direction" of the Main Gear</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1" morerows = "1"><Text><Emphasis bold = "active">3</Emphasis></Text></entry>
+<entry colname = "2" morerows = "1"><Text><Emphasis bold = "active">10A
+DC Motor Driver Shield 2</Emphasis></Text></entry>
+<entry colname = "3" morerows = "1"><Text>–</Text></entry>
+<entry colname = "4"><Text>D_5</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port "PWM" (Pulse Width Modulation)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "4"><Text>D_8</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port "Direction"</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1" morerows = "3"><Text><Emphasis bold = "active">4</Emphasis></Text></entry>
+<entry colname = "2" morerows = "3"><Text><Emphasis bold = "active">Relay
+Unit</Emphasis></Text></entry>
+<entry colname = "3" morerows = "3"><Text>–</Text></entry>
+<entry colname = "4"><Text>D_22</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Relay Unit’s "Channel 1"</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "4"><Text>D_24</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Relay Unit’s "Channel 2"</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "4"><Text>D_26</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Relay Unit’s "Channel 3"</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "4"><Text>D_28</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Relay Unit’s "Channel 4"</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">5</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Limit Switch Stop</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_2</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Limit Switch "Stop" (connection via blue cable)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">6</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Limit Switch Start</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_3</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Limit Switch "Start" (connection via blue cable)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">7</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Limit Switch Top</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_4</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Limit Switch "Top" (connection via blue cable)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1" morerows = "1"><Text><Emphasis bold = "active">8</Emphasis></Text></entry>
+<entry colname = "2" morerows = "1"><Text><Emphasis bold = "active">Laser
+Meter UT390B</Emphasis></Text></entry>
+<entry colname = "3" morerows = "1"><Text>–</Text></entry>
+<entry colname = "4"><Text>D_18</Text>
+<Text>TX</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port TX (connection via yellow cable)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "4"><Text>D_19</Text>
+<Text>RX</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port RX (connection via green cable)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1" morerows = "1"><Text><Emphasis bold = "active">9</Emphasis></Text></entry>
+<entry colname = "2" morerows = "1"><Text><Emphasis bold = "active">Gears
+for Grippers</Emphasis></Text></entry>
+<entry colname = "3"><Text>5 V</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>SWITCH;
+TESTING provides a stable 5.0 Volt output for needed sensor voltage</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "3"><Text>GND</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>SWITCH;
+TESTING provides grounding (0 Volt)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">10</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Inclinometer
+1</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_5</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>LATER;
+SKIPPING; communicates with Inclinometer XY</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">11</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Inclinometer
+2</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_6</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>LATER;
+SKIPPING; communicates with Inclinometer XZ</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">12</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Sensor 1</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_7</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Gripper 1 pincer 1</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">13</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Sensor 2</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_8</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Gripper 1 pincer 2</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">14</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Sensor 3</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_9</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Gripper 2 pincer 1</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">15</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">Sensor 4</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_10</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with Gripper 2 pincer 2</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">16</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">LED resistor
+1</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_11</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>indicates
+end position Gripper 1</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">17</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">LED resistor
+2</Emphasis></Text></entry>
+<entry colname = "3"><Text>A_12</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>indicates
+end position Gripper 2</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">18</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">LED Red</Emphasis></Text></entry>
+<entry colname = "3" morerows = "1"><Text>–</Text></entry>
+<entry colname = "4"><Text>D_2</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port "PWM" (Pulse Width Modulation)</Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">19</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active">LED Green</Emphasis></Text></entry>
+<entry colname = "4"><Text>D_4</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext>communicates
+with port "Direction" of the Main Gear</Bodytext></ListEntry></List></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Assigned PINs</Caption></table></Description></Section>
+<Section><Heading StartPosition = "TopOfPage">10A DC Motor Driver
+Arduino Shield</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model is
+available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.robotshop.com/en/10a-dc-motor-driver-arduino-shield.html"/></Bodytext></ListEntry></List>
+<i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<List Type = "Bulleted"><ListHead>The <Emphasis bold = "active">first</Emphasis> <Emphasis
+    bold = "inactive" underline = "active">10A DC Motor Driver Arduino
+Shield</Emphasis> controls:</ListHead>
+<ListEntry><Bodytext>speed of the Main Gear</Bodytext></ListEntry>
+<ListEntry><Bodytext>voltage inversion</Bodytext></ListEntry></List>
+<List Type = "Bulleted"><ListHead>The <Emphasis bold = "active">second</Emphasis> <Emphasis
+    bold = "inactive" underline = "active">10A DC Motor Driver Arduino
+Shield</Emphasis> controls:</ListHead>
+<ListEntry><Bodytext>speed of all four LMC gear motors (each activated
+individually via Relay)</Bodytext></ListEntry>
+<ListEntry><Bodytext>voltage inversion of all four LMC gear motors
+(activation individually)</Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure6" impsize = "5.333in 2.764in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "2.764in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption>10A DC Motor Driver Arduino Shield</Caption>
+<LegendTab><Legend><LegendPos/><LegendText>POWER IN</LegendText></Legend>
+<Legend><LegendPos/><LegendText>POWER OUT<Linefeed/><Linefeed/></LegendText></Legend>
+<Legend><LegendPos/><LegendText>ACTIVATION OF ARDUINO PINS<Linefeed/><Emphasis
+    bold = "active">FOR CONNECTIVITY</Emphasis></LegendText></Legend>
+<Legend><LegendPos/><LegendText>CONNECTION POINTS FOR HIDDEN ARDUINO
+PINS</LegendText></Legend></LegendTab></Graphic></Description></Section></SubChapter>
+<SubChapter><Heading StartPosition = "TopOfPage">Microcontroller
+Arduino Mega2560 – Gripper</Heading>
+<Description><i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The Microcontroller Arduino Mega2560 contains the Central
+Prosessing Unit, it controls all other elements which are connected
+to it. The program is loaded directly to the Arduino Mega2560.</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Overview"></i-Head>
+<Graphic>
+<Figure entity = "figure2" impsize = "5.333in 3.264in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.264in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption></Caption>
+<LegendTab><Legend><LegendPos/><LegendText><Emphasis bold = "active">THESE
+PINS ARE ACCESSIBLE ONLY VIA THE UPMOST 10 A DC SHIELD</Emphasis><Linefeed/></LegendText></Legend></LegendTab></Graphic>
+<i-Head StartPosition = "Anywhere" TransGuide = "Function"></i-Head>
+<List Type = "Bulleted"><ListHead>Controlled by the Arduino Mega2560
+installed <Emphasis bold = "active">on the gripper</Emphasis> are:</ListHead>
+<ListEntry><Bodytext>5 Volt power supply for sensors and secondary
+boards (excludes engines)</Bodytext></ListEntry>
+<ListEntry><Bodytext>10A DC Motor Driver Shield (1 unit)</Bodytext>
+<List Type = "Bulleted"><ListEntry><Bodytext>first shield controls
+the two gripper motor [OPTIONAL, later: Laser-Servo]</Bodytext></ListEntry></List></ListEntry>
+<ListEntry><Bodytext>Relay Board (1 unit)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Laser meter UT390B</Bodytext></ListEntry>
+<ListEntry><Bodytext>gears for Grippers (2 units)</Bodytext></ListEntry>
+<ListEntry><Bodytext>inclinometer (2 units)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Pressure Sensors (4 units)</Bodytext></ListEntry>
+<ListEntry><Bodytext>Control diodes (2 units)</Bodytext></ListEntry></List></Description>
+<Section><Heading StartPosition = "TopOfPage">Assigned PINs</Heading>
+<Description>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "5" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.472in"/>
+<colspec colnum = "2" colname = "2" colwidth = "1.142in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.689in"/>
+<colspec colnum = "4" colname = "4" colwidth = "0.650in"/>
+<colspec colnum = "5" colname = "5" colwidth = "3.937in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Unit</Text></entry>
+<entry colname = "2"><Text>Name</Text></entry>
+<entry colname = "3"><Text>Analog PIN</Text></entry>
+<entry colname = "4"><Text>Digital PIN</Text></entry>
+<entry colname = "5"><Text>Task</Text></entry>
+</row>
+</thead>
+<tfoot>
+<row rowsep = "0">
+<entry namest = "1" nameend = "5"><Counter>1 / 2</Counter></entry>
+</row>
+</tfoot>
+<tbody>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+<row rowsep = "1">
+<entry colname = "1"><Text><Emphasis bold = "active">1</Emphasis></Text></entry>
+<entry colname = "2"><Text><Emphasis bold = "active"></Emphasis></Text></entry>
+<entry colname = "3"><Text></Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+<entry colname = "5"><List Type = "Bulleted"><ListEntry><Bodytext></Bodytext></ListEntry></List></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Assigned PINs</Caption></table></Description></Section>
+<Section><Heading StartPosition = "TopOfPage">10A DC Motor Driver
+Arduino Shield</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model is
+available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.robotshop.com/en/10a-dc-motor-driver-arduino-shield.html"/></Bodytext></ListEntry></List>
+<i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<List Type = "Bulleted"><ListHead>The <Emphasis bold = "active">first</Emphasis> <Emphasis
+    bold = "inactive" underline = "active">10A DC Motor Driver Arduino
+Shield</Emphasis> controls:</ListHead>
+<ListEntry><Bodytext>speed of the Main Gear</Bodytext></ListEntry>
+<ListEntry><Bodytext>voltage inversion</Bodytext></ListEntry></List>
+<List Type = "Bulleted"><ListHead>The <Emphasis bold = "active">second</Emphasis> <Emphasis
+    bold = "inactive" underline = "active">10A DC Motor Driver Arduino
+Shield</Emphasis> controls:</ListHead>
+<ListEntry><Bodytext>speed of all four LMC gear motors (each activated
+individually via Relay)</Bodytext></ListEntry>
+<ListEntry><Bodytext>voltage inversion of all four LMC gear motors
+(activation individually)</Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure6" impsize = "5.333in 2.764in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "2.764in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption>10A DC Motor Driver Arduino Shield</Caption>
+<LegendTab><Legend><LegendPos/><LegendText>POWER IN</LegendText></Legend>
+<Legend><LegendPos/><LegendText>POWER OUT<Linefeed/><Linefeed/></LegendText></Legend>
+<Legend><LegendPos/><LegendText>ACTIVATION OF ARDUINO PINS<Linefeed/><Emphasis
+    bold = "active">FOR CONNECTIVITY</Emphasis></LegendText></Legend>
+<Legend><LegendPos/><LegendText>CONNECTION POINTS FOR HIDDEN ARDUINO
+PINS</LegendText></Legend></LegendTab></Graphic></Description></Section></SubChapter>
+<SubChapter><Heading StartPosition = "TopOfPage">Gear with Cable
+Winch</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model [Gear]
+with <Emphasis bold = "active">gear ratio 810:1</Emphasis> is available
+at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.conrad.de/ce/de/product/222367/"/></Bodytext></ListEntry></List>
+<i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The four winches are designed to lower the gripper vertically
+/ to lift the grippper vertically.</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Components"></i-Head>
+<Graphic>
+<Figure entity = "figure7" impsize = "5.333in 3.167in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.167in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption>Seilwinde</Caption>
+<LegendTab><Legend><LegendPos/><LegendText>Winch / Winder</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Gear motor</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Deflector roll</LegendText></Legend></LegendTab></Graphic>
+<i-Head StartPosition = "Anywhere" TransGuide = "Function"></i-Head>
+<Bodytext>Each Gear Motor is triggered individually by one of the
+four Channels of the Relay.</Bodytext>
+<Bodytext>Speed and Direction of the entire group are controlled
+by the second Motor Shield.</Bodytext></Description></SubChapter>
+<SubChapter><Heading StartPosition = "TopOfPage">Rail System with
+Guiding Chain and Inductive Limit Switch</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model [Norgren
+Limit Switch] is available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.conrad.de/ce/de/product/580622/"/></Bodytext></ListEntry></List>
+<i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The Rail System is designed to keep the carriage on track
+and to move it forward (including position control).</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Components"></i-Head>
+<Graphic>
+<Figure entity = "figure8" impsize = "5.333in 3.556in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.556in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption>Seilwinde</Caption>
+<LegendTab><Legend><LegendPos/><LegendText>Chain</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Rail</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Guide</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Inductive Limit Switch Stop</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Inductive Limit Switch Start</LegendText></Legend></LegendTab></Graphic>
+<i-Head StartPosition = "Anywhere" TransGuide = "Function"></i-Head>
+<Bodytext>By transmitting traction to the Guiding Chain the carriage...</Bodytext></Description></SubChapter>
+<SubChapter><Heading StartPosition = "TopOfPage">Gripper with InclinoMeter,
+LaserMeter,  PressureSensor and Position Indicator</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model with <Emphasis
+    bold = "active">gear ratio 3000:1</Emphasis> is available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.conrad.de/ce/de/product/222368/"/></Bodytext></ListEntry></List>
+<List Type = "Bulleted"><ListHead>The used model [Gripper] is available
+at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.amazon.de/gp/product/B007L4FNPU/ref=oh_details_o09_s00_i00?ie=UTF8&#x0026;psc=1"/></Bodytext></ListEntry></List>
+<List Type = "Bulleted"><ListHead>The used model [pressure sensor]
+is available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://www.conrad.de/ce/de/product/182519/"/></Bodytext></ListEntry></List>
+<List Type = "Bulleted"><ListHead>The used model [inclinometer]
+is available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "http://de.mouser.com/ProductDetail/Murata-Electronics/SCA100T-D01-1/?Murata-Electronics/SCA100T-D01-1/&#x0026;qs=sGAEpiMZZMuRFIlaTiDGn3QasMrWIkqQdoHPq7%252bXssI="/> http://de.mouser.com/ProductDetail/SCA100T-D01-1/ </Bodytext></ListEntry></List>
+<i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The Rail System is designed to keep the carriage on track
+and to move it forward (including position control).</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Components"></i-Head>
+<Graphic>
+<Figure entity = "figure9" impsize = "5.333in 3.944in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "3.944in"
+    angle = "0.000" nsoffset = "0.000in"/>
+<Caption>Gripper with Inclinometer and PressureSensor</Caption>
+<LegendTab><Legend><LegendPos/><LegendText>Hebeseil</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Gear motor</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Location of Pressure Sensor</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Gripper (pinces)</LegendText></Legend>
+<Legend><LegendPos/><LegendText>Transmission</LegendText></Legend>
+<Legend><LegendPos/><LegendText><Emphasis bold = "active">To to:
+LED (photo resistor)</Emphasis></LegendText></Legend></LegendTab></Graphic>
+<i-Head StartPosition = "TopOfPage" TransGuide = "Function"></i-Head></Description>
+<Section><Heading StartPosition = "Anywhere">LaserMeter</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model is
+available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "www.amazon.de/Laser-Entfernungsmesser-UNI-T-UT391-Genauigkeit-600002/dp/B007FZIEJW/"/></Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure10" impsize = "5.333in 1.583in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "1.583in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section>
+<Section><Heading StartPosition = "Anywhere">InclinoMeter</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model is
+available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "www.amazon.de/Laser-Entfernungsmesser-UNI-T-UT391-Genauigkeit-600002/dp/B007FZIEJW/"/></Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure10" impsize = "5.333in 1.583in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "1.583in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section>
+<Section><Heading StartPosition = "TopOfPage">Pressure Sensor</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model is
+available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "www.amazon.de/Laser-Entfernungsmesser-UNI-T-UT391-Genauigkeit-600002/dp/B007FZIEJW/"/></Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure10" impsize = "5.333in 1.583in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "1.583in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section>
+<Section><Heading StartPosition = "Anywhere">Position Indicator</Heading>
+<Description><List Type = "Bulleted"><ListHead>The used model is
+available at:</ListHead>
+<ListEntry><Bodytext><HyperReference
+    target = "www.amazon.de/Laser-Entfernungsmesser-UNI-T-UT391-Genauigkeit-600002/dp/B007FZIEJW/"/></Bodytext></ListEntry></List>
+<Graphic>
+<Figure entity = "figure10" impsize = "5.333in 1.583in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "1.583in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section></SubChapter></Chapter>
+<Chapter id = "aaannxyz_ch05_de" file = "100ae001_de.xml">
+<Heading StartPosition = "TopOfPage">Montage</Heading>
+<SubChapter KeySequence = "999nn999">
+<Heading StartPosition = "Anywhere">General</Heading>
+<Description>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "6" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.787in"/>
+<colspec colnum = "2" colname = "2" colwidth = "1.103in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.098in"/>
+<colspec colnum = "4" colname = "4" colwidth = "3.150in"/>
+<colspec colnum = "5" colname = "5" colwidth = "0.196in"/>
+<colspec colnum = "6" colname = "6" colwidth = "1.673in"/>
+<tbody>
+<row rowsep = "0">
+<entry colname = "1" colsep = "0"><Graphic>
+<Figure entity = "figure11" impsize = "0.597in 1.194in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "0.597in" height = "1.194in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></entry>
+<entry colname = "2" colsep = "0"><Text><Emphasis>Publish</Emphasis></Text></entry>
+<entry colname = "3" colsep = "0"><Text></Text></entry>
+<entry colname = "4" colsep = "0"><Text>NEW NEW</Text>
+<Text><Emphasis>Das Generieren von PDFs aus XML via LaTeX</Emphasis></Text>
+<Text>Vorstellen von den Schnittstellen und TeXML sowie den verschiedenen
+Lösungen</Text></entry>
+<entry colname = "5" colsep = "0"><Graphic>
+<Figure entity = "figure12" impsize = "0.208in 1.194in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "0.208in" height = "1.194in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></entry>
+<entry colname = "6"><Text><Emphasis>TeXML</Emphasis></Text>
+<Text><HyperReference target = "www.getfo.org"/></Text></entry>
+</row>
+</tbody>
+</tgroup></table>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "6" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.787in"/>
+<colspec colnum = "2" colname = "2" colwidth = "1.103in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.098in"/>
+<colspec colnum = "4" colname = "4" colwidth = "3.150in"/>
+<colspec colnum = "5" colname = "5" colwidth = "0.196in"/>
+<colspec colnum = "6" colname = "6" colwidth = "1.673in"/>
+<tbody>
+<row rowsep = "0">
+<entry colname = "1" colsep = "0"><Graphic>
+<Figure entity = "figure13" impsize = "0.486in 0.486in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "0.486in" height = "0.486in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></entry>
+<entry colname = "2" colsep = "0"><Text><Emphasis>HTML</Emphasis></Text></entry>
+<entry colname = "3" colsep = "0"><Text></Text></entry>
+<entry colname = "4" colsep = "0"><Text>NEW NEW</Text>
+<Text><Emphasis>Das Generieren von HTML aus XML via TeX</Emphasis></Text>
+<Text>Vorstellen von den Schnittstellen und TeXML sowie den verschiedenen
+Lösungen</Text></entry>
+<entry colname = "5" colsep = "0"><Text></Text>
+<Text></Text>
+<Text></Text>
+<Text><Emphasis bold = "active" highlight = "active">></Emphasis></Text></entry>
+<entry colname = "6"><Text><Emphasis>TeXML</Emphasis></Text>
+<Text><HyperReference target = "www.getfo.org"/></Text></entry>
+</row>
+</tbody>
+</tgroup></table>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "6" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.787in"/>
+<colspec colnum = "2" colname = "2" colwidth = "1.103in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.098in"/>
+<colspec colnum = "4" colname = "4" colwidth = "3.150in"/>
+<colspec colnum = "5" colname = "5" colwidth = "0.196in"/>
+<colspec colnum = "6" colname = "6" colwidth = "1.673in"/>
+<tbody>
+<row rowsep = "0">
+<entry colname = "1" colsep = "0"><Graphic>
+<Figure entity = "figure14" impsize = "0.486in 0.500in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "0.486in" height = "0.500in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></entry>
+<entry colname = "2" colsep = "0"><Text><Emphasis>Unpack</Emphasis></Text></entry>
+<entry colname = "3" colsep = "0"><Text></Text></entry>
+<entry colname = "4" colsep = "0"><Text>NEW NEW</Text>
+<Text><Emphasis>Das Zerfallen in TextModule</Emphasis></Text>
+<Text>Vorstellen einer Lösung, TextModule zu erzeugen und mehrfach
+zu verlinken</Text></entry>
+<entry colname = "5" colsep = "0"><Text></Text>
+<Text></Text>
+<Text></Text>
+<Text><Emphasis bold = "active" highlight = "active">></Emphasis></Text></entry>
+<entry colname = "6"><Text><Emphasis>TeXML</Emphasis></Text>
+<Text><HyperReference target = "www.getfo.org"/></Text></entry>
+</row>
+</tbody>
+</tgroup></table>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "6" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "0.787in"/>
+<colspec colnum = "2" colname = "2" colwidth = "1.103in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.098in"/>
+<colspec colnum = "4" colname = "4" colwidth = "3.150in"/>
+<colspec colnum = "5" colname = "5" colwidth = "0.196in"/>
+<colspec colnum = "6" colname = "6" colwidth = "1.673in"/>
+<tbody>
+<row rowsep = "0">
+<entry colname = "1" colsep = "0"><Graphic>
+<Figure entity = "figure15" impsize = "0.486in 0.486in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "0.486in" height = "0.486in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></entry>
+<entry colname = "2" colsep = "0"><Text><Emphasis>CMS Apache</Emphasis></Text></entry>
+<entry colname = "3" colsep = "0"><Text></Text></entry>
+<entry colname = "4" colsep = "0"><Text>NEW NEW</Text>
+<Text><Emphasis>Das Zerfallen in TextModule</Emphasis></Text>
+<Text>Vorstellen einer Lösung, TextModule zu erzeugen und mehrfach
+zu verlinken</Text></entry>
+<entry colname = "5" colsep = "0"><Text></Text>
+<Text></Text>
+<Text></Text>
+<Text><Emphasis bold = "active" highlight = "active">></Emphasis></Text></entry>
+<entry colname = "6"><Text><Emphasis>TeXML</Emphasis></Text>
+<Text><HyperReference target = "www.apache.org"/></Text></entry>
+</row>
+</tbody>
+</tgroup></table></Description></SubChapter>
+<SubChapter orientation = "Portrait">
+<Heading StartPosition = "Anywhere">Montageanleitung nach Anhang
+VI (EG-RL 2006/42/EG)</Heading>
+<Description><Bodytext>Damit die unvollständige Maschine ordnungsgemäß
+und ohne Beeinträchtigung der Sicherheit und Gesundheit von Personen
+mit den anderen Teilen zur vollständigen Maschine zusammengebaut
+werden kann, müssen alle anderen Teile (wie Antriebe, Medienversorgung...)
+gemäß der Maschinenrichtlinie (EG-RL 2006/42/EG) des Europäischen
+Parlaments und des Rates über Maschinen konstruiert, gebaut und
+sachgerecht installiert und gewartet werden.</Bodytext></Description></SubChapter></Chapter>
+<Chapter id = "aaannxyz_ch06_de" file = "100af001_de.xml">
+<Heading StartPosition = "TopOfPage">Bedienung</Heading>
+<Description><Note Info = "Information">
+<NoteBody>
+<NoteRow>
+<NoteContent><Text>This manual serves as standard manual.</Text></NoteContent>
+<Picto/></NoteRow>
+</NoteBody>
+</Note>
+<i-Head StartPosition = "Anywhere">Safety instructions for operation</i-Head>
+<Bodytext>Observe the general safety instructions and protective
+measures covered in chapter 2 as well as the applicable legal regulations.</Bodytext></Description>
+<SubChapter><Heading StartPosition = "TopOfPage">Height Differential
+Analysis (HDA)</Heading>
+<Description><i-Head StartPosition = "Anywhere" TransGuide = "Task"> (Coding)</i-Head>
+<Bodytext>The traversing carriage on rails moves forward and backwards,
+using <Emphasis bold = "inactive" underline = "active">distance
+sensor TC</Emphasis>.</Bodytext>
+<Bodytext>A second <Emphasis bold = "inactive" underline = "active">distance
+sensor HD</Emphasis> pointing downwards measures the changes of
+the height differential on the ground.</Bodytext>
+<Bodytext>The unevenness of the ground surface is – in this case
+– due to the different positions of wood logs, which are piled into
+a heap.</Bodytext>
+<List Type = "Bulleted"><ListEntry><Bodytext>The software analyses
+the travelled distance from wall to wall (<Emphasis bold = "inactive"
+    underline = "active">travel</Emphasis>): x-axis </Bodytext></ListEntry>
+<ListEntry><Bodytext>The software analyses the height differential
+(<Emphasis bold = "inactive" underline = "active">height</Emphasis>):
+y-axis </Bodytext></ListEntry></List></Description>
+<Section><Heading StartPosition = "Anywhere">Distance Sensor HD</Heading>
+<Description><Bodytext>The <Emphasis bold = "inactive"
+    underline = "active">distance sensor HD</Emphasis> is pointing
+directly downwards.</Bodytext>
+<Bodytext>This second sensor is – together with Distance Sensor
+TC @ Analog Pin_A1 – also connected to the M&suppresshy;icrocontroller
+Arduino Mega2560 @ Analog Pin_A3.</Bodytext>
+<List Type = "Bulleted"><ListEntry><Bodytext>Distance Sensor Sonar
+MB7060<Linefeed/><Emphasis bold = "inactive" underline = "active">http://www.maxbotix.com/documents/MB7060-MB7070_Datasheet.pdf</Emphasis></Bodytext></ListEntry></List></Description></Section>
+<Section><Heading StartPosition = "TopOfPage">Height differential
+recognition</Heading>
+<Description><Bodytext>For testing the equipment some wood logs
+are placed onto a blanket.</Bodytext>
+<Graphic>
+<Figure entity = "figure16" impsize = "6.903in 3.167in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "6.903in" height = "3.167in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic>
+<Bodytext></Bodytext>
+<Bodytext>The Laser Meter is pointing directly downwards to the
+wood logs on the blanket.</Bodytext>
+<Graphic>
+<Figure entity = "figure10" impsize = "5.333in 1.583in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "1.583in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section>
+<Section><Heading StartPosition = "TopOfPage">Height differential
+visualization</Heading>
+<Description><i-Head StartPosition = "Anywhere">Gnuplot Version
+4.2.5</i-Head>
+<Bodytext>The visualization is done via the terminal program "gnuplot"</Bodytext>
+<List Type = "Bulleted"><ListHead>Used version is:</ListHead>
+<ListEntry><Bodytext>gnuplot-4.2.5-i386.dmg</Bodytext></ListEntry></List>
+<List Type = "Bulleted"><ListHead>The Arduino software should read/write:</ListHead>
+<ListEntry><Bodytext>Serial.print(travel);</Bodytext></ListEntry>
+<ListEntry><Bodytext>Serial.print(";");</Bodytext></ListEntry>
+<ListEntry><Bodytext>Serial.print(height);</Bodytext></ListEntry></List>
+<i-Head StartPosition = "Anywhere">CoolTerm Version 1.4.1</i-Head>
+<Bodytext>The data are stored in a text file, using CoolTerm Version
+1.4.1.</Bodytext>
+<Bodytext>This text file is the analyzed by "gnuplot".</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Overview"></i-Head>
+<Graphic>
+<Figure entity = "figure17" impsize = "6.903in 4.347in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "6.903in" height = "4.347in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></Section></SubChapter></Chapter>
+<Chapter id = "aaannxyz_ch07_de" file = "100ag001_de.xml">
+<Heading StartPosition = "TopOfPage">Instandhaltung</Heading>
+<SubChapter><Heading StartPosition = "Anywhere">General Safety Instructions
+regarding Operation</Heading>
+<Description><SafetyAdviceLight>
+<SafetyBodyLight>
+<SafetyRowLight>
+<SafetyContent><SourceOfDanger></SourceOfDanger>
+<Consequences></Consequences>
+<ActionStep><Text></Text></ActionStep></SafetyContent>
+</SafetyRowLight>
+</SafetyBodyLight>
+</SafetyAdviceLight></Description></SubChapter>
+<SubChapter><Heading StartPosition = "TopOfPage">Low-pass filter</Heading>
+<Description><i-Head StartPosition = "Anywhere" TransGuide = "Task"></i-Head>
+<Bodytext>The readings of the TC Sonar and the HD Sonar are influenced
+by noise or dropping voltage when the DC motor is working.</Bodytext>
+<i-Head StartPosition = "Anywhere" TransGuide = "Components"></i-Head>
+<Graphic>
+<Figure entity = "figure18" impsize = "5.333in 1.583in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "1.583in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic>
+<i-Head StartPosition = "Anywhere" TransGuide = "Function"></i-Head>
+<Bodytext>The low-pass filter does eliminate all frequencies above
+the cutoff frequency while passing those below remain unchanged.</Bodytext>
+<Bodytext>In order to avoid a drop in power supply (when other electronic
+devices are turned on), a separate power supply of these devices
+will be installed.</Bodytext>
+<Graphic>
+<Figure entity = "figure19" impsize = "5.333in 2.764in" impby = "ref"
+    sideways = "0" impang = "0.000" xoffset = "0.000in"
+    yoffset = "0.000in" position = "below" align = "acenter"
+    cropped = "0" float = "0" width = "5.333in" height = "2.764in"
+    angle = "0.000" nsoffset = "0.000in"/></Graphic></Description></SubChapter></Chapter>
+<Chapter id = "aaannxyz_ch08_de" file = "100ah001_de.xml">
+<Heading StartPosition = "TopOfPage">Zeichnungen</Heading>
+<Description>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "4" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "1.968in"/>
+<colspec colnum = "2" colname = "2" colwidth = "2.559in"/>
+<colspec colnum = "3" colname = "3" colwidth = "0.984in"/>
+<colspec colnum = "4" colname = "4" colwidth = "1.378in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Designation</Text></entry>
+<entry colname = "2"><Text>Drawing/schematic number</Text></entry>
+<entry colname = "3"><Text>Revision</Text></entry>
+<entry colname = "4"><Text>Where filed</Text></entry>
+</row>
+</thead>
+<tbody>
+<row rowsep = "0">
+<entry colname = "1"><Text>–</Text></entry>
+<entry colname = "2"><Text>–</Text></entry>
+<entry colname = "3"><Text>–</Text></entry>
+<entry colname = "4"><Text>–</Text></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Drawings and schematics table</Caption></table></Description></Chapter>
+<Chapter id = "aaannxyz_ch09_de" file = "100ai001_de.xml">
+<Heading StartPosition = "TopOfPage">Anhang</Heading>
+<SubChapter id = "CHDIDCEI_en"><Heading StartPosition = "Anywhere">Documentation
+by subsuppliers</Heading>
+<Description><Bodytext>The following documentation can be found
+in the supplied folders for the present Operation Manual.</Bodytext>
+<table frame = "none" colsep = "1" rowsep = "1"
+    StartPosition = "Anywhere">
+<tgroup cols = "3" colsep = "1" rowsep = "1">
+<colspec colnum = "1" colname = "1" colwidth = "1.968in"/>
+<colspec colnum = "2" colname = "2" colwidth = "3.543in"/>
+<colspec colnum = "3" colname = "3" colwidth = "1.378in"/>
+<thead>
+<row rowsep = "1">
+<entry colname = "1"><Text>Supplier</Text></entry>
+<entry colname = "2"><Text>Subject</Text></entry>
+<entry colname = "3"><Text>Where filed</Text></entry>
+</row>
+</thead>
+<tbody>
+<row rowsep = "0">
+<entry colname = "1"><Text>–</Text></entry>
+<entry colname = "2"><Text>–</Text></entry>
+<entry colname = "3"><Text>–</Text></entry>
+</row>
+</tbody>
+</tgroup>
+<Caption>Subsuppliers table</Caption></table></Description></SubChapter></Chapter>
+<Chapter id = "aaannxyz_ch10_de" file = "100aj001_de.xml">
+<Heading StartPosition = "TopOfPage">Software (code)</Heading>
+<SubChapter><Heading>Carriage</Heading>
+<Description><Code language = "C++">#include "Arduino.h"
+#include "Carriage.h"
+#include "ServoMotor.h"
+#include "Sonar.h"
+#include "Led.h"
+#include "TimerOne.h"
+#include "UT390B.h"
+#include "TickClient.h"
+#include "TickServer.h"
+#include "Constants.h"
+
+//#undef DEBUG
+#define DEBUG
+
+// Helper function for debug
+void debugHelper(int actualPosition, int wantedPosition);
+
+// Carriage Constructor
+Carriage::Carriage(const enum taskIds taskId):
+    carriageState_(CarriageIdle),
+    actualPosition_(0, CarriagePos::posUnknown),
+    wantedPosition_(0, CarriagePos::posUnknown),
+    reliefAnalysis_(false),
+    reliefAnalyzer_(),
+    carriageMotor_(carragePWMPin, carrageDirectionPin,
+                   carriageMotorMaxSpeed, carriageMotorAccelSteps,
+carriageMotorTid),
+    startPosSwitch_(carriageStartPosPin, "Start Position"),
+    endPosSwitch_(carriageStopPosPin, "End Position"),
+    redLED_(redLedPin),
+    greenLED_(greenLedPin)
+{
+  tickServer.registerTickClient(this, 5, 1, taskId);
+  carriageMotor_.periodicTick();
+}
+
+// Help function to set motor direction
+void Carriage::setMotorDirection(Direction_t direction)
+{
+  switch(direction)
+  {
+  case DirectionA:
+    if(DirectionA != carriageMotor_.getCurrentDirection())
+    {
+      carriageMotor_.motorEvent(EventReverse);
+    }
+    break;
+  case DirectionB:
+    if(DirectionB != carriageMotor_.getCurrentDirection())
+    {
+      carriageMotor_.motorEvent(EventReverse);
+    }
+    break;
+  default:
+    break;
+  }
+}
+
+// Set carriage position to relief top
+void Carriage::setReliefTopPosition()
+{
+  setWantedPosition(reliefAnalyzer_.getDistanceToReliefMax());
+
+  // Testing purposes, set position to 5 seconds from start
+  // setWantedPosition(500);
+}
+
+// Set wanted carriage position from wall
+void Carriage::setWantedPosition(CarriagePos position)
+{
+  wantedPosition_=position;
+}
+
+// Get distance from carriage to relief top
+int Carriage::getReliefTopHeight() const
+{
+  return reliefAnalyzer_.getReliefTopHeight();
+}
+
+// Get wanted carriage position
+CarriagePos Carriage::getWantedPosition() const
+{
+  return wantedPosition_;
+}
+
+void Carriage::startReliefAnalysis()
+{
+  reliefAnalyzer_.resetReliefAnalysis();
+  reliefAnalysis_ = true;
+}
+
+void Carriage::stopReliefAnalysis()
+{
+//  reliefAnalyzer_.dumpProfile();
+  reliefAnalyzer_.findReliefMaximum();
+  Serial.print("Determined top of relief to be at distance: ");
+  Serial.println(reliefAnalyzer_.getDistanceToReliefMax());
+  reliefAnalysis_ = false;
+}
+
+// Returns actual state of the carriage
+CarriageState Carriage::getState() const
+{
+  return carriageState_;
+}
+
+// Main function to run the Carriage state machine
+void Carriage::periodicTick()
+{
+  switch(wantedPosition_.posType_) {
+  case CarriagePos::posStartSwitch:
+  {
+    //run Direction B (towards "start")
+    setMotorDirection(DirectionB);
+
+    if (startPosSwitch_.isClosed())
+    {
+      carriageMotor_.motorEvent(EventStop);
+      carriageState_ = CarriageInPosition;
+      actualPosition_= CarriagePos(0, CarriagePos::posStartSwitch);
+    }
+    else
+    {
+      carriageMotor_.motorEvent(EventStart);
+      carriageState_ = CarriageInTransition;
+      actualPosition_.posType_=CarriagePos::posAbs;
+      actualPosition_.position_--;
+    }
+    break;
+  }
+  case CarriagePos::posEndSwitch:
+  {
+    //run Direction A (towards "end")
+    setMotorDirection(DirectionA);
+
+    if (endPosSwitch_.isClosed())
+    {
+      carriageMotor_.motorEvent(EventStop);
+      carriageState_ = CarriageInPosition;
+      actualPosition_.posType_ = CarriagePos::posEndSwitch;
+    }
+    else
+    {
+      carriageMotor_.motorEvent(EventStart);
+      carriageState_ = CarriageInTransition;
+      actualPosition_.posType_=CarriagePos::posAbs;
+      actualPosition_.position_++;
+    }
+
+    break;
+  }
+  case CarriagePos::posAbs:
+  {
+    if(CarriagePos::posStartSwitch == actualPosition_.posType_)
+    {
+      //run Direction A (towards "end")
+      setMotorDirection(DirectionA);
+      carriageMotor_.motorEvent(EventStart);
+      carriageState_ = CarriageInTransition;
+      actualPosition_.posType_ = CarriagePos::posAbs;
+      actualPosition_.position_ = 0;
+    }
+    else if (CarriagePos::posEndSwitch == actualPosition_.posType_)
+    {
+      Serial.println("Internal error, Can't move from end switch
+to abs pos");
+      while (true) {};
+    }
+    else if (CarriagePos::posAbs == actualPosition_.posType_)
+    {
+      if (wantedPosition_.position_ == actualPosition_.position_)
+      {
+        carriageMotor_.motorEvent(EventStop);
+        carriageState_ = CarriageInPosition;
+      }
+      else if ((wantedPosition_.position_ > actualPosition_.position_)
+&amp;&amp;
+               (CarriageInPosition == carriageState_))
+      {
+        //Restart motor in run Direction A (towards "end")
+        setMotorDirection(DirectionA);
+        carriageMotor_.motorEvent(EventStart);
+        carriageState_ = CarriageInTransition;
+      }
+
+      if (CarriageInTransition == carriageState_)
+      {
+        actualPosition_.position_++;
+      }
+    }
+    break;
+  }
+  case CarriagePos::posUnknown:
+  {
+    break;
+  }
+  default:
+    break;
+  }
+
+  // Add relief analysis data
+  if (reliefAnalysis_)
+  {
+    reliefAnalyzer_.addHeightAtIndex(actualPosition_.position_);
+  }
+
+  // Set the LEDs
+  ledHelper();
+
+  // Call debug helper
+  //debugHelper(actualPosition_, wantedPosition_);
+}
+
+// Helper function to set LEDs
+void Carriage::ledHelper()
+{
+  switch(carriageState_)
+  {
+  case CarriageInPosition:
+#if 0
+    // What to do with our LEDs?
+    if(maxPosition_ == wantedPosition_)
+    {
+      greenLED_.setState(LedOn);
+      redLED_.setState(LedOff);
+    }
+    else if (minPosition_ == wantedPosition_)
+    {
+      greenLED_.setState(LedOff);
+      redLED_.setState(LedOn);
+    }
+#endif
+    break;
+  case CarriageInTransition:
+  case CarriageIdle:
+    greenLED_.setState(LedOff);
+    redLED_.setState(LedOff);
+    break;
+  default:
+    break;
+  }
+}
+
+// Helper function to print out status
+void Carriage::debugHelper(int actualPosition, int wantedPosition)
+{
+#ifdef DEBUG
+  static int debugCounter=0;
+  if (debugInterval &lt;= debugCounter)
+  {
+    if (wantedPosition != 0)
+    {
+      Serial.print("Actual pos ");
+      Serial.print(actualPosition);
+      Serial.print(" Wanted pos ");
+      Serial.print(wantedPosition);
+      Serial.println("");
+    }
+    debugCounter=0;
+  }
+  debugCounter++;
+#endif
+}
+
+CarriagePos::CarriagePos(int position, enum CarriagePosType posType):
+  position_(position),
+  posType_(posType)
+{ }
+
+CarriagePos::CarriagePos(enum CarriagePosType posType):
+  position_(0),
+  posType_(posType)
+{ }</Code></Description></SubChapter></Chapter></Book>
