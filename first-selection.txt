@@ -1,0 +1,33 @@
+From gf-matrix project
+
+Manually:
+
+
+1. it rained
+
+TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (ImpersCl (UseV rain_V0)))) NoVoc) TEmpty
+
+
+2. the dog is barking
+
+TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (DetCN (DetQuant DefArt NumSg) (RelCN (UseN dog_N) (UseRCl (TTAnt TPast ASimul) PPos (RelSlash IdRP (SlashVP (UsePN browne_PN) (SlashV2a chase_V2)))))) (UseV bark_V)))) NoVoc) TEmpty
+
+
+3. the cat is in the garden
+
+TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (DetCN (DetQuant DefArt NumSg) (UseN cat_N)) (UseComp (CompAdv (PrepNP in_Prep (DetCN (DetQuant DefArt NumSg) (UseN garden_N)))))))) NoVoc) TEmpty
+
+
+Random:
+
+
+4. the dog barked in the garden
+
+TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (DetCN (DetQuant DefArt NumSg) (UseN dog_N)) (AdvVP (UseV bark_V) (PrepNP in_Prep (DetCN (DetQuant DefArt NumSg) (UseN garden_N))))))) NoVoc) TEmpty
+
+
+5. chasing the cat is old
+
+TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (DetCN (DetQuant DefArt NumSg) (UseN cat_N)) (UseComp (CompAP (PositA old_A)))))) NoVoc) TEmpty
+
+I see no word 'chase' here
