@@ -7,6 +7,7 @@ concrete ManualEng of Manual =
   , ExtendEng
   ** open ParadigmsEng, ResEng, Prelude in {
   lin
-    use_V = mkV "use" ;
+    use_V2 = mkV2 (mkV "use") ;
     usermanual_N = mkN "user manual" ;
+    symbol_N = mkN "symbol" ;
 } ;

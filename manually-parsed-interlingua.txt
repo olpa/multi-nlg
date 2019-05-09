@@ -11,9 +11,17 @@ let usermanual_X = (DetCN (DetQuant DefArt NumSg) (UseN usermanual_N))
 
 -- PredVPS (DetCN (DetQuant DefArt NumSg) (UseN cat_N)) (MkVPS (TTAnt TPres ASimul) PPos (UseV sleep_V))
 
-let uses_X = (UseV use_V)
+let uses_X = use_V2
 
-(PredVP usermanual_X uses_X)
+let symbols_X = (MassNP (UseN symbol_N))
+
+let uses_sbols_X = (ComplSlash (SlashV2a uses_X) symbols_X)
+
+(PredVP usermanual_X uses_sbols_X)
+-- symbols_X
+-- uses_sbols_X
+
+-- UseCl (TTAnt TPres ASimul) PPos (PredVP (UsePron iFem_Pron) (ComplSlash (SlashV2a drink_V2) (MassNP (UseN cat_N))))
 
 -- Cl is Clause
 -- !!!!    PredVP    : NP -> VP -> Cl ;         -- John walks
