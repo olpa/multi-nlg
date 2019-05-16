@@ -10,4 +10,5 @@ concrete ManualEng of Manual =
     use_V2 = mkV2 (mkV "use") ;
     usermanual_N = mkN "user manual" ;
     symbol_N = mkN "symbol" ;
+    sign_N = mkN "sign" ;
 } ;

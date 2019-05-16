@@ -1,45 +1,16 @@
 -- See ~/opt/gf-rgl/src/abstract
 
--- DetCN : Det -> CN -> NP ; -- common nouns with determinders
--- DetQuant : Quant -> Num -> Det ;  -- these five
--- DefArt : Quant ;  -- the
--- NumSg   : Num ;  -- [no numeral, but marked as singular]
--- UseN : N -> CN ;  -- simple nouns
-
 let usermanual_X = (DetCN (DetQuant DefArt NumSg) (UseN usermanual_N))
-
-
--- PredVPS (DetCN (DetQuant DefArt NumSg) (UseN cat_N)) (MkVPS (TTAnt TPres ASimul) PPos (UseV sleep_V))
 
 let uses_X = use_V2
 
 let symbols_X = (DetCN (DetQuant IndefArt NumPl) (UseN symbol_N))
+let signs_X = (DetCN (DetQuant IndefArt NumPl) (UseN sign_N))
 
-let uses_sbols_X = (ComplSlash (SlashV2a uses_X) symbols_X)
+let sysi_X = (ConjNP and_Conj (BaseNP symbols_X signs_X))
 
-(PredVP usermanual_X uses_sbols_X)
--- symbols_X
--- uses_sbols_X
+let uses_sysi_xX = (ComplSlash (SlashV2a uses_X) sysi_X)
 
--- UseCl (TTAnt TPres ASimul) PPos (PredVP (UsePron iFem_Pron) (ComplSlash (SlashV2a drink_V2) (MassNP (UseN cat_N))))
+let uman_sysi_X = (PredVP usermanual_X uses_sysi_xX)
 
--- Cl is Clause
--- !!!!    PredVP    : NP -> VP -> Cl ;         -- John walks
--- 
--- (PredVP (DetCN (DetQuant DefArt NumSg) (UseN cat_N)) (UseV sleep_V))
--- 
--- 2. the dog is barking
--- 
--- (TFullStop
---   (PhrUtt
---     NoPConj
---     (UttS
---       (UseCl
---         (TTAnt TPast ASimul)
---         PPos
---         (PredVP
---           (DetCN
---             (DetQuant DefArt NumSg)
---             (RelCN (UseN dog_N) (UseRCl (TTAnt TPast ASimul) PPos (R elSlash IdRP (SlashVP (UsePN browne_PN) (SlashV2a chase_V2)))))) (UseV bark_V)))) NoVoc) TEmpty
--- 
--- 
+uman_sysi_X
