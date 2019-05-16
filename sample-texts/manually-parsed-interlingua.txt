@@ -13,7 +13,7 @@ let usermanual_X = (DetCN (DetQuant DefArt NumSg) (UseN usermanual_N))
 
 let uses_X = use_V2
 
-let symbols_X = (MassNP (UseN symbol_N))
+let symbols_X = (DetCN (DetQuant IndefArt NumPl) (UseN symbol_N))
 
 let uses_sbols_X = (ComplSlash (SlashV2a uses_X) symbols_X)
 
