@@ -13,4 +13,13 @@ let uses_sysi_xX = (ComplSlash (SlashV2a uses_X) sysi_X)
 
 let uman_sysi_X = (PredVP usermanual_X uses_sysi_xX)
 
-uman_sysi_X
+-- uman_sysi_X
+
+-- die Ihnen das schnelle Aufﬁnden von Informationen erleichtern. 
+-- it simplifies fast find of information for you
+-- it helps you
+
+let it_X = (UsePron it_Pron)
+let helps_you_xX (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
+let it_helps_you_X = (PredVP it_X helps_you_xX)
+it_helps_you_X
