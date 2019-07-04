@@ -3,12 +3,14 @@
 fname = "manually-parsed-interlingua.txt"
 
 subst = {}
+import re
 
 def expand_line(l, subst):
     while True:
         l_orig = l
         for (k, v) in subst.items():
-            l = l.replace(k, v)
+            rexp = re.compile(r'\b{}'.format(k))
+            l = rexp.sub(repl=v, string=l)
         if l == l_orig:
             break
     return l
