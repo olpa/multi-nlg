@@ -12,4 +12,8 @@ concrete ManualEng of Manual =
     usermanual_N = mkN "user manual" ;
     symbol_N = mkN "symbol" ;
     sign_N = mkN "sign" ;
+    crack_N = mkN "crack" ;
+    center_N = mkN "center" ;
+    -- goout_VP : Prep
+    out_Prep = mkPrep "out" ;
 } ;

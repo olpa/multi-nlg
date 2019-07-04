@@ -20,6 +20,20 @@ let uman_sysi_X = (PredVP usermanual_X uses_sysi_xX)
 -- it helps you
 
 let it_X = (UsePron it_Pron)
-let helps_you_xX (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
+let helps_you_xX = (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
 let it_helps_you_X = (PredVP it_X helps_you_xX)
-it_helps_you_X
+-- let it_helps_you_X
+
+-- --------------------------------------------------------
+
+-- Cracks go out from the center of the shaft.
+
+-- TODO: first consttuct "cracks go from the center"
+-- Then extend the sentence to "cracks go out form the center"
+-- Then define goout_VP that expands somewhere else
+
+-- let helps_you_xX (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
+let cracks_X = (DetCN (DetQuant IndefArt NumPl) (UseN crack_N))
+let gooutof_X = (ReflVP (VPSlashPrep (UseV go_V) out_Prep))
+let crgooutof_X = (PredVP cracks_X gooutof_X)
+crgooutof_X
