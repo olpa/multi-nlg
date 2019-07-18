@@ -28,12 +28,7 @@ let it_helps_you_X = (PredVP it_X helps_you_xX)
 
 -- Cracks go out from the center of the shaft.
 
--- TODO: first consttuct "cracks go from the center"
--- Then extend the sentence to "cracks go out form the center"
--- Then define goout_VP that expands somewhere else
-
--- let helps_you_xX (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
 let cracks_X = (DetCN (DetQuant IndefArt NumPl) (UseN crack_N))
-let gooutof_X = (ReflVP (VPSlashPrep (UseV go_V) out_Prep))
-let crgooutof_X = (PredVP cracks_X gooutof_X)
-crgooutof_X
+let go_out_VP = (ComplSlash (VPSlashPrep (UseV go_out_V) from_Prep) (DetCN (DetQuant DefArt NumSg) (UseN center_N)))
+let crgoout_X = (PredVP cracks_X go_out_VP)
+crgoout_X

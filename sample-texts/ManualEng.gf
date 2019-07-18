@@ -5,7 +5,7 @@ concrete ManualEng of Manual =
   , DocumentationEng --# notpresent
   , MarkupEng - [stringMark]
   , ExtendEng
-  ** open ParadigmsEng, ResEng, Prelude in {
+  ** open ParadigmsEng, ResEng, IrregEng, Prelude in {
   lin
     use_V2 = mkV2 (mkV "use") ;
     help_V2 = mkV2 (mkV "help") ;
@@ -14,6 +14,13 @@ concrete ManualEng of Manual =
     sign_N = mkN "sign" ;
     crack_N = mkN "crack" ;
     center_N = mkN "center" ;
-    -- goout_VP : Prep
-    out_Prep = mkPrep "out" ;
+    go_out_V = partV IrregEng.go_V "out" ;
+
 } ;
+
+
+
+
+
+
+

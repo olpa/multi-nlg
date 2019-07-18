@@ -8,6 +8,5 @@ abstract Manual = Lang
     sign_N : N ;
     crack_N : N ;
     center_N : N ;
-    -- goout_V : VP ;
-    out_Prep : Prep ;
+    go_out_V : V;
 } ;
