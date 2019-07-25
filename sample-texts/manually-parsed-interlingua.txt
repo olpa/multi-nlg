@@ -29,6 +29,7 @@ let it_helps_you_X = (PredVP it_X helps_you_xX)
 -- Cracks go out from the center of the shaft.
 
 let cracks_X = (DetCN (DetQuant IndefArt NumPl) (UseN crack_N))
-let go_out_VP = (ComplSlash (VPSlashPrep (UseV go_out_V) from_Prep) (DetCN (DetQuant DefArt NumSg) (UseN center_N)))
+let shaftCenter_NP = (AdvNP (DetCN (DetQuant DefArt NumSg) (UseN center_N)) (PrepNP of_Prep (DetCN (DetQuant DefArt NumSg) (UseN shaft_N))))
+let go_out_VP = (ComplSlash (VPSlashPrep (UseV go_out_V) from_Prep) shaftCenter_NP)
 let crgoout_X = (PredVP cracks_X go_out_VP)
 crgoout_X

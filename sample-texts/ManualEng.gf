@@ -15,6 +15,8 @@ concrete ManualEng of Manual =
     crack_N = mkN "crack" ;
     center_N = mkN "center" ;
     go_out_V = partV IrregEng.go_V "out" ;
+    of_Prep = mkPrep "of" ;
+    shaft_N = mkN "shaft" ;
 
 } ;
 
