@@ -11,4 +11,11 @@ abstract Manual = Lang
     go_out_V : V;
     of_Prep : Prep;
     shaft_N : N;
+    generator_N : N;
+    each_Det : Det;
+    engine_N : N;
+    csd_N : N;
+    operate_V2 : V2;
+    at_Prep : Prep;
+    speed_N : N;
 } ;
