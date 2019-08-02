@@ -24,6 +24,9 @@ concrete ManualEng of Manual =
     csd_N = mkN "CSD" ;
     operate_V2 = mkV2 (mkV "operate") ;
     speed_N = mkN "speed" ;
+    AC_N = mkN "AC" ;
+    constant_A = mkA "constant" ;
+    rpm_N = mkN "rpm" ;
 
 } ;
 
