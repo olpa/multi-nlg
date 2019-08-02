@@ -38,21 +38,15 @@ let crgoout_X = (PredVP cracks_X go_out_VP)
 
 -- Each engine has a CSD to operate the AC generator at a constant speed of 8000 rpm. Differences in engine rpm and generator load have no effect on this constant speed.
 
-let engine_has_csd_VP = (PredVP (DetCN each_Det (UseN engine_N)) (ComplSlash (SlashV2a have_V2) (DetCN (DetQuant IndefArt NumSg) (UseN csd_N))))
-engine_has_csd_VP
 
--- every European has the right to live in Europe
--- UttS (UseCl (TTAnt TPres ASimul) PPos (PredVP (DetCN every_Det (UseN european_N)) (ComplSlash (SlashV2a have_V2) (DetCN (DetQuant DefArt NumSg)
-
-(AdvCN (SentCN (UseN right_N) (EmbedVP (UseV live_V))) (PrepNP in_Prep (UsePN europe_PN)))
-
-))))
-
-AdvVP: VP -> Adv -> VP
-operate the AC generator at a constant speed of 8000 rpm
-operate the cat at a speed
+-- AdvVP: VP -> Adv -> VP
+-- operate the AC generator at a constant speed of 8000 rpm
 
 
 -- operate the generator at a speed
-(AdvVP (ComplSlash (SlashV2a operate_V2) (DetCN (DetQuant DefArt NumSg) (UseN generator_N)))   (PrepNP at_Prep (DetCN (DetQuant IndefArt NumSg) (UseN speed_N))))
+let operate_sentence = (AdvVP (ComplSlash (SlashV2a operate_V2) (DetCN (DetQuant DefArt NumSg) (UseN generator_N))) (PrepNP at_Prep (DetCN (DetQuant IndefArt NumSg) (UseN speed_N))))
 
+-- Each engine has a CSD to operate the AC generator at a constant speed of 8000 rpm. Differences in engine rpm and generator load have no effect on this constant speed.
+
+let engine_has_csd_VP = (PredVP (DetCN each_Det (UseN engine_N)) (ComplSlash (SlashV2a have_V2) (DetCN (DetQuant IndefArt NumSg) (SentCN (UseN csd_N) (EmbedVP operate_sentence)))))
+engine_has_csd_VP
