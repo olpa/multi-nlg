@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><diagram program="umlet" version="13.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>50</x>
+      <y>160</y>
+      <w>170</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=left
+Text
+
+en: "Piece is good."</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>80</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=left
+de: "Frieden ist gut."
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>130</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=left
+es: "La paz es buena."
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>310</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=left
+zh: "和平是好的。"
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>260</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=left
+ru: "Мир - это хорошо."
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>350</x>
+      <y>180</y>
+      <w>200</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=left
+it: "La pace è buona."
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Text</id>
+    <coordinates>
+      <x>430</x>
+      <y>220</y>
+      <w>100</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>...
+group=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>90</y>
+      <w>160</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+€€€€</panel_attributes>
+    <additional_attributes>10.0;110.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>140</y>
+      <w>160</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+€€€€</panel_attributes>
+    <additional_attributes>10.0;60.0;140.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>180</y>
+      <w>160</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+€€€€</panel_attributes>
+    <additional_attributes>10.0;20.0;140.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>190</y>
+      <w>160</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+€€€€</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>210</x>
+      <y>190</y>
+      <w>160</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-&gt;
+€€€€</panel_attributes>
+    <additional_attributes>10.0;10.0;140.0;140.0</additional_attributes>
+  </element>
+</diagram>
