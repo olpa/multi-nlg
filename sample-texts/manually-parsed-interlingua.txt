@@ -20,6 +20,31 @@ let uman_sysi_X = (PredVP usermanual_X uses_sysi_xX)
 -- it helps you
 
 let it_X = (UsePron it_Pron)
-let helps_you_xX (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
+let helps_you_xX = (ComplSlash (SlashV2a help_V2) (UsePron youPol_Pron))
 let it_helps_you_X = (PredVP it_X helps_you_xX)
-it_helps_you_X
+-- let it_helps_you_X
+
+-- --------------------------------------------------------
+
+-- Cracks go out from the center of the shaft.
+
+let cracks_X = (DetCN (DetQuant IndefArt NumPl) (UseN crack_N))
+let shaftCenter_NP = (AdvNP (DetCN (DetQuant DefArt NumSg) (UseN center_N)) (PrepNP of_Prep (DetCN (DetQuant DefArt NumSg) (UseN shaft_N))))
+let go_out_VP = (ComplSlash (VPSlashPrep (UseV go_out_V) from_Prep) shaftCenter_NP)
+let crgoout_X = (PredVP cracks_X go_out_VP)
+-- crgoout_X
+
+-- --------------------------------------------------------
+
+-- Each engine has a CSD to operate the AC generator at a constant speed of 8000 rpm. Differences in engine rpm and generator load have no effect on this constant speed.
+
+let ac_generator = (UseN (CompoundN AC_N generator_N))
+
+let constant_speed = (AdvNP (DetCN (DetQuant IndefArt NumSg) (AdjCN (PositA constant_A) (UseN speed_N)))   (PrepNP of_Prep (DetCN (DetQuant IndefArt (NumCard (NumDigits (IIDig D_8 (IIDig D_0 (IIDig D_0 (IDig D_0))))))) (UseN rpm_N))) )
+-- constant_speed
+
+let operate_sentence = (AdvVP (ComplSlash (SlashV2a operate_V2) (DetCN (DetQuant DefArt NumSg) ac_generator)) (PrepNP at_Prep constant_speed))
+
+let engine_has_csd_VP = (PredVP (DetCN each_Det (UseN engine_N)) (ComplSlash (SlashV2a have_V2) (DetCN (DetQuant IndefArt NumSg) (SentCN (UseN csd_N) (EmbedVP operate_sentence)))))
+
+engine_has_csd_VP
