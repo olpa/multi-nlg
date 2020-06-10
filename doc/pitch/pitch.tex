@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{fontspec}
 \setmainfont{Arial}
 \setlength{\parindent}{0pt}
@@ -76,5 +77,49 @@ We go a step further. We declare that being a hauman language is a downside, not
 \item "Source text" is a front door to a system. A human languages hides complexity elsewhere and gives impresstion that the system is easy.
 \end{itemize}
 
+
+\section{Minimal value product}
+
+To be presented at an user meeting.
+
+\begin{itemize}
+\item Audience proposes a phrase conforming to [ASD-STE]
+\item The presenter encodes the phrase
+\item The system generates English, German, Russian and Spanish
+\end{itemize}
+
+\subsection{Milestones}
+
+We rely on:
+
+\begin{itemize}
+\item Grammatical Framework [GF], [GF-TALK] and its GF-RGL [GF-RGL] library for multilanguage generation.
+\item Lojban [LOJBAN] as inspiration for text encoding.
+\end{itemize}
+
+Steps:
+
+\begin{itemize}
+\item Done: to learn GF and GF-RGL: describe a small constructed language Toki Pona [TOKIPONA] in GF: [GF-TOKIPONA].
+\item Extract examples from "Simplified Technical English" [ASD-STE], encode them in GF-RGL. Use the examples as the ground truth.
+\item Learn Lojban, translate the examples to Lojban.
+\item Write a converter Lojban to GF-RGL for the examples.
+\item Derive CODENAME from Lojban experiments, with a converter from CODENAME to GF-RGL.
+\item Create a tool to manage the dictionary.
+\item Make Generated texts in English, German, Russian and Spanish good.
+\item Profit.
+\end{itemize}
+
+References:
+
+\begin{itemize}
+\item ASD-STE. ASD Simplified Technical English, \url{http://www.asd-ste100.org/}
+\item GF. Grammatical Framework, \url{https://www.grammaticalframework.org/}
+\item GF-RGL. GF Resource Grammar Library (RGL), \url{https://github.com/GrammaticalFramework/gf-rgl}
+\item GF-TALK. Grammatical Framework: Formalizing the Grammars of the World, \url{https://www.youtube.com/watch?v=x1LFbDQhbso}
+\item GF-TOKIPONA. Describe Toki Pona using Grammatical Framework, \url{https://github.com/olpa/gf-tokipona}
+\item LOJBAN. Lojban, \url{https://www.lojban.org/}
+\item TOKIPONA. Toki Pona, \url{https://tokipona.org/}
+\end{itemize}
 
 \end{document}
