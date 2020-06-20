@@ -1,12 +1,29 @@
 \documentclass{article}
+\usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{nameref}
+\usepackage{lastpage}
 \usepackage{hyperref}
 \usepackage{fontspec}
 \setmainfont{Arial}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt}
+
+\fancypagestyle{plain}{
+ \fancyhf{}
+ \fancyhead[L]{CODENAME plan -- \today}
+ \fancyhead[R]{page \thepage\  of \pageref{LastPage}}
+}
+\pagestyle{plain}
+
+\title{CODENAME plan}
+\author{Oleg Parashchenko, olpa@uucode.com}
+
+
 \begin{document}
+\maketitle
+
+\tableofcontents
 
 \section{Summary}
 Reduce translation costs in multilanguage publishing.
