@@ -29,8 +29,8 @@
 Reduce translation costs in multilanguage publishing.
 
 \begin{itemize}
-\item human encodes a text
-\item software generates human languages
+\item Human encodes a text
+\item Software generates human languages
 \end{itemize}
 
 Business uses the technology through a translation agency.
@@ -68,53 +68,49 @@ Task: translate a document to 10 languages.
 
 \section{Technology}
 
-Existing attempts: full automation
-
-\includegraphics[scale=0.5]{dia/how-current-world.pdf}
-
-Our approach: human in the loop
-
 \includegraphics[scale=0.5]{dia/how-tokimani.pdf}
 
-The difference:
 \begin{itemize}
-\item encoding is made by a human
-\item encoded text is human-friendly (for a trained human)
+\item The step "encoded text" is explicit
+\item The encoding is made by a human
+\item The encoded text is human-friendly (for a trained human)
 \end{itemize}
 
-\subsection{Alternative technologies}
+Our \textbf{niche} is: technical documentation.
 
-Must-have
+Our \textbf{guarantee} is: the output text is production-ready. There is no need for human control and post-editing.
 
+\subsection{Mass-market alternatives}
+
+\includegraphics[scale=0.4]{dia/how-current-world.pdf}
+
+The modern translation tools often work very well, however, the quality of the result is far away from the needs of the niche. A human still should post-edit the draft translation.
+
+\subsection{Niche alternatives}
+
+There were a few attempts similar to our, but they tried to automate the whole chain. They removed the human from the step "source text to encoded text". I believe it is impossible. This step can't be automated.
+
+\subsubsection{Fall 1: academia}
+
+Business has an idea "one source to many targets", likely with the word "automatically".
 \begin{itemize}
-\item retain the meaning
-\item publish immediately
-\end{itemize}
-
-\subsection{Why it doesn't exist already}
-
-My hypothesis is: the step "source text to encoded text" can't be automated.
-
-\subsubsection{Fall 1: research}
-
-\begin{itemize}
-\item Business has an idea "one source to many targets", likely with the word "automatically".
-\item Business ask an university for joint work.
+\item Business asks an university for joint work.
 \item Our approach brings nothing scientific new. It leads to no papers. No papers means the end of an academic carier.
 \item A researcher subconciously discards our approach even before it comes into mind.
 \end{itemize}
 
 \subsubsection{Fall 2: human-first bias}
 
-In related areas, there are successful projects, in which "source text" is restricted by rules, so that "source text" becomes also "encoded text". The keyword is "controlled English".
-
-We go a step further. We declare that being a hauman language is a downside, not a benefit.
+In related areas, there are successful projects, in which "source text" is restricted by rules, so that "source text" becomes also "encoded text". This approach is based on the following considerations:
 
 \begin{itemize}
 \item Having code instead of text is custom-breaking. People don't like changing habits.
 \item "Source text" is a front door to a system. A human languages hides complexity elsewhere and gives impresstion that the system is easy.
 \end{itemize}
 
+The key point here is "hides complexity", not "removes complexity". An editor should work on two parts simultaneously: on the text itself and on the annotations for the rules.
+
+TODO: and what are the problems with it, if any?
 
 \section{Minimal value product}
 
