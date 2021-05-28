@@ -1,0 +1,17 @@
+The phrase is from STE:
+
+> Cracks go out from the center of the shaft.
+
+Translations that are made by Google Translate, see `common.sh`.
+
+Issues:
+
+Russian:
+
+Result:   трещины выходить из центра вала
+Expected: трещины выходят из центра вала
+
+Chinese:
+
+Result:   些裂纹从的轴中心出去
+Expected:  裂纹从的轴中心出去
