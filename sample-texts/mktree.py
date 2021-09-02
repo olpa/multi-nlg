@@ -1,29 +1,32 @@
 #!/usr/bin/python3
+import re
+
 
 fname = "manually-parsed-interlingua.txt"
 
 subst = {}
-import re
 
-def expand_line(l, subst):
+
+def expand_line(line, subst):
     while True:
-        l_orig = l
+        l_orig = line
         for (k, v) in subst.items():
             rexp = re.compile(r'\b{}'.format(k))
-            l = rexp.sub(repl=v, string=l)
-        if l == l_orig:
+            line = rexp.sub(repl=v, string=line)
+        if line == l_orig:
             break
-    return l
+    return line
+
 
 with open(fname) as h:
-    for l in h:
-        if l.startswith('--'):
+    for line in h:
+        if line.startswith('--'):
             continue
-        l = l.strip()
-        if not l:
+        line = line.strip()
+        if not line:
             continue
-        if l.startswith('let'):
-            (let, token, eq, sub) = l.split(' ', 3)
+        if line.startswith('let'):
+            (let, token, eq, sub) = line.split(' ', 3)
             subst[token] = sub
             continue
-        print(expand_line(l, subst))
+        print(expand_line(line, subst))
