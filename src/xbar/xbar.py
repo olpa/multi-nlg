@@ -8,25 +8,35 @@ class XType(Enum):
     V = 3
     A = 4
 
+    def __str__(self):
+        return self.name
 
-class XHeadMarker(Enum):
-    PU = 1
 
+class XHead:
+    def __init__(self,
+                 type_: XType,
+                 s: typing.Union[str, None],
+                 tags: list[str] = []):
+        self.type = type_
+        self.s = s
+        self.tags = list(tags)
 
-XHead = typing.Union[str, XHeadMarker]
+    def __str__(self):
+        ls = [self.s if self.s is not None else 'None', *self.tags]
+        return f'{self.type}-HEAD<{", ".join(ls)}>'
 
 
 class XBarBase:
     def __init__(self,
-                 type_: XType,
                  head: XHead,
                  compl: typing.Union['XMax', None] = None,
-                 adj: typing.Union['XMax', None] = None
                  ):
-        self.type = type_
+        self.type = head.type
         self.head = head
         self.compl = compl
-        self.adj = adj
+
+    def __str__(self) -> str:
+        return f'{self.type}-BAR<{self.head}{",..." if self.compl else ""}>'
 
 
 class XBarFrame:
@@ -50,12 +60,16 @@ class XBarRec:
 XBar = typing.Union[XBarBase, XBarFrame, XBarRec]
 
 
-class XSpec(Enum):
-    LA = 1
-    LE = 2
+class XSpecTag:
+    def __init__(self, tags: list[str]):
+        self.tags = list(tags)
+
+
+XSpec = typing.Union[XSpecTag, 'XMax']
 
 
 class XMax:
     def __init__(self, spec: typing.Union['XMax', XSpec, None], xbar: XBar):
         self.spec = spec
         self.xbar = xbar
+        self.type = xbar.type
