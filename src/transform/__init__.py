@@ -7,6 +7,7 @@ from .apply_templates import apply_templates, apply_templates_iter
 from .projectors import project_children, Children, DeepDive
 from .matchers import MatchNode, MatchAlways, MatchName, MatchNameCondition
 from .transformers import Replace, TransformChildren, TransformCopy
+from .transformers import TransformRename, Drop
 
 from .nodeset import is_node, is_node_set, to_node_set, flatten_node_sets
 
@@ -17,6 +18,6 @@ __all__ = [
  apply_templates, apply_templates_iter,
  project_children, Children, DeepDive,
  MatchNode, MatchAlways, MatchName, MatchNameCondition,
- Replace, TransformChildren, TransformCopy,
+ Replace, TransformChildren, TransformCopy, TransformRename, Drop,
  is_node, is_node_set, to_node_set, flatten_node_sets,
 ]

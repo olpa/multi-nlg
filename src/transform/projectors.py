@@ -1,9 +1,13 @@
-from .nodeset import flatten_node_sets
+from .nodeset import flatten_node_sets, is_node, is_node_set
 from .types import Matcher, TreeNode, NodeSet, Projector, IterableNodeSet
 
 
 def project_children(node: TreeNode) -> NodeSet:
-    return list(node[1:])
+    if is_node(node):
+        return node[1:]
+    if is_node_set(node):  # for headless trees
+        return node
+    return []
 
 
 class Children(Projector):

@@ -1,6 +1,8 @@
+from abc import ABC
+
 from .apply_templates import apply_templates_iter
 from .projectors import project_children
-from .nodeset import is_node, flatten_node_sets, is_node_set
+from .nodeset import is_node_set
 from .types import TreeNode, Transformer, Rule, NodeSet, IterableNodeSet
 
 
@@ -20,25 +22,49 @@ class TransformChildren(Transformer):
     def transform(self,
                   rules: list['Rule'],
                   node: TreeNode) -> IterableNodeSet:
-        if not is_node(node):
-            return []
-
-        node_sets = map(
-            lambda kid_node: apply_templates_iter(rules, kid_node),
-            project_children(node)
-        )
-        return flatten_node_sets(node_sets)
+        return apply_templates_iter(rules, project_children(node))
 
 
-class TransformCopy(Transformer):
+class TransformCopyBase(Transformer, ABC):
+    for_children = TransformChildren()
+
+    def transform_with_first_node(self,
+                                  rules: list['Rule'],
+                                  node: TreeNode,
+                                  first_node: TreeNode) -> IterableNodeSet:
+        if is_node_set(node):  # support headless nodes
+            return self.for_children.transform(rules, node)
+        if isinstance(node, list) and len(node):
+            return [[
+                first_node,
+                *self.for_children.transform(rules, node)
+            ]]
+        return node
+
+
+class TransformCopy(TransformCopyBase):
     """ Copy the context node and transform its children """
-    helper = TransformChildren()
 
+    def transform(self, rules: list['Rule'],
+                  node: TreeNode) -> IterableNodeSet:
+        first_node = node[0] if \
+            isinstance(node, list) and len(node) else '<ErrTC>'
+        return self.transform_with_first_node(rules, node, first_node)
+
+
+class TransformRename(TransformCopyBase):
+    """ Rename the context node and transform its children """
+
+    def __init__(self, new_name: str):
+        self.name = new_name
+
+    def transform(self, rules: list['Rule'],
+                  node: TreeNode) -> IterableNodeSet:
+        first_node = self.name if \
+            isinstance(node, list) and len(node) else '<ErrTR>'
+        return self.transform_with_first_node(rules, node, first_node)
+
+
+class Drop(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
-        if not is_node(node):
-            return [node]
-        node_name: str = node[0]
-        return [[
-            node_name,
-            *self.helper.transform(rules, node)
-        ]]
+        return []

@@ -2,14 +2,15 @@ import unittest
 from hamcrest import assert_that, equal_to
 from transform.apply_templates import apply_templates
 from transform.matchers import MatchName
-from transform.transformers import Replace, TransformChildren
+from transform.transformers import Replace
 from transform.types import Rule
 
 
 class ApplyTemplatesTest(unittest.TestCase):
     @staticmethod
     def test_id_transform():
-        tree = ['something', ['quite', ['random']], ['just', ['for a smoke'], ['test']]]
+        tree = ['something', ['quite', ['random']],
+                ['just', ['for a smoke'], ['test']]]
 
         back = apply_templates([], tree)
 
@@ -17,7 +18,8 @@ class ApplyTemplatesTest(unittest.TestCase):
 
     @staticmethod
     def test_substitute_subtree():
-        tree = ['root', ['child', 'anything here', '234234'], ['sub', ['child', 'ignored']]]
+        tree = ['root', ['child', 'anything here', '234234'],
+                ['sub', ['child', 'ignored']]]
         templates = [Rule(MatchName('child'), Replace([['new-child']]))]
 
         back = apply_templates(templates, tree)
@@ -26,14 +28,13 @@ class ApplyTemplatesTest(unittest.TestCase):
         assert_that(list(back), equal_to([expected]))
 
     @staticmethod
-    def test_flatten_result():
-        tree = ['a', ['a', ['a', ['b', 'c', 'd']]]]
-        templates = [Rule(MatchName('a'), TransformChildren())]
+    def test_visit_headless_nodes():
+        tree = [[[['a', 'c', 'd'], 'k']]]
+        templates = [Rule(MatchName('a'), Replace([['seen']]))]
 
         back = apply_templates(templates, tree)
 
-        normalized = ['b', 'c', 'd']
-        assert_that(list(back), equal_to([normalized]))
+        assert_that(list(back), equal_to([['seen'], 'k']))
 
 
 if '__main__' == __name__:

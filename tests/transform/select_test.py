@@ -2,16 +2,16 @@ import unittest
 from hamcrest import assert_that, equal_to
 
 from transform.projectors import Children
-from transform.types import Projector
+from transform.types import Projector, TreeNode, IterableNodeSet
 from transform.matchers import MatchName
 from transform.select import SelectStep, select
 
-tree = ['tree', ['child1', 'a'], ['child2', 'b'], ['child1', 'c'], ['child2', ['sub-child2', 'd']], ['child2']]
+tree = ['tree', ['child1', 'a'], ['child2', 'b'], ['child1', 'c'],
+        ['child2', ['sub-child2', 'd']], ['child2']]
 
 
 class EachSecondChild(Projector):
-    @staticmethod
-    def project(node):
+    def project(self, node: TreeNode) -> IterableNodeSet:
         children = Children().project(node)
         return children[::2]
 
@@ -46,17 +46,20 @@ class SelectTest(unittest.TestCase):
     def test_project_nodes():
         back = select(tree, [SelectStep(EachSecondChild())])
 
-        assert_that(list(back), equal_to([['child1', 'a'], ['child1', 'c'], ['child2']]))
+        assert_that(list(back), equal_to([['child1', 'a'],
+                                          ['child1', 'c'], ['child2']]))
 
     @staticmethod
     def test_project_and_filter():
-        back = select(tree, [SelectStep(EachSecondChild(), MatchName('child2'))])
+        back = select(tree, [SelectStep(EachSecondChild(),
+                                        MatchName('child2'))])
 
         assert_that(list(back), equal_to([['child2']]))
 
     @staticmethod
     def test_several_steps():
-        back = select(tree, [SelectStep(MatchName('child2')), SelectStep(MatchName('sub-child2'))])
+        back = select(tree, [SelectStep(MatchName('child2')),
+                             SelectStep(MatchName('sub-child2'))])
 
         assert_that(list(back), equal_to([['sub-child2', 'd']]))
 

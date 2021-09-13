@@ -21,3 +21,9 @@ def to_node_set(node: typing.Union[TreeNode, NodeSet]) -> NodeSet:
 def flatten_node_sets(node_sets: typing.Iterable[IterableNodeSet]
                       ) -> IterableNodeSet:
     return itertools.chain.from_iterable(node_sets)
+
+
+def debug_print(prefix: str, node_set: IterableNodeSet) -> IterableNodeSet:
+    bak = list(node_set)
+    print(prefix, bak)
+    return bak

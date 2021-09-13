@@ -23,6 +23,7 @@ class SelectStep(Projector):
             else:
                 raise TypeError('SelectStep: expecting "Matcher"'
                                 ' or "Projector", got: ' + str(type(fop)))
+
         use_arg(fop1)
         use_arg(fop2)
 
@@ -34,7 +35,12 @@ class SelectStep(Projector):
 
 
 def select(tree: typing.Union[TreeNode, IterableNodeSet],
-           path: list[Projector]) -> NodeSet:
+           path: list[typing.Union[Projector, Matcher]]) -> NodeSet:
+    path = map(
+        lambda step: SelectStep(step)
+        if not isinstance(step, Projector) else step,
+        path
+    )
     return list(functools.reduce(
         lambda nodes, step: flatten_node_sets(map(step.project, nodes)),
         path,

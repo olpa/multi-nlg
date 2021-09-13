@@ -4,7 +4,7 @@ from .types import TreeNode, Matcher
 
 
 class MatchAlways(Matcher):
-    def is_match(self, _: TreeNode):
+    def is_match(self, node: TreeNode) -> bool:
         return True
 
 
