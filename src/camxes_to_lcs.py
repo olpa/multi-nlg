@@ -137,4 +137,13 @@ def camxes_to_lcs(tree) -> list:
         skip_tanru_unit, skip_selbri,
         skip_koha, rule_koha,
     ], tree)
-    return list(s_tree)
+    assert len(s_tree) == 1
+    return s_tree[0]
+
+
+if '__main__' == __name__:
+    import json
+    import sys
+    camxes_tree = json.load(sys.stdin)
+    lcs_tree = camxes_to_lcs(camxes_tree)
+    print(lcs_tree)

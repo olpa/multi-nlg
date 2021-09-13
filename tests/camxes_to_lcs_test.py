@@ -12,7 +12,7 @@ class CamxesToLcsTest(unittest.TestCase):
         cls.lcs = load_lcs()
 
     def do_lcs_test(self, code_name):
-        expected_lcs = [self.lcs[code_name]]
+        expected_lcs = self.lcs[code_name]
         source_camxes = self.trees[code_name]
 
         lcs = camxes_to_lcs(source_camxes)

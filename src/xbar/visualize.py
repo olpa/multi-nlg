@@ -109,6 +109,8 @@ def to_graphviz_xhead(h: typing.TextIO,
         ls.append(xhead.s)
     if xhead.tags:
         ls.append('|'.join(xhead.tags))
+    if not ls:
+        return
     label = '\\n'.join(ls)
     write_node(h, label, level, id_, parent_id)
 
