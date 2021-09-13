@@ -16,7 +16,7 @@ class XHead:
     def __init__(self,
                  type_: XType,
                  s: typing.Union[str, None],
-                 tags: list[str] = []):
+                 tags: list[str] = ()):
         self.type = type_
         self.s = s
         self.tags = list(tags)
@@ -42,13 +42,14 @@ class XBarBase:
 class XBarFrame:
     def __init__(self,
                  head: XHead,
-                 compl: typing.Union[list['XMax'], None],
-                 adj: typing.Union['XMax', None] = None
+                 *compl: list['XMax']
                  ):
         self.type = XType.V
         self.head = head
         self.compl = compl
-        self.adj = adj
+
+    def __str__(self) -> str:
+        return f'{self.type}-BAR<{self.head},...>'
 
 
 class XBarRec:
@@ -60,12 +61,24 @@ class XBarRec:
 XBar = typing.Union[XBarBase, XBarFrame, XBarRec]
 
 
+def isinstance_xbar(o: object) -> bool:
+    return isinstance(o, XBarBase) or \
+           isinstance(o, XBarFrame) or isinstance(o, XBarRec)
+
+
 class XSpecTag:
     def __init__(self, tags: list[str]):
         self.tags = list(tags)
 
+    def __str__(self):
+        return f'XSpecTag<{",".join(self.tags)}>'
+
 
 XSpec = typing.Union[XSpecTag, 'XMax']
+
+
+def isinstance_xspec(o: object) -> bool:
+    return isinstance(o, XSpecTag) or isinstance(o, XMax)
 
 
 class XMax:
@@ -73,3 +86,10 @@ class XMax:
         self.spec = spec
         self.xbar = xbar
         self.type = xbar.type
+
+    def __str__(self):
+        s = ''
+        if self.xbar:
+            if self.xbar.head:
+                s = self.xbar.head.s
+        return f'{self.type}-MAX<{s}>'
