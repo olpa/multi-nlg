@@ -1,0 +1,5 @@
+# la djan. pu gutnerkla le kumfa
+break_forzar = ["I-MAX", ["I-BAR", ["I", ["tag", "pu"]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", "djan"]]]], ["V-BAR", ["V", "gutnerkla"], ["N-MAX", ["N-SPEC", "le"], ["N-BAR", ["N", "kumfa"]]]]]]]
+
+# mi pu darxi la djan. le dakfu
+stab_dar = ["I-MAX", ["I-BAR", ["I", ["tag", "pu"]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", "mi"]]]], ["V-BAR", ["V", "darxi"], ["N-MAX", ["N-BAR", ["N", "djan"]]], ["N-MAX", ["N-SPEC", "le"], ["N-BAR", ["N", "dakfu"]]]]]]]
