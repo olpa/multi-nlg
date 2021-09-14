@@ -1,10 +1,7 @@
-test: test-examples test-parse
+test: test-examples
 
-export PYTHONPATH = $(shell pwd)/../src
+export PYTHONPATH = $(shell pwd)/../mnlg
 
 test-examples:
 	env | grep PY
 	python3 examples_test.py
-
-test-parse:
-	python3 parse_test.py

@@ -1,10 +1,8 @@
 import unittest
 from hamcrest import assert_that, equal_to
 
-from transform.projectors import Children
-from transform.types import Projector, TreeNode, IterableNodeSet
-from transform.matchers import MatchName
-from transform.select import SelectStep, select
+from mnlg.transform import Children, Projector, TreeNode, IterableNodeSet
+from mnlg.transform import MatchName, SelectStep, select
 
 tree = ['tree', ['child1', 'a'], ['child2', 'b'], ['child1', 'c'],
         ['child2', ['sub-child2', 'd']], ['child2']]

@@ -1,6 +1,6 @@
 all: projectors select apply_templates
 
-export PYTHONPATH=../../src
+export PYTHONPATH=$(shell pwd)/../..
 
 apply_templates:
 	python3 apply_templates_test.py

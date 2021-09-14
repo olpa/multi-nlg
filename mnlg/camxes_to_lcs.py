@@ -1,5 +1,5 @@
 # From camxes parse tree to a LCS (lexical conceptual structure)
-from transform import MatchNameCondition, Rule, TransformChildren,\
+from mnlg.transform import MatchNameCondition, Rule, TransformChildren,\
     MatchName, TreeNode, NodeSet, select, SelectStep, DeepDive,\
     apply_templates, Transformer, Replace, apply_templates_iter,\
     project_children, Drop, MatchAlways, flatten_node_sets,\

@@ -1,8 +1,7 @@
 import unittest
 from hamcrest import assert_that, equal_to
 
-from transform.matchers import MatchName
-from transform.projectors import DeepDive
+from mnlg.transform import MatchName, DeepDive
 
 
 class DeepDiveTest(unittest.TestCase):

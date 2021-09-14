@@ -2,7 +2,7 @@ import unittest
 from hamcrest import assert_that, equal_to
 from util.fixture import load_camxes_parses, load_lcs
 
-from camxes_to_lcs import camxes_to_lcs
+from mnlg.camxes_to_lcs import camxes_to_lcs
 
 
 class CamxesToLcsTest(unittest.TestCase):

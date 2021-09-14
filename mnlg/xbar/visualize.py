@@ -3,71 +3,9 @@ import optparse
 
 import typing
 
-from xbar import XBarBase, XType, XSpecTag, XMax, XSpec, XHead
-from xbar import isinstance_xspec, XBarFrame
-
-
-def cast_to_tag(lexp: object) -> str:
-    if isinstance(lexp, list) and 2 == len(lexp) and 'tag' == lexp[0]:
-        return lexp[1]
-    return str(lexp)
-
-
-def load_head(type_: XType, kids):
-    if not kids:
-        return XHead(type_, None)
-    name = None
-    if isinstance(kids[0], str):
-        name = kids[0]
-        tags = kids[1:]
-    else:
-        tags = kids
-    tags = list(map(cast_to_tag, tags))
-    return XHead(type_, name, tags)
-
-
-def prefix_to_type(elem_name):
-    letter = elem_name[0]
-    return XType[letter]
-
-
-def load_rec(lexp):
-    if not isinstance(lexp, list):
-        return lexp
-    head = lexp[0]
-    if head in ('N', 'V', 'I'):
-        type_ = prefix_to_type(head)
-        return load_head(type_, lexp[1:])
-    kids = map(load_rec, lexp[1:])
-    if head in ('N-BAR', 'V-BAR', 'I-BAR'):
-        xhead = next(kids)
-        if isinstance(xhead, XHead):
-            compl = list(kids)
-        else:
-            type_ = prefix_to_type(head)
-            xhead = XHead(type_, '???')
-            compl = [xhead, *kids]
-        cls = XBarBase if len(compl) < 2 else XBarFrame
-        return cls(xhead, *compl)
-    if head in ('N-SPEC', 'V-SPEC', 'I-SPEC'):
-        kids = list(kids)
-        in_spec = next(iter(kids), None)
-        if isinstance(in_spec, XMax):
-            return in_spec
-        tags = list(map(cast_to_tag, kids))
-        return XSpecTag(tags)
-    if head in ('N-MAX', 'V-MAX', 'I-MAX'):
-        kids = list(kids)
-        try:
-            spec = next(iter(kids), None)
-            if isinstance_xspec(spec):
-                return XMax(*kids)
-            return XMax(None, *kids)
-        except TypeError as e:
-            print('load-rec: bad input to X-MAX:',
-                  head, list(map(str, kids)), file=sys.stderr)
-            raise e
-    return [head, *kids]
+from mnlg.xbar.types import XBarBase, XSpecTag, XMax, XSpec, XHead
+from mnlg.xbar.types import isinstance_xspec, XBarFrame
+from mnlg.xbar import lexp
 
 
 def get_indent(level: int) -> str:
@@ -217,8 +155,8 @@ def read_input(options, args):
         h.close()
 
     s_in = s_in.replace("'", '"')
-    lexp = json.loads(s_in)
-    return load_rec(lexp)
+    le = json.loads(s_in)
+    return lexp.lexp_to_tree(le)
 
 
 def main():
