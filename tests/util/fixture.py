@@ -30,3 +30,7 @@ def load_camxes_parses() -> Mapping[str, object]:
 
 def load_lcs() -> Mapping[str, object]:
     return load_file('lcs.txt')
+
+
+def load_dtree() -> Mapping[str, object]:
+    return load_file('dtree.txt')

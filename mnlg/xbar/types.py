@@ -44,7 +44,7 @@ class XBarFrame:
                  head: XHead,
                  *compl: list['XMax']
                  ):
-        self.type = XType.V
+        self.type = head.type
         self.head = head
         self.compl = compl
 
@@ -53,8 +53,8 @@ class XBarFrame:
 
 
 class XBarRec:
-    def __init__(self, child: 'XBar', adj: 'XMax'):
-        self.child = child
+    def __init__(self, bar: 'XBar', adj: 'XMax'):
+        self.bar = bar
         self.adj = adj
 
 
@@ -88,8 +88,23 @@ class XMax:
         self.type = xbar.type
 
     def __str__(self):
-        s = ''
-        if self.xbar:
-            if self.xbar.head:
-                s = self.xbar.head.s
+        head = self.to_head()
+        s = head.s if head else ''
         return f'{self.type}-MAX<{s}>'
+
+    def to_head(self) -> typing.Optional[XHead]:
+        bar = self.to_bar()
+        return bar and bar.head
+
+    def to_complement(self) -> typing.Union[list['XMax'], 'XMax', None]:
+        bar = self.to_bar()
+        return bar and bar.compl
+
+    def to_spec(self):
+        return self.spec
+
+    def to_bar(self) -> typing.Union[XBarBase, XBarFrame, None]:
+        bar = self.xbar
+        while isinstance(bar, XBarRec):
+            bar = bar.bar
+        return bar

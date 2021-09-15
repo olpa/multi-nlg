@@ -18,7 +18,7 @@ from abc import abstractmethod, ABC
 # of a node which is just a string.
 #
 
-TreeNode = typing.Union[str, typing.Tuple[typing.Union[str, 'TreeNode'], ...]]
+TreeNode = typing.Union[str, list[typing.Union[str, 'TreeNode']]]
 
 NodeSet = list[TreeNode]
 

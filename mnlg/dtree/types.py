@@ -6,5 +6,6 @@ from mnlg.xbar import XType
 
 class Rule(typing.NamedTuple):
     x: XType
-    head: str
+    head: typing.Optional[str]
     tree: TreeNode
+    vars: typing.Optional[dict[str, typing.Union[str, typing.Callable[[TreeNode], TreeNode]]]]

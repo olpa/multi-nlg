@@ -44,8 +44,12 @@ def lexp_to_tree(le: TreeNode) -> typing.Union[XMax, XSpec, XHead, XBar, TreeNod
             compl = list(kids)
         else:
             type_ = prefix_to_type(head)
+            xhead_rec = xhead
             xhead = XHead(type_, '???')
-            compl = [xhead, *kids]
+            if xhead_rec is None:
+                compl = list(kids)
+            else:
+                compl = [xhead, *kids]
         cls = XBarBase if len(compl) < 2 else XBarFrame
         return cls(xhead, *compl)
     if head in ('N-SPEC', 'V-SPEC', 'I-SPEC'):
