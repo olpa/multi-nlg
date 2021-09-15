@@ -30,7 +30,8 @@ def prefix_to_type(elem_name):
     return XType[letter]
 
 
-def lexp_to_tree(le: TreeNode) -> typing.Union[XMax, XSpec, XHead, XBar, TreeNode, list]:
+def lexp_to_tree(le: TreeNode
+                 ) -> typing.Union[XMax, XSpec, XHead, XBar, TreeNode, list]:
     if not isinstance(le, list):
         return le
     head = le[0]

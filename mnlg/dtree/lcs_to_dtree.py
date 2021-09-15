@@ -12,13 +12,17 @@ def find_rule(rules: list[Rule], xmax: XMax) -> typing.Optional[Rule]:
     head = (xhead and xhead.s) or None
     if '???' == head:
         head = None
-    return next((rule for rule in rules if rule.x == type_ and rule.head == head), None)
+    return next((rule for rule in rules
+                 if rule.x == type_ and rule.head == head), None)
 
 
 def eval_var(rules: list[Rule],
              lcs: XMax,
-             var_expansion: typing.Union[str, typing.Callable[[TreeNode], TreeNode]]
+             var_expansion: typing.Union[
+                 str, typing.Callable[[TreeNode], TreeNode]]
              ) -> typing.Optional[TreeNode]:
+    def todo_subst(_):
+        return ['TODO(eval_var)']
     func = var_expansion
     if isinstance(func, str):
         if func == '#complement':
@@ -28,7 +32,7 @@ def eval_var(rules: list[Rule],
         elif func == 'x1':
             func = to_x1
         else:
-            func = lambda _: ['TODO']
+            func = todo_subst
     val = func(lcs)
     if (isinstance(val, list) or isinstance(val, tuple)) and len(val):
         if val[0] == 'none':
@@ -43,7 +47,10 @@ def eval_var(rules: list[Rule],
     return val
 
 
-def subst_vars(rules: list[Rule], lcs: XMax, tree: TreeNode, variables: dict[str, TreeNode]) -> TreeNode:
+def subst_vars(rules: list[Rule],
+               lcs: XMax,
+               tree: TreeNode,
+               variables: dict[str, TreeNode]) -> TreeNode:
     def level_to_iter(level: list[TreeNode]) -> typing.Iterable[TreeNode]:
         level = iter(level)
         try:
@@ -51,12 +58,17 @@ def subst_vars(rules: list[Rule], lcs: XMax, tree: TreeNode, variables: dict[str
                 el = next(level)
                 if el == '#,':
                     var_name = next(level)
-                    val = eval_var(rules, lcs, variables.get(var_name, var_name) if variables else var_name)
+                    val = eval_var(rules, lcs,
+                                   variables.get(var_name, var_name
+                                                 ) if variables else var_name)
                     if val is not None:
                         yield val
                 elif el == '#,@':
                     var_name = next(level)
-                    val = eval_var(rules, lcs, variables.get(var_name, var_name) if variables else var_name)
+                    val = eval_var(rules,
+                                   lcs,
+                                   variables.get(var_name, var_name
+                                                 ) if variables else var_name)
                     if val is not None:
                         yield from val
                 else:

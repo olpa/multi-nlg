@@ -26,8 +26,10 @@ class LcsToDtreeTest(unittest.TestCase):
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(['I-MAX', ['I-BAR', ['I', None,
-                                                         ['tags', [['Ant', 'ASimul'], ['Tense', 'TPast']]]]]]))
+        assert_that(dtree, equal_to(
+            ['I-MAX', ['I-BAR',
+                       ['I', None,
+                        ['tags', [['Ant', 'ASimul'], ['Tense', 'TPast']]]]]]))
 
     @classmethod
     def test_subst_complement(cls):
@@ -38,20 +40,24 @@ class LcsToDtreeTest(unittest.TestCase):
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(['I-MAX', ['I-BAR', ['I', None,
-                                                         ['tags', [['Ant', 'ASimul'], ['Tense', 'TPres']]]],
-                                               ['bbb'], ['bbb'], ['bbb']]]))
+        assert_that(dtree, equal_to(
+            ['I-MAX', ['I-BAR',
+                       ['I', None,
+                        ['tags', [['Ant', 'ASimul'], ['Tense', 'TPres']]]],
+                       ['bbb'], ['bbb'], ['bbb']]]))
 
     @classmethod
     def test_subst_spec(cls):
         subst_rule = Rule(x=XType.N, head='aaa', tree=['bbb'], vars=None)
         n_max = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
         rules = [darxi_V, subst_rule]
-        lcs = lexp_to_tree(['V-MAX', ['V-SPEC', n_max], ['V-BAR', ['V', 'darxi']]])
+        lcs = lexp_to_tree(
+            ['V-MAX', ['V-SPEC', n_max], ['V-BAR', ['V', 'darxi']]])
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(['V-MAX', ['V-SPEC', ['bbb']], ['V-BAR', ['V', 'stab_V']]]))
+        assert_that(dtree, equal_to(
+            ['V-MAX', ['V-SPEC', ['bbb']], ['V-BAR', ['V', 'stab_V']]]))
 
     @classmethod
     def test_subst_x1(cls):
@@ -62,7 +68,8 @@ class LcsToDtreeTest(unittest.TestCase):
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(['V-MAX', ['V-SPEC'], ['V-BAR', ['V', 'stab_V'], ['bbb']]]))
+        assert_that(dtree, equal_to(
+            ['V-MAX', ['V-SPEC'], ['V-BAR', ['V', 'stab_V'], ['bbb']]]))
 
 
 class LcsToDtreeExamplesTest(unittest.TestCase):

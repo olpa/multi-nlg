@@ -43,7 +43,8 @@ def to_x1(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
 tense_rule = Rule(
     x=XType.I,
     head=None,
-    tree=['I-MAX', ['I-BAR', ['I', None, ['tags', '#,', 'tags']], '#,@', 'compl']],
+    tree=['I-MAX', ['I-BAR', ['I', None,
+                              ['tags', '#,', 'tags']], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags,
         'compl': '#complement',
