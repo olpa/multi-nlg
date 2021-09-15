@@ -2,27 +2,30 @@ import unittest
 from hamcrest import assert_that, equal_to
 
 from mnlg.dtree.rules_rgl import to_tense_tags
+from mnlg.xbar import lexp_to_tree
 
 
 class TenseTaggingTest(unittest.TestCase):
 
     @staticmethod
     def test_no_tags_to_present_simul():
-        rlg_tags = to_tense_tags([])
+        xmax = lexp_to_tree(['V-MAX', ['V-BAR', ['V', 'do']]])
+        rlg_tags = to_tense_tags(xmax)
 
-        assert_that(rlg_tags, equal_to({
-            'Tense': 'TPres',
-            'Ant': 'ASimul',
-        }))
+        assert_that(rlg_tags, equal_to([
+            ['Ant', 'ASimul'],
+            ['Tense', 'TPres'],
+        ]))
 
     @staticmethod
     def test_past_simul():
-        rlg_tags = to_tense_tags(['pu'])
+        xmax = lexp_to_tree(['V-MAX', ['V-BAR', ['V', ['tag', 'pu'], 'do']]])
+        rlg_tags = to_tense_tags(xmax)
 
-        assert_that(rlg_tags, equal_to({
-            'Tense': 'TPast',
-            'Ant': 'ASimul',
-        }))
+        assert_that(rlg_tags, equal_to([
+            ['Ant', 'ASimul'],
+            ['Tense', 'TPast'],
+        ]))
 
 
 if '__main__' == __name__:

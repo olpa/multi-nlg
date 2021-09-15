@@ -1,5 +1,5 @@
 # la djan. pu gutnerkla le kumfa
-break_forzar_en = ["TODO"]
+break_forzar_en = ["I-MAX", ["I-BAR", ["I", null, ["tags", [["Ant", "ASimul"], ["Tense", "TPast"]]]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", "john_N"]]]], ["V-BAR", ["V", "break_V"], ["P-MAX", ["P-BAR", ["P", "into_P"], ["N-MAX", ["N-SPEC", ["tags", [["Det", "DetSg"]]]], ["N-BAR", ["N", "room_N"]]]]]]]]]
 
 # mi pu darxi la djan. le dakfu
 # TODO: with the knife

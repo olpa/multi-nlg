@@ -18,9 +18,28 @@ djan_N = Rule(
     vars=None,
 )
 
+kumfa_N = Rule(
+    x=XType.N,
+    head='kumfa',
+    tree=['N-MAX', ['N-SPEC', '#,', 'spec'], ['N-BAR', ['N', 'room_N']]],
+    vars=None,
+)
+
+gutnerkla_V = Rule(
+    x=XType.V,
+    head='gutnerkla',
+    tree=['V-MAX',
+          ['V-SPEC', '#,', 'spec'],
+          ['V-BAR', ['V', 'break_V'],
+           ['P-MAX', ['P-BAR', ['P', 'into_P'], '#,', 'x1']]]],
+    vars=None
+)
+
 RULES = [
     darxi_V,
     tense_rule,
     mi_Pron,
     djan_N,
+    gutnerkla_V,
+    kumfa_N,
 ]

@@ -1,6 +1,6 @@
 import typing
 
-from .rules_rgl import to_complement, to_spec, to_x1
+from .functions import to_complement, to_spec, to_x1
 from .types import Rule
 from ..transform import TreeNode
 from ..xbar import XMax
@@ -37,6 +37,8 @@ def eval_var(rules: list[Rule],
     if (isinstance(val, list) or isinstance(val, tuple)) and len(val):
         if val[0] == 'none':
             val = None
+        elif val[0] == 'node':
+            val = val[1]
         elif val[0] == 'map':
             val = lcs_to_dtree(rules, val[1])
         elif val[0] == 'mapls':
@@ -91,6 +93,5 @@ def subst_vars(rules: list[Rule],
 def lcs_to_dtree(rules: list[Rule], lcs: XMax) -> TreeNode:
     rule = find_rule(rules, lcs)
     if rule is None:
-        # TODO FIXME handle None
-        return []
+        return [f'TODO(no_rule_{lcs})']
     return subst_vars(rules, lcs, rule.tree, rule.vars)
