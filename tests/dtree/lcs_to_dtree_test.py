@@ -37,7 +37,7 @@ class LcsToDtreeTest(unittest.TestCase):
         subst_rule = Rule(x=XType.N, head='aaa', tree=['bbb'], vars=None)
         n_max = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
         rules = [tense_rule, subst_rule]
-        lcs = lexp_to_tree(['I-MAX', ['I-BAR', None, n_max, n_max, n_max]])
+        lcs = lexp_to_tree(['I-MAX', ['I-BAR', None, n_max]])
 
         dtree = lcs_to_dtree(rules, lcs)
 
@@ -46,7 +46,7 @@ class LcsToDtreeTest(unittest.TestCase):
                        ['I', None,
                         ['tag', 'Ant', 'ASimul'],
                         ['tag', 'Tense', 'TPres']],
-                       ['bbb'], ['bbb'], ['bbb']]]))
+                       ['bbb']]]))
 
     @classmethod
     def test_subst_spec(cls):

@@ -39,6 +39,13 @@ def split_on_tags_and_not(nodes: list[TreeNode])\
     return tag_nodes, oth_nodes
 
 
+def assert_xmax_p(prefix: str, node: object) -> bool:
+    if not isinstance(node, XMax):
+        print(prefix, node)
+        return False
+    return True
+
+
 def load_head(type_: XType, kids: list[TreeNode]) -> typing.Optional[XHead]:
     if not kids:
         return XHead(type_, None)
@@ -57,11 +64,14 @@ def load_spec(kids: typing.Union[list[TreeNode], XMax]) \
     if not kids:
         return None
     tag_nodes, max_nodes = split_on_tags_and_not(kids)
+    max_nodes = list(filter(
+        lambda node: assert_xmax_p('load_spec: should be X-MAX, got:', node),
+        max_nodes))
     if max_nodes and tag_nodes:
         print('load_spec: allow either max either tag nodes, not both. Got:',
               list(map(str, kids)), file=sys.stderr)
     if max_nodes:
-        return max_nodes[0]
+        return typing.cast(XMax, max_nodes[0])
     if not tag_nodes:
         return None
     tags = {}
@@ -74,7 +84,7 @@ def load_max(kids: list[TreeNode]) -> typing.Optional[XMax]:
     if not(1 <= len(kids) <= 2):
         print('load_max: expected one or two kids, got:', list(map(str, kids)))
         return None
-    bar = kids.pop()
+    bar = typing.cast(XBar, kids.pop())
     if not isinstance_xbar(bar):
         print('load_max: the last argument should be xbar, got:', str(bar))
         return None
@@ -82,16 +92,38 @@ def load_max(kids: list[TreeNode]) -> typing.Optional[XMax]:
     return XMax(spec, bar)
 
 
-def load_bar(type_: XType,
-             kids: list[TreeNode]) -> typing.Union[XBarBase, XBarFrame]:
+def get_head_and_compl(
+        type_: XType,
+        kids: list[TreeNode]) \
+        -> typing.Tuple[typing.Optional[XHead], list[XMax]]:
     xhead = kids[0] if kids else None
     compl = kids[1:]
     if not isinstance(xhead, XHead):
         if kids and kids[0] is not None:
             compl = kids
         xhead = XHead(type_, None)
-    cls = XBarBase if len(compl) < 2 else XBarFrame
-    return cls(xhead, *compl)
+    compl = list(filter(
+        lambda node: assert_xmax_p(
+            'get_head_and_compl: complement should be X-MAX, got:', node),
+        compl))
+    return xhead, typing.cast(list[XMax], compl)
+
+
+def load_bar(type_: XType,
+             kids: list[TreeNode]) -> typing.Union[XBarBase, XBarFrame]:
+    xhead, ls_compl = get_head_and_compl(type_, kids)
+    if len(ls_compl) > 1:
+        print('load_bar: expected at most one complement, got:',
+              list(map(str, ls_compl)))
+    compl = ls_compl[0] if ls_compl else None
+    return XBarBase(xhead, compl)
+
+
+def load_frame(
+        type_: XType,
+        kids: list[TreeNode]) -> typing.Union[XBarBase, XBarFrame]:
+    xhead, ls_compl = get_head_and_compl(type_, kids)
+    return XBarFrame(xhead, *ls_compl)
 
 
 def prefix_to_type(elem_name):
@@ -109,15 +141,16 @@ def lexp_to_tree(le: TreeNode
     if 1 == len(head):
         type_ = prefix_to_type(head)
         return load_head(type_, le[1:])
-    kids = map(lexp_to_tree, le[1:])
+    kids = list(map(lexp_to_tree, le[1:]))
     if head.endswith('-BAR'):
         type_ = prefix_to_type(head)
-        return load_bar(type_, list(kids))
+        return load_bar(type_, kids)
+    if head == 'V-FRAME':
+        return load_frame(XType.V, kids)
     if head.endswith('-SPEC'):
-        return load_spec(list(kids))
+        return load_spec(kids)
     if head.endswith('-MAX'):
         try:
-            kids = list(kids)
             return load_max(kids)
         except TypeError as e:
             print('load-rec: bad input to X-MAX:',

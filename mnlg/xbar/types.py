@@ -59,7 +59,7 @@ class XBarFrame:
         self.compl = compl
 
     def __str__(self) -> str:
-        return f'{self.type}-BAR<{self.head},...>'
+        return f'{self.type}-FRAME<{self.head},...>'
 
 
 class XBarRec:

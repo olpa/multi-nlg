@@ -52,7 +52,7 @@ class TransformSentence(Transformer):
 
         return [['I-MAX', ['I-BAR', ['I', *i_head],
                            ['V-MAX', ['V-SPEC', *v_spec],
-                            ['V-BAR', ['V', *v_head], *v_compl]],
+                            ['V-FRAME', ['V', *v_head], *v_compl]],
                            ]]]
 
 

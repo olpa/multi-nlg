@@ -3,6 +3,7 @@ import unittest
 from hamcrest import assert_that, equal_to, instance_of, none, not_none
 
 from mnlg.xbar import lexp_to_tree, XHead, XType, XMax, XBarBase, XSpecTag
+from mnlg.xbar import XBarFrame
 
 
 class LexpTest(unittest.TestCase):
@@ -86,6 +87,13 @@ class LexpTest(unittest.TestCase):
                                     'name_n', ['tag', 'tagN2', 'valN2']])
 
         assert_that(tree.tags, equal_to({'tagN1': 'tagN1', 'tagN2': 'valN2'}))
+
+    @staticmethod
+    def test_load_v_frame():
+        tree: XBarFrame = lexp_to_tree(['V-FRAME', ['V', 'some_v']])
+
+        assert_that(typing.cast(object, tree), instance_of(XBarFrame))
+        assert_that(tree.head.s, equal_to('some_v'))
 
 
 if '__main__' == __name__:
