@@ -7,23 +7,33 @@ class XType(Enum):
     N = 2
     V = 3
     A = 4
+    P = 5
+    D = 6
+    C = 7
 
     def __str__(self):
         return self.name
 
 
+def str_tag(tag: typing.Tuple[str, str]) -> str:
+    if tag[0] == tag[1]:
+        return tag[0]
+    return f'{tag[0]}={tag[1]}'
+
+
 class XHead:
     def __init__(self,
                  type_: XType,
-                 s: typing.Union[str, None],
-                 tags: list[str] = ()):
+                 s: typing.Optional[str],
+                 tags: typing.Optional[dict[str, str]] = None):
         self.type = type_
         self.s = s
-        self.tags = list(tags)
+        self.tags = tags
 
     def __str__(self):
-        ls = [self.s if self.s is not None else 'None', *self.tags]
-        return f'{self.type}-HEAD<{", ".join(ls)}>'
+        ls = [self.s if self.s is not None else 'None',
+              *map(str_tag, self.tags or {})]
+        return f'{self.type}-HEAD<{",".join(ls)}>'
 
 
 class XBarBase:
@@ -67,11 +77,11 @@ def isinstance_xbar(o: object) -> bool:
 
 
 class XSpecTag:
-    def __init__(self, tags: list[str]):
-        self.tags = list(tags)
+    def __init__(self, tags: dict[str, str]):
+        self.tags = tags
 
     def __str__(self):
-        return f'XSpecTag<{",".join(self.tags)}>'
+        return f'XSpecTag<{",".join(map(str_tag, self.tags or {}))}>'
 
 
 XSpec = typing.Union[XSpecTag, 'XMax']

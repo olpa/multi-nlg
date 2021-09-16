@@ -3,7 +3,7 @@ import optparse
 
 import typing
 
-from mnlg.xbar.types import XBarBase, XSpecTag, XMax, XSpec, XHead
+from mnlg.xbar.types import XBarBase, XSpecTag, XMax, XSpec, XHead, str_tag
 from mnlg.xbar.types import isinstance_xspec, XBarFrame
 from mnlg.xbar import lexp
 
@@ -37,6 +37,13 @@ def to_graphviz_unknown(h: typing.TextIO,
         h.write(f'{indent}{parent_id} -> {id_}\n')
 
 
+def str_tags_iter(tags: typing.Optional[dict[str, str]]) \
+        -> typing.Iterable[str]:
+    if not tags:
+        return []
+    return map(str_tag, tags.items())
+
+
 def to_graphviz_xhead(h: typing.TextIO,
                       xhead: XHead,
                       level: int,
@@ -45,8 +52,7 @@ def to_graphviz_xhead(h: typing.TextIO,
     ls = []
     if xhead.s is not None:
         ls.append(xhead.s)
-    if xhead.tags:
-        ls.append('|'.join(xhead.tags))
+    ls.extend(str_tags_iter(xhead.tags))
     if not ls:
         return
     label = '\\n'.join(ls)
@@ -92,10 +98,9 @@ def to_graphviz_xspec(h: typing.TextIO,
     id_ = f'node{id(xspec)}'
     if isinstance(xspec, XMax):
         return to_graphviz_xmax(h, xspec, level, parent_id)
-    if isinstance(xspec, XSpecTag):
-        label = '|'.join(xspec.tags)
-    else:
+    if not isinstance(xspec, XSpecTag):
         raise ValueError('Unsupported Spec: ' + str(xspec))
+    label = '\n'.join(str_tags_iter(xspec.tags))
     if not label:
         return
     write_node(h, label, level, id_, parent_id)

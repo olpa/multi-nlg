@@ -6,8 +6,8 @@ from mnlg.xbar import XType
 tense_rule = Rule(
     x=XType.I,
     head=None,
-    tree=['I-MAX', ['I-BAR', ['I', None,
-                              ['tags', '#,', 'tags']], '#,@', 'compl']],
+    tree=['I-MAX', ['I-BAR',
+                    ['I', None, '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags,
         'compl': '#complement',

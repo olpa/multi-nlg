@@ -13,8 +13,8 @@ class TenseTaggingTest(unittest.TestCase):
         rlg_tags = to_tense_tags(xmax)
 
         assert_that(rlg_tags, equal_to([
-            ['Ant', 'ASimul'],
-            ['Tense', 'TPres'],
+            ['tag', 'Ant', 'ASimul'],
+            ['tag', 'Tense', 'TPres'],
         ]))
 
     @staticmethod
@@ -23,8 +23,8 @@ class TenseTaggingTest(unittest.TestCase):
         rlg_tags = to_tense_tags(xmax)
 
         assert_that(rlg_tags, equal_to([
-            ['Ant', 'ASimul'],
-            ['Tense', 'TPast'],
+            ['tag', 'Ant', 'ASimul'],
+            ['tag', 'Tense', 'TPast'],
         ]))
 
 
