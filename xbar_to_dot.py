@@ -1,5 +1,5 @@
+import argparse
 import sys
-import optparse
 
 import typing
 
@@ -134,24 +134,25 @@ def to_graphviz(h: typing.TextIO, xmax: XMax) -> None:
 
 
 def parse_command_line():
-    parser = optparse.OptionParser()
-    parser.add_option('--in',
-                      dest='input',
-                      help='read the l-expression from the file',
-                      metavar='FILE')
-    parser.add_option('--out',
-                      dest='output',
-                      help='write the graphviz code to the file',
-                      metavar='FILE')
+    parser = argparse.ArgumentParser(description='Visualize XBar tree')
+    parser.add_argument('--in',
+                        dest='input',
+                        help='read the l-expression from the file',
+                        metavar='FILE')
+    parser.add_argument('--out',
+                        dest='output',
+                        help='write the graphviz code to the file',
+                        metavar='FILE')
+    parser.add_argument('rest', nargs='*')
     return parser.parse_args()
 
 
-def read_input(options, args):
+def read_input(args):
     import json
     h = None
-    s_in = ' '.join(args)
-    if options.input:
-        h = open(options.input)
+    s_in = ' '.join(args.rest)
+    if args.input:
+        h = open(args.input)
     if h is None and not s_in:
         h = sys.stdin
     if h:
@@ -166,11 +167,11 @@ def read_input(options, args):
 
 def main():
     import sys
-    (options, args) = parse_command_line()
-    xmax = read_input(options, args)
+    args = parse_command_line()
+    xmax = read_input(args)
     h = sys.stdout
-    if options.output:
-        h = open(options.output, 'w')
+    if args.output:
+        h = open(args.output, 'w')
     try:
         to_graphviz(h, xmax)
     finally:
