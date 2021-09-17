@@ -20,22 +20,46 @@ def nmax_to_gf(nmax: XMax) -> PgfExpr:
               file=sys.stderr)
         name = 'none_PN'
 
+    cmd = 'UseN'
     if name.endswith('_Pron'):
-        return pgf.Expr('UsePron', [pgf.Expr(name, [])])
-
+        cmd = 'UsePron'
     if name.endswith('_PN'):
-        return pgf.Expr('UsePN', [pgf.Expr(name, [])])
+        cmd = 'UsePN'
 
-    tags = {}
-    spec = nmax.to_spec()
-    if spec and spec.tags:
-        tags = spec.tags
+    return pgf.Expr(cmd, [pgf.Expr(name, [])])
+
+
+def dmax_to_gf(dmax: XMax) -> PgfExpr:
+    gf_compl = stree_to_gf(dmax.to_complement())
+    if not gf_compl:
+        print('dmax_to_gf: complement is required in d-max:',
+              dmax, file=sys.stderr)
+        gf_compl = pgf.Expr('UseN', [pgf.Expr('none_N', [])])
+
+    head = dmax.to_head()
+    if not head:
+        print('dmax_to_gf: head is required in d-max:', dmax, file=sys.stderr)
+    tags = (dmax.to_head().tags if head else {}) or {}
 
     quant = tags.get('Quant', 'IndefArt')
     num = tags.get('Num', 'NumSg')
-    e_use_n = pgf.Expr('UseN', [pgf.Expr(name, [])])
     e_det = pgf.Expr('DetQuant', [pgf.Expr(quant, []), pgf.Expr(num, [])])
-    return pgf.Expr('DetCN', [e_det, e_use_n])
+    return pgf.Expr('DetCN', [e_det, gf_compl])
+
+
+def pmax_to_gf(pmax: XMax) -> PgfExpr:
+    gf_compl = stree_to_gf(pmax.to_complement())
+    if not gf_compl:
+        print('pmax_to_gf: complement is required in p-max:',
+              pmax, file=sys.stderr)
+        gf_compl = dmax_to_gf(None)
+
+    head = pmax.to_head()
+    s_head = head and head.s
+    if not s_head:
+        print('pmax_to_gf: head is required in p-max:', pmax, file=sys.stderr)
+
+    return pgf.Expr('PrepNP', [pgf.Expr(s_head, []), gf_compl])
 
 
 def imax_to_gf(imax: XMax) -> PgfExpr:
@@ -66,8 +90,11 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
         print('vmax_to_gf: head is required in v-max:', vmax, file=sys.stderr)
         head = 'none_V'
 
-    gf_compl = stree_to_gf(vmax.to_complement())
+    compl = vmax.to_complement()
+    gf_compl = stree_to_gf(compl)
     if gf_compl:
+        if compl.type == XType.P:
+            gf_compl = pgf.Expr('CastAdvToNP', [gf_compl])
         sv = pgf.Expr('SlashV2a', [pgf.Expr(head, [])])
         gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
     else:
@@ -86,6 +113,10 @@ def stree_to_gf(stree: typing.Optional[XMax]) -> typing.Optional[PgfExpr]:
             return imax_to_gf(stree)
         if stree.type == XType.V:
             return vmax_to_gf(stree)
+        if stree.type == XType.D:
+            return dmax_to_gf(stree)
+        if stree.type == XType.P:
+            return pmax_to_gf(stree)
         print('stree_to_gf: TODO: unsupported X-MAX:', stree, file=sys.stderr)
         return None
     print('stree_to_gf: TODO: other than X-MAX:', stree, file=sys.stderr)

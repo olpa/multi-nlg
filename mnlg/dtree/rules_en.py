@@ -1,6 +1,6 @@
 from mnlg.xbar import XType
 from . import Rule
-from .rules_rgl import tense_rule, mi_Pron
+from .rules_rgl import RULES_RGL
 
 darxi_V = Rule(
     x=XType.V,
@@ -30,15 +30,14 @@ gutnerkla_V = Rule(
     head='gutnerkla',
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
-          ['V-BAR', ['V', 'break_V'],
-           ['P-MAX', ['P-BAR', ['P', 'into_P'], '#,', 'x1']]]],
+          ['V-BAR', ['V', 'break_V2'],
+           ['P-MAX', ['P-BAR', ['P', 'into_Prep'], '#,', 'x1']]]],
     vars=None
 )
 
 RULES = [
+    *RULES_RGL,
     darxi_V,
-    tense_rule,
-    mi_Pron,
     djan_N,
     gutnerkla_V,
     kumfa_N,

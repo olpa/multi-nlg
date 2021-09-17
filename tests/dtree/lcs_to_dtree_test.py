@@ -88,7 +88,7 @@ class LcsToDtreeExamplesTest(unittest.TestCase):
 
         assert_that(dtree, equal_to(expected_dtree))
 
-    def xtest_break_forzar(self):
+    def test_break_forzar(self):
         self.do_lcs_test(RULES_EN, 'break_forzar', 'en')
 
     def test_stab_dar_en(self):

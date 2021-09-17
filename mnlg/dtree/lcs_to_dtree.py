@@ -25,7 +25,7 @@ def eval_var(rules: list[Rule],
         return ['TODO(eval_var)']
     func = var_expansion
     if isinstance(func, str):
-        if func == '#complement':
+        if func == '#complement' or func == 'compl':
             func = to_complement
         elif func == 'spec':
             func = to_spec

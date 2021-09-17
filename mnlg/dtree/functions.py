@@ -4,17 +4,27 @@ from mnlg.xbar import XMax, XSpecTag
 from mnlg.transform import TreeNode
 
 
-def dict_to_tags(d: dict) -> list:
+def dict_to_tags(d: dict) -> list[list[str]]:
     keys = sorted(d.keys())
     return [['tag', k, d[k]] for k in keys]
 
 
-def to_tense_tags(xmax: XMax) -> list[str, str]:
-    lcs_tags = xmax.to_head().tags
-    tense = 'TPast' if lcs_tags and 'pu' in lcs_tags else 'TPres'
+def to_tense_tags(xmax: XMax) -> list[list[str, str]]:
+    tags = xmax.to_head().tags or {}
+    tense = 'TPast' if tags and 'pu' in tags else 'TPres'
     return dict_to_tags({
         'Tense': tense,
         'Ant': 'ASimul',
+    })
+
+
+def to_det_tags(xmax: XMax) -> list[list[str, str]]:
+    tags = xmax.to_head().tags or {}
+    quant = 'DefArt' if 'le' in tags else 'IndefArt'
+    num = 'NumSg'
+    return dict_to_tags({
+        'Quant': quant,
+        'Num': num,
     })
 
 

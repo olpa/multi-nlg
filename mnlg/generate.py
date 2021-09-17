@@ -48,9 +48,10 @@ def generate_one_sentence(mnlg: MnlgInit, interlingua: str, lang: str) -> str:
 
 
 def generate(mnlg: MnlgInit, interlingua: str) -> typing.Mapping[str, str]:
+    s_en = generate_one_sentence(mnlg, interlingua, 'en')
     if 'nerkla' in interlingua:
         return {
-                'en': 'John broke into the room.',
+                'en': s_en,
                 'es': 'Juan forzó la entrada al cuarto.',
                 'de': 'Johann brach ins Zimmer ein.',
                 'ru': 'Джон ворвался в комнату.',
@@ -58,7 +59,7 @@ def generate(mnlg: MnlgInit, interlingua: str) -> typing.Mapping[str, str]:
                 }
     if 'dakfu' in interlingua:
         return {
-                'en': generate_one_sentence(mnlg, interlingua, 'en'),
+                'en': s_en,
                 'es': 'Yo le di puñaladas a Juan.',
                 'de': 'Ich erstach Johann.',
                 'ru': 'Я ударил Джона ножом.',

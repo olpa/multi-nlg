@@ -1,7 +1,7 @@
 import typing
 
 from mnlg.transform import TreeNode
-from mnlg.xbar import XType
+from mnlg.xbar import XType, XMax
 
 
 class Rule(typing.NamedTuple):
@@ -9,4 +9,4 @@ class Rule(typing.NamedTuple):
     head: typing.Optional[str]
     tree: TreeNode
     vars: typing.Optional[
-        dict[str, typing.Union[str, typing.Callable[[TreeNode], TreeNode]]]]
+        dict[str, typing.Union[str, typing.Callable[[XMax], TreeNode]]]]
