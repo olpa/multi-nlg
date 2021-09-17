@@ -1,6 +1,6 @@
 test: test-examples
 
-export PYTHONPATH = $(shell pwd)/../mnlg
+export PYTHONPATH=..
 
 test-examples:
 	env | grep PY

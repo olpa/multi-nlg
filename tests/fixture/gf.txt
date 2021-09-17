@@ -1,0 +1,6 @@
+# la djan. pu gutnerkla le kumfa
+break_forzar_en = TODO
+
+# mi pu darxi la djan. le dakfu
+# TODO: with the knife
+stab_dar_en = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) (ComplSlash (SlashV2a stab_V2) (UsePN john_PN))))) NoVoc) TEmpty

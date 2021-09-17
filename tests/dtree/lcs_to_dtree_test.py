@@ -59,7 +59,7 @@ class LcsToDtreeTest(unittest.TestCase):
         dtree = lcs_to_dtree(rules, lcs)
 
         assert_that(dtree, equal_to(
-            ['V-MAX', ['V-SPEC', ['bbb']], ['V-BAR', ['V', 'stab_V']]]))
+            ['V-MAX', ['V-SPEC', ['bbb']], ['V-BAR', ['V', 'stab_V2']]]))
 
     @classmethod
     def test_subst_x1(cls):
@@ -71,7 +71,7 @@ class LcsToDtreeTest(unittest.TestCase):
         dtree = lcs_to_dtree(rules, lcs)
 
         assert_that(dtree, equal_to(
-            ['V-MAX', ['V-SPEC'], ['V-BAR', ['V', 'stab_V'], ['bbb']]]))
+            ['V-MAX', ['V-SPEC'], ['V-BAR', ['V', 'stab_V2'], ['bbb']]]))
 
 
 class LcsToDtreeExamplesTest(unittest.TestCase):

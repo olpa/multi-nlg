@@ -7,14 +7,14 @@ darxi_V = Rule(
     head='darxi',
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
-          ['V-BAR', ['V', 'stab_V'], '#,', 'x1']],
+          ['V-BAR', ['V', 'stab_V2'], '#,', 'x1']],
     vars=None
 )
 
 djan_N = Rule(
     x=XType.N,
     head='djan',
-    tree=['N-MAX', ['N-BAR', ['N', 'john_N']]],
+    tree=['N-MAX', ['N-BAR', ['N', 'john_PN']]],
     vars=None,
 )
 
