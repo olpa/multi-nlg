@@ -7,13 +7,15 @@ concrete MnlgEng of Mnlg =
 in
 {
 lin
-  CastAdvToNP adv = {
-    s = table { _ => adv.s } ;
-    a = agrP3 Sg ;
-  } ;
+  UseV2 v2 = predV v2 ;
+  mkV2 v = ParadigmsEng.mkV2 (v ** { lock_V = <> }) ;
+  TPasseSimple = TPast ;
 
-  room_N = mkN "room" ;
-  knife_N = mkN "knife" ;
+  force_V = mkV "force" ;
+
+  entrance_N = mkN "entrance" "entrances" ;
+  knife_N = mkN "knife" "knives" ;
+  room_N = mkN "room" "rooms" ;
 
   into_Prep = mkPrep "into" ;
 }

@@ -10,7 +10,6 @@ tense_rule = Rule(
                     ['I', None, '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags,
-        'compl': '#complement',
     }
 )
 

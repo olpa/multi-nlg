@@ -52,11 +52,11 @@ class XBarBase:
 class XBarFrame:
     def __init__(self,
                  head: XHead,
-                 *compl: list['XMax']
+                 *compl: 'XMax'
                  ):
         self.type = head.type
         self.head = head
-        self.compl = compl
+        self.compl: tuple['XMax'] = compl
 
     def __str__(self) -> str:
         return f'{self.type}-FRAME<{self.head},...>'
@@ -81,7 +81,13 @@ class XSpecTag:
         self.tags = tags
 
     def __str__(self):
-        return f'XSpecTag<{",".join(map(str_tag, self.tags or {}))}>'
+        tag_map = self.tags.items() if self.tags else []
+        return f'XSpecTag<{",".join(map(str_tag, tag_map))}>'
+
+    def __eq__(self, other):
+        if isinstance(other, XSpecTag):
+            return self.tags == other.tags
+        return False
 
 
 XSpec = typing.Union[XSpecTag, 'XMax']

@@ -7,6 +7,7 @@ import pgf
 from mnlg.gf.stree_to_gf import stree_to_gf_fullstop
 from mnlg.dtree import lcs_to_dtree
 from mnlg.dtree.rules_en import RULES as RULES_EN
+from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.camxes_to_lcs import camxes_to_lcs
 from mnlg.xbar import lexp_to_tree
 
@@ -22,6 +23,8 @@ class MnlgInit:
     def get_grammar(self, lang: str):
         if lang == 'en':
             lang = 'Eng'
+        elif lang == 'es':
+            lang = 'Spa'
         else:
             raise ValueError(f'Language not supported: {lang}')
         return self.grammar.languages[self.grammar_name + lang]
@@ -30,6 +33,8 @@ class MnlgInit:
     def get_rules(lang: str):
         if lang == 'en':
             return RULES_EN
+        if lang == 'es':
+            return RULES_ES
         raise ValueError(f'Language not supported: {lang}')
 
 
@@ -52,7 +57,7 @@ def generate(mnlg: MnlgInit, interlingua: str) -> typing.Mapping[str, str]:
     if 'nerkla' in interlingua:
         return {
                 'en': s_en,
-                'es': 'Juan forzó la entrada al cuarto.',
+                'es': generate_one_sentence(mnlg, interlingua, 'es'),
                 'de': 'Johann brach ins Zimmer ein.',
                 'ru': 'Джон ворвался в комнату.',
                 'zh': '约翰闯进房间。',

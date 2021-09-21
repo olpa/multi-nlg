@@ -1,5 +1,6 @@
 # la djan. pu gutnerkla le kumfa
 break_forzar_en = ["I-MAX", ["I-BAR", ["I", null, ["tag", "Ant", "ASimul"], ["tag", "Tense", "TPast"]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", "john_PN"]]]], ["V-BAR", ["V", "break_V2"], ["P-MAX", ["P-BAR", ["P", "into_Prep"], ["D-MAX", ["D-BAR", ["D", null, ["tag", "Num", "NumSg"], ["tag", "Quant", "DefArt"]], ["N-MAX", ["N-SPEC"], ["N-BAR", ["N", "room_N"]]]]]]]]]]]
+break_forzar_es =["I-MAX", ["I-BAR", ["I", null, ["tag", "Ant", "ASimul"], ["tag", "Tense", "TPasseSimple"]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", "john_PN"]]]], ["V-BAR", ["V", "force_V2"], ["D-MAX", ["D-BAR", ["D", null, ["tag", "Num", "NumSg"], ["tag", "Quant", "DefArt"]], ["N-MAX", ["N-BAR", ["N", "entrance_N"], ["P-MAX", ["P-BAR", ["P", "to_Prep"], ["D-MAX", ["D-BAR", ["D", null, ["tag", "Num", "NumSg"], ["tag", "Quant", "DefArt"]], ["N-MAX", ["N-BAR", ["N", "room_N"]]]]]]]]]]]]]]]
 
 # mi pu darxi la djan. le dakfu
 # TODO: with the knife

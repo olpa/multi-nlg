@@ -7,7 +7,7 @@ darxi_V = Rule(
     head='darxi',
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
-          ['V-BAR', ['V', 'stab_V2'], '#,', 'x1']],
+          ['V-BAR', ['V', 'stab_V2'], '#,', 'x2']],
     vars=None
 )
 
@@ -31,7 +31,7 @@ gutnerkla_V = Rule(
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
           ['V-BAR', ['V', 'break_V2'],
-           ['P-MAX', ['P-BAR', ['P', 'into_Prep'], '#,', 'x1']]]],
+           ['P-MAX', ['P-BAR', ['P', 'into_Prep'], '#,', 'x2']]]],
     vars=None
 )
 

@@ -1,6 +1,6 @@
 import typing
 
-from mnlg.xbar import XMax, XSpecTag
+from mnlg.xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame
 from mnlg.transform import TreeNode
 
 
@@ -49,7 +49,22 @@ def to_spec(xmax: XMax
     return 'map', spec
 
 
-def to_x1(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
+def to_x2(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
     func, compl = to_complement(xmax)
     if func == 'mapls' and compl:
         return 'map', compl[0]
+
+
+def copy_spec(xmax: XMax) -> typing.Optional[XSpec]:
+    return xmax.to_spec()
+
+
+def copy_x2(xmax: XMax) -> typing.Optional[XSpec]:
+    bar = xmax.to_bar()
+    if isinstance(bar, XBarBase):
+        return bar.compl
+    if isinstance(bar, XBarFrame):
+        compl = bar.compl
+        if isinstance(compl, tuple) and compl:
+            return compl[0]
+    return None

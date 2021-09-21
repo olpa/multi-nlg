@@ -1,9 +1,9 @@
 import typing
 
-from .functions import to_complement, to_spec, to_x1
+from .functions import to_complement, to_spec, to_x2, copy_spec, copy_x2
 from .types import Rule
 from ..transform import TreeNode
-from ..xbar import XMax
+from mnlg.xbar import lexp_to_tree, XMax
 
 
 def find_rule(rules: list[Rule], xmax: XMax) -> typing.Optional[Rule]:
@@ -21,18 +21,24 @@ def eval_var(rules: list[Rule],
              var_expansion: typing.Union[
                  str, typing.Callable[[TreeNode], TreeNode]]
              ) -> typing.Optional[TreeNode]:
-    def todo_subst(_):
-        return ['TODO(eval_var)']
+    def mk_todo_subst(func_name):
+        def todo_subst(_):
+            return [f'TODO({func_name})']
+        return todo_subst
     func = var_expansion
     if isinstance(func, str):
         if func == '#complement' or func == 'compl':
             func = to_complement
         elif func == 'spec':
             func = to_spec
-        elif func == 'x1':
-            func = to_x1
+        elif func == 'x2':
+            func = to_x2
+        elif func == 'copy-spec':
+            func = copy_spec
+        elif func == 'copy-x2':
+            func = copy_x2
         else:
-            func = todo_subst
+            func = mk_todo_subst(func)
     val = func(lcs)
     if (isinstance(val, list) or isinstance(val, tuple)) and len(val):
         if val[0] == 'none':
@@ -46,6 +52,9 @@ def eval_var(rules: list[Rule],
                 lambda node: lcs_to_dtree(rules, node),
                 val[1]
             ))
+        elif val[0] == 'subst':
+            from_node = val[1]
+            val = subst_vars(rules, lcs, from_node, None)
     return val
 
 
@@ -73,6 +82,17 @@ def subst_vars(rules: list[Rule],
                                                  ) if variables else var_name)
                     if val is not None:
                         yield from val
+                elif el == '#,lcs':
+                    rest = list(level)
+                    lexp = subst_vars(rules, lcs, rest, variables)
+                    mapped_lcs = lexp_to_tree(lexp)
+                    if not isinstance(mapped_lcs, XMax):
+                        print('subst_vars, macro >#,lcs<:',
+                              'the mapped type should be XMax, got:',
+                              type(mapped_lcs))
+                    else:
+                        mapped_tree = lcs_to_dtree(rules, mapped_lcs)
+                        level = iter(mapped_tree)
                 else:
                     yield el
         except StopIteration:

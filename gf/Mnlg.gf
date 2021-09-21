@@ -1,9 +1,12 @@
 abstract Mnlg =
   Lang
   , Extend
-** {
+**
+{
 fun
-  CastAdvToNP : Adv -> NP ;
+  UseV2 : V2 -> VP ;
+  mkV2 : V -> V2 ;
+  TPasseSimple : Tense ;
 
   -- i_Pron : Pron ;
 
@@ -12,8 +15,12 @@ fun
   -- break_V2: V2 ;
   -- stab_V2: V2 ;
 
-  room_N : N ;
+  force_V : V;
+
+  entrance_N : N ;
   knife_N : N ;
+  room_N : N ;
 
   into_Prep : Prep ;
+  -- to_prep : Prep ;
 }
