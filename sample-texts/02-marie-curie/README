@@ -1,0 +1,33 @@
+Example from the talk "Towards Knowledge Equity" by Denny Vrandečić, http://videolectures.net/www2021_vrandecic_knowledge_equity/, starting at 16:00
+
+> Marie Curie was the only person to receive the Nobel Prize in two different scientific categories.
+
+Structure (from the slides):
+
+```
+OnlyPersonThat
+  Person: Marie Curie
+  Condition: AwardWinning
+    Award: Nobel Prize
+    Type: ModNounPhrase
+      Determiner: two
+      Modifiers:
+        different
+        scientific
+      Head: category
+```
+
+Google translate:
+
+de: Marie Curie war die einzige Person, die den Nobelpreis in zwei verschiedenen wissenschaftlichen Kategorien erhielt.
+es: Marie Curie fue la única persona en recibir el Premio Nobel en dos categorías científicas diferentes.
+ru: Мария Кюри была единственным человеком, получившим Нобелевскую премию в двух различных научных категориях.
+zh: 居里夫人是唯一在两个不同科学类别中获得诺贝尔奖的人。
+
+deepl:
+
+de: Marie Curie war die einzige Person, die den Nobelpreis in zwei verschiedenen wissenschaftlichen Kategorien erhielt.
+es: Marie Curie fue la única persona que recibió el Premio Nobel en dos categorías científicas diferentes.
+ru: Мария Кюри была единственным человеком, получившим Нобелевскую премию в двух разных научных категориях.
+zh: 玛丽-居里是唯一在两个不同科学类别中获得诺贝尔奖的人。
+
