@@ -1,11 +1,15 @@
 abstract Mnlg =
   Lang
-  , Extend
 **
 {
 fun
   UseV2 : V2 -> VP ;
-  mkV2 : V -> V2 ;
+  CastVtoV2 : V -> V2 ;
+  CastV3toV : V3 -> V ;
+
+  VPshell : V -> NP -> NP -> VP ; -- NPs: dative (becomes "to"), accusative
+  VPshellDirect : V -> NP -> NP -> VP ; -- NPs: dative (becomes an object), accusative
+
   TPasseSimple : Tense ;
 
   -- i_Pron : Pron ;

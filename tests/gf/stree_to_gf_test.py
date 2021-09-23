@@ -3,13 +3,22 @@ import unittest
 from hamcrest import assert_that, equal_to
 
 from mnlg.gf.stree_to_gf import stree_to_gf, stree_to_gf_fullstop
-from mnlg.xbar import lexp_to_tree
+from mnlg.xbar import lexp_to_tree, XMax
 from tests.util.fixture import load_stree, load_gf
+from mnlg.transform import TreeNode
 
 
 n_max = ['N-MAX', ['N-BAR', ['N', 'word_N']]]
 d_max = ['D-MAX', ['D-BAR', n_max]]
 d_np = '(DetCN (DetQuant IndefArt NumSg) (UseN word_N))'
+
+
+def mk_d_max(word: str) -> TreeNode:
+    return ['D-MAX', ['D-BAR', ['N-MAX', ['N-BAR', ['N', word]]]]]
+
+
+def str_d_max(word: str) -> str:
+    return f'(DetCN (DetQuant IndefArt NumSg) (UseN {word}))'
 
 
 class StreeToGfTest(unittest.TestCase):
@@ -99,6 +108,44 @@ class StreeToGfTest(unittest.TestCase):
         e = stree_to_gf(stree)
 
         assert_that(str(e), equal_to(f'PrepNP in_Prep {d_np}'))
+
+    @staticmethod
+    def mk_lexp_vp_shell(inner_spec: TreeNode) -> XMax:
+        # subject_N gives theme_N to recipient_N
+        return lexp_to_tree(
+            ['V-MAX', ['V-SPEC', mk_d_max('subject_N')],
+             ['V-BAR', ['V', 'give_V3'],
+              ['V-MAX',
+               ['V-SPEC', inner_spec],
+               ['V-BAR',
+                ['V', None, ['tag', 'trace']],
+                mk_d_max('theme_N')]]]])
+
+    @staticmethod
+    def mk_s_vp_shell(s_command: str, s_inner: str) -> str:
+        return (f'PredVP {str_d_max("subject_N")} ({s_command} '
+                f'(CastV3toV give_V3) {s_inner} {str_d_max("theme_N")})')
+
+    @staticmethod
+    def test_vp_shell():
+        stree = StreeToGfTest.mk_lexp_vp_shell(mk_d_max('recipient_N'))
+        expected_gf = StreeToGfTest.mk_s_vp_shell(
+            'VPshell', str_d_max('recipient_N'))
+
+        e = stree_to_gf(stree)
+
+        assert_that(str(e), equal_to(expected_gf))
+
+    @staticmethod
+    def test_vp_shell_direct():
+        recipient = ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'i_Pron']]]
+        stree = StreeToGfTest.mk_lexp_vp_shell(recipient)
+        expected_gf = StreeToGfTest.mk_s_vp_shell(
+            'VPshellDirect', '(UsePron i_Pron)')
+
+        e = stree_to_gf(stree)
+
+        assert_that(str(e), equal_to(expected_gf))
 
 
 class StreeToGfExamplesTest(unittest.TestCase):

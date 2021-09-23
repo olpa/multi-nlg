@@ -8,8 +8,13 @@ in
 {
 lin
   UseV2 v2 = predV v2 ;
-  mkV2 v = ParadigmsEng.mkV2 (v ** { lock_V = <> }) ;
+  CastVtoV2 v = mkV2 (v ** { lock_V=<> }) ;
+  CastV3toV v3 = v3 ** { lock_V3=<> } ;
+
   TPasseSimple = TPast ;
+
+  VPshell v goal thema = ComplSlash (Slash2V3 (mkV3 (v ** {lock_V=<>}) noPrep toP) thema) goal ;
+  VPshellDirect v goal thema = ComplSlash (Slash2V3 (mkV3 (v ** {lock_V=<>}) noPrep noPrep) goal) thema ;
 
   force_V = mkV "force" ;
 

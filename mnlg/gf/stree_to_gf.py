@@ -3,7 +3,7 @@ import typing
 
 import pgf
 
-from mnlg.xbar import XMax, XType
+from mnlg.xbar import XMax, XType, XHead
 
 PgfExpr = object
 
@@ -78,6 +78,57 @@ def imax_to_gf(imax: XMax) -> PgfExpr:
     return pgf.Expr('UseCl', usecl)
 
 
+def is_lower_vp_shell(xmax: typing.Optional[XMax]) -> bool:
+    xhead = xmax and xmax.to_head()
+    return (xhead and
+            xhead.type == XType.V and
+            xhead.tags and
+            'trace' in xhead.tags)
+
+
+def head_to_gf_v(vhead: XHead) -> PgfExpr:
+    sv = (vhead and vhead.s) or '_none_V'
+    vn = None
+    if not sv.endswith('_V'):
+        idx = sv.rfind('_')
+        if idx > 0:
+            vn = sv[idx+1:]
+    gf_v = pgf.Expr(sv, [])
+    if vn is not None:
+        gf_v = pgf.Expr(f'Cast{vn}toV', [gf_v])
+    return gf_v
+
+
+def vp_shell_to_gf(
+        outer_vhead: XHead, outer_spec: XMax, inner_vmax: XMax
+) -> PgfExpr:
+    """ the structure should be already validated
+    .
+    Examples of linearization:
+    - line VPshellDirect (CastV3toV give_V3) (UsePron i_Pron) \
+      (MassNP (UseN milk_N))
+    give me milk, dar me leche
+    - line VPshellDirect (CastV3toV give_V3) (UsePN john_PN) \
+      (MassNP (UseN milk_N))
+    give John milk, dar leche a Juan (the spanish gf-rgl is smart here)
+    never generated
+    - line VPshell (CastV3toV give_V3) (UsePN john_PN) (MassNP (UseN milk_N))
+    give milk to John, dar leche a Juan
+    - line VPshell (CastV3toV sell_V3) (UsePron i_Pron) (MassNP (UseN milk_N))
+    sell milk to me, vender &+ me leche (the spanish gf-rgl is smart here)
+    """
+    gf_subj = stree_to_gf(inner_vmax.to_spec())
+    gf_compl = stree_to_gf(inner_vmax.to_complement())
+    gf_v = head_to_gf_v(outer_vhead)
+    subject = outer_spec.to_head()
+    is_pron = (isinstance(subject, XHead) and
+               subject.type == XType.N and
+               subject.tags and
+               'pron' in subject.tags)
+    cmd = 'VPshellDirect' if is_pron else 'VPshell'
+    return pgf.Expr(cmd, [gf_v, gf_subj, gf_compl])
+
+
 def vmax_to_gf(vmax: XMax) -> PgfExpr:
     gf_spec = stree_to_gf(vmax.to_spec())
     if not gf_spec:
@@ -85,20 +136,24 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
         gf_spec = pgf.Expr('UseN', [pgf.Expr('none_N', [])])
 
     head = vmax.to_head()
-    head = head and head.s
-    if not head:
+    s_head = head and head.s
+    if not s_head:
         print('vmax_to_gf: head is required in v-max:', vmax, file=sys.stderr)
-        head = 'none_V'
+        s_head = 'none_V'
 
     compl = vmax.to_complement()
-    gf_compl = stree_to_gf(compl)
-    if gf_compl:
-        if compl.type == XType.P:
-            gf_compl = pgf.Expr('CastAdvToNP', [gf_compl])
-        sv = pgf.Expr('SlashV2a', [pgf.Expr(head, [])])
-        gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
+    if is_lower_vp_shell(compl):
+        gf_vp = vp_shell_to_gf(head, compl.to_spec(), compl)
     else:
-        gf_vp = pgf.Expr('UseV', [pgf.Expr(head, [])])
+        gf_compl = stree_to_gf(compl)
+
+        if gf_compl:
+            if compl.type == XType.P:
+                gf_compl = pgf.Expr('CastAdvToNP', [gf_compl])
+            sv = pgf.Expr('SlashV2a', [pgf.Expr(s_head, [])])
+            gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
+        else:
+            gf_vp = pgf.Expr('UseV', [pgf.Expr(s_head, [])])
 
     return pgf.Expr('PredVP', [gf_spec, gf_vp])
 
