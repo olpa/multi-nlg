@@ -6,7 +6,7 @@ from mnlg.xbar import lexp_to_tree, XHead, XType, XMax, XBarBase, XSpecTag
 from mnlg.xbar import XBarFrame
 
 
-class LexpTest(unittest.TestCase):
+class LoadLexpTest(unittest.TestCase):
 
     @staticmethod
     def test_load_n():
@@ -94,6 +94,50 @@ class LexpTest(unittest.TestCase):
 
         assert_that(typing.cast(object, tree), instance_of(XBarFrame))
         assert_that(tree.head.s, equal_to('some_v'))
+
+
+class ToLexpTest(unittest.TestCase):
+
+    @staticmethod
+    def test_head():
+        lexp = ['N', ['tag', 'a-tag'], ['tag', 'b-tag', 'val'], 'n']
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
+
+    n_max = ['N-MAX', ['N-BAR', ['N', 'n']]]
+    v_head = ['V', 'v']
+
+    def test_bar_base(self):
+        lexp = ['V-BAR', self.v_head, self.n_max]
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
+
+    def test_bar_frame(self):
+        lexp = ['V-FRAME', self.v_head, self.n_max, self.n_max, self.n_max]
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
+
+    @staticmethod
+    def test_spec_tags():
+        lexp = ['X-SPEC', ['tag', 'a-tag'], ['tag', 'b-tag', 'val']]
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
+
+    def test_max(self):
+        lexp = ['V-MAX', ['V-SPEC', self.n_max],
+                ['V-BAR', ['V', 'do'], self.n_max]]
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
 
 
 if '__main__' == __name__:

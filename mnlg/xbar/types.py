@@ -21,6 +21,16 @@ def str_tag(tag: typing.Tuple[str, str]) -> str:
     return f'{tag[0]}={tag[1]}'
 
 
+def tags_to_list(tags: typing.Optional[dict[str, str]]) -> list[list[str]]:
+    if not tags:
+        return []
+    tag_names = sorted(tags.keys())
+    return [['tag', name]
+            if name == tags[name]
+            else ['tag', name, tags[name]]
+            for name in tag_names]
+
+
 class XHead:
     def __init__(self,
                  type_: XType,
@@ -35,6 +45,9 @@ class XHead:
               *map(str_tag, self.tags or {})]
         return f'{self.type}-HEAD<{",".join(ls)}>'
 
+    def to_lexp(self):
+        return [self.type.name, *tags_to_list(self.tags), self.s]
+
 
 class XBarBase:
     def __init__(self,
@@ -48,6 +61,12 @@ class XBarBase:
     def __str__(self) -> str:
         return f'{self.type}-BAR<{self.head}{",..." if self.compl else ""}>'
 
+    def to_lexp(self) -> list:
+        ls = [f'{self.type}-BAR', self.head.to_lexp()]
+        if self.compl:
+            ls.append(self.compl.to_lexp())
+        return ls
+
 
 class XBarFrame:
     def __init__(self,
@@ -60,6 +79,11 @@ class XBarFrame:
 
     def __str__(self) -> str:
         return f'{self.type}-FRAME<{self.head},...>'
+
+    def to_lexp(self) -> list:
+        return [f'{self.type}-FRAME',
+                self.head.to_lexp(),
+                *(kid.to_lexp() for kid in self.compl)]
 
 
 class XBarRec:
@@ -89,6 +113,9 @@ class XSpecTag:
             return self.tags == other.tags
         return False
 
+    def to_lexp(self):
+        return ['X-SPEC', *tags_to_list(self.tags)]
+
 
 XSpec = typing.Union[XSpecTag, 'XMax']
 
@@ -107,6 +134,13 @@ class XMax:
         head = self.to_head()
         s = head.s if head else ''
         return f'{self.type}-MAX<{s}>'
+
+    def to_lexp(self):
+        ls = [f'{self.type}-MAX']
+        if self.spec:
+            ls.append([f'{self.type}-SPEC', self.spec.to_lexp()])
+        ls.append(self.xbar.to_lexp())
+        return ls
 
     def to_head(self) -> typing.Optional[XHead]:
         bar = self.to_bar()
