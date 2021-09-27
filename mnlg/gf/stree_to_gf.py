@@ -41,6 +41,10 @@ def dmax_to_gf(dmax: XMax) -> PgfExpr:
         print('dmax_to_gf: head is required in d-max:', dmax, file=sys.stderr)
     tags = (dmax.to_head().tags if head else {}) or {}
 
+    if 'mass' in tags:
+        gf_mass = pgf.Expr('MassLoi', [gf_compl])
+        return gf_mass
+
     quant = tags.get('Quant', 'IndefArt')
     num = tags.get('Num', 'NumSg')
     e_det = pgf.Expr('DetQuant', [pgf.Expr(quant, []), pgf.Expr(num, [])])
@@ -86,17 +90,25 @@ def is_lower_vp_shell(xmax: typing.Optional[XMax]) -> bool:
             'trace' in xhead.tags)
 
 
-def head_to_gf_v(vhead: XHead) -> PgfExpr:
-    sv = (vhead and vhead.s) or '_none_V'
-    vn = None
-    if not sv.endswith('_V'):
+def head_to_gf_vn(vhead: XHead, target_vn: str) -> PgfExpr:
+    sv = (vhead and vhead.s) or f'_none_{target_vn}'
+    source_vn = None
+    if not sv.endswith(f'_{target_vn}'):
         idx = sv.rfind('_')
         if idx > 0:
-            vn = sv[idx+1:]
+            source_vn = sv[idx+1:]
     gf_v = pgf.Expr(sv, [])
-    if vn is not None:
-        gf_v = pgf.Expr(f'Cast{vn}toV', [gf_v])
+    if source_vn is not None:
+        gf_v = pgf.Expr(f'Cast{source_vn}to{target_vn}', [gf_v])
     return gf_v
+
+
+def head_to_gf_v(vhead: XHead) -> PgfExpr:
+    return head_to_gf_vn(vhead, 'V')
+
+
+def head_to_gf_v2(vhead: XHead) -> PgfExpr:
+    return head_to_gf_vn(vhead, 'V2')
 
 
 def vp_shell_to_gf(
@@ -136,10 +148,8 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
         gf_spec = pgf.Expr('UseN', [pgf.Expr('none_N', [])])
 
     head = vmax.to_head()
-    s_head = head and head.s
-    if not s_head:
+    if not head:
         print('vmax_to_gf: head is required in v-max:', vmax, file=sys.stderr)
-        s_head = 'none_V'
 
     compl = vmax.to_complement()
     if is_lower_vp_shell(compl):
@@ -150,10 +160,12 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
         if gf_compl:
             if compl.type == XType.P:
                 gf_compl = pgf.Expr('CastAdvToNP', [gf_compl])
-            sv = pgf.Expr('SlashV2a', [pgf.Expr(s_head, [])])
+            gf_head = head_to_gf_v2(head)
+            sv = pgf.Expr('SlashV2a', [gf_head])
             gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
         else:
-            gf_vp = pgf.Expr('UseV', [pgf.Expr(s_head, [])])
+            gf_head = head_to_gf_v(head)
+            gf_vp = pgf.Expr('UseV', [gf_head])
 
     return pgf.Expr('PredVP', [gf_spec, gf_vp])
 

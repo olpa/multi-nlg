@@ -13,6 +13,8 @@ lin
   CastVtoV2 v = mkV2 (v ** { lock_V = <> });
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
 
+  MassLoi cn = DetCN (DetQuant IndefArt NumPl) cn ;
+
   TPasseSimple = ExtraRomanceSpa.TPasseSimple ;
 
   VPshell v goal thema = ComplSlash (Slash2V3 (mkV3 (v ** {lock_V=<>})) goal) thema ;
@@ -23,6 +25,7 @@ lin
   entrance_N = mkN "entrada" ;
   knife_N = mkN "cuchillo" ;
   room_N = mkN "cuarto" ;
+  darxi_dakfu_N = mkN "puñalada" ;
 
   into_Prep = in_Prep ;
 }

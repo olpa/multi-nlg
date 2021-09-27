@@ -56,6 +56,14 @@ class StreeToGfTest(unittest.TestCase):
             'DetCN (DetQuant IndefArt NumSg) (UseN word_N)'))
 
     @staticmethod
+    def test_det_loi():
+        e = stree_to_gf(lexp_to_tree(
+            ['D-MAX', ['D-BAR', ['D', ['tag', 'mass']], n_max]]))
+
+        assert_that(str(e), equal_to(
+            'MassLoi (UseN word_N)'))
+
+    @staticmethod
     def test_infl():
         stree = lexp_to_tree(
             ['I-MAX', ['I-BAR', ['I',
@@ -162,11 +170,17 @@ class StreeToGfExamplesTest(unittest.TestCase):
 
         assert_that(str(gf), equal_to(expected_gf))
 
-    def test_break_forzar(self):
+    def test_break_forzar_en(self):
         self.do_gf_test('break_forzar_en')
 
     def test_stab_dar_en(self):
         self.do_gf_test('stab_dar_en')
+
+    def xtest_break_forzar_es(self):
+        self.do_gf_test('break_forzar_es')
+
+    def test_stab_dar_es(self):
+        self.do_gf_test('stab_dar_es')
 
 
 if '__main__' == __name__:

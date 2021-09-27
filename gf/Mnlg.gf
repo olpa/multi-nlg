@@ -10,6 +10,8 @@ fun
   VPshell : V -> NP -> NP -> VP ; -- NPs: dative (becomes "to"), accusative
   VPshellDirect : V -> NP -> NP -> VP ; -- NPs: dative (becomes an object), accusative
 
+  MassLoi : CN -> NP ;
+
   TPasseSimple : Tense ;
 
   -- i_Pron : Pron ;
@@ -24,6 +26,7 @@ fun
   entrance_N : N ;
   knife_N : N ;
   room_N : N ;
+  darxi_dakfu_N : N ;
 
   into_Prep : Prep ;
   -- to_prep : Prep ;

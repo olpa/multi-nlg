@@ -1,9 +1,10 @@
 import typing
 
-from .functions import to_complement, to_spec, to_x2, copy_spec, copy_x2
+from .functions import to_complement, to_spec, to_x2, to_x3
+from .functions import copy_spec, copy_x2, manner_x3
 from .types import Rule
 from ..transform import TreeNode
-from mnlg.xbar import lexp_to_tree, XMax
+from mnlg.xbar import lexp_to_tree, XMax, XType
 
 
 def find_rule(rules: list[Rule], xmax: XMax) -> typing.Optional[Rule]:
@@ -14,6 +15,21 @@ def find_rule(rules: list[Rule], xmax: XMax) -> typing.Optional[Rule]:
         head = None
     return next((rule for rule in rules
                  if rule.x == type_ and rule.head == head), None)
+
+
+def make_manner_rule(xmax: XMax) -> typing.Optional[Rule]:
+    if not xmax.type == XType.N:
+        return None
+    xhead = xmax.to_head()
+    manner = xhead and xhead.tags and xhead.tags['manner']
+    if not manner:
+        return None
+    return Rule(
+        x=xhead.type,
+        head=xhead.s,
+        vars=None,
+        tree=['N-MAX', ['N-BAR', ['N', f'{xhead.s}_{manner}_N']]]
+    )
 
 
 def eval_var(rules: list[Rule],
@@ -33,10 +49,14 @@ def eval_var(rules: list[Rule],
             func = to_spec
         elif func == 'x2':
             func = to_x2
+        elif func == 'x3':
+            func = to_x3
         elif func == 'copy-spec':
             func = copy_spec
         elif func == 'copy-x2':
             func = copy_x2
+        elif func == 'manner-x3':
+            func = manner_x3
         else:
             func = mk_todo_subst(func)
     val = func(lcs)
@@ -112,6 +132,8 @@ def subst_vars(rules: list[Rule],
 
 def lcs_to_dtree(rules: list[Rule], lcs: XMax) -> TreeNode:
     rule = find_rule(rules, lcs)
+    if rule is None:
+        rule = make_manner_rule(lcs)
     if rule is None:
         return [f'TODO(no_rule_{lcs})']
     return subst_vars(rules, lcs, rule.tree, rule.vars)

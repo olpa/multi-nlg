@@ -26,7 +26,7 @@ det_rule = Rule(
 mi_Pron = Rule(
     x=XType.N,
     head='mi',
-    tree=['N-MAX', ['N-BAR', ['N', 'i_Pron']]],
+    tree=['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'i_Pron']]],
     vars=None,
 )
 

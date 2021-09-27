@@ -16,21 +16,26 @@ stab_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos ${stab
 # Juan forzó la entrada al cuarto
 into_the_room_es_NP="(PrepNP to_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N)))"
 the_entrance_es_NP="(DetCN (DetQuant DefArt NumSg) (UseN entrance_N))"
-break_es_VP="(AdvVP (ComplSlash (SlashV2a (mkV2 force_V)) ${the_entrance_es_NP}) ${into_the_room_es_NP})"
+break_es_VP="(AdvVP (ComplSlash (SlashV2a (CastVtoV2 force_V)) ${the_entrance_es_NP}) ${into_the_room_es_NP})"
 break_es_Cl="(PredVP (UsePN john_PN) ${break_es_VP})"
 break_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos ${break_es_Cl})) NoVoc) TEmpty)"
 
+# Yo le di puñaladas a Juan.
+# TODO: "le"
+give_stab_es_VP="(VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi (UseN darxi_dakfu_N)))"
+stab_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) ${give_stab_es_VP}))) NoVoc) TEmpty)"
+
 #
 
-#X="${break_S}"
-X="${break_es_S}"
+#X="${break_es_S}"
+X="${stab_es_S}"
 #Lang=Eng
 Lang=Spa
 
 run_gf() {
   lang=$1
   echo "linearize ${X}"
-  echo "linearize ${X}" | gf Mnlg.gf Mnlg${lang}.gf
+  # echo "linearize ${X}" | gf Mnlg.gf Mnlg${lang}.gf
 }
 
 run_gf ${Lang}

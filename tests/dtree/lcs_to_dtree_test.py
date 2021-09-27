@@ -5,8 +5,10 @@ from mnlg.dtree.rules_rgl import tense_rule
 from mnlg.dtree.rules_en import RULES as RULES_EN, darxi_V
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree import lcs_to_dtree, Rule
-from mnlg.xbar import lexp_to_tree, XType, XSpecTag
+from mnlg.xbar import lexp_to_tree, XType
 from tests.util.fixture import load_lcs, load_dtree
+
+lexp_n_aaa = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
 
 
 class LcsToDtreeTest(unittest.TestCase):
@@ -14,7 +16,7 @@ class LcsToDtreeTest(unittest.TestCase):
     @classmethod
     def test_literal_subst_without_vars(cls):
         rules = [Rule(x=XType.N, head='aaa', tree=['bbb'], vars=None)]
-        lcs = lexp_to_tree(['N-MAX', ['N-BAR', ['N', 'aaa']]])
+        lcs = lexp_to_tree(lexp_n_aaa)
 
         dtree = lcs_to_dtree(rules, lcs)
 
@@ -76,8 +78,8 @@ class LcsToDtreeTest(unittest.TestCase):
 
     @classmethod
     def test_copy_spec_and_x(cls):
-        n_max_spec = lexp_to_tree(['N-MAX', ['N-BAR', ['N', 'n-spec']]])
-        n_max_x2 = lexp_to_tree(['N-MAX', ['N-BAR', ['N', 'n-x2']]])
+        n_max_spec = ['N-MAX', ['N-BAR', ['N', 'n-spec']]]
+        n_max_x2 = ['N-MAX', ['N-BAR', ['N', 'n-x2']]]
         lcs = lexp_to_tree(['V-MAX', ['V-SPEC', n_max_spec],
                             ['V-FRAME', ['V', 'v-test'], n_max_x2]])
         subst_rule = Rule(
@@ -106,12 +108,100 @@ class LcsToDtreeTest(unittest.TestCase):
             x=XType.N,
             head='name2',
             vars=None,
-            tree=['#,', 'copy-spec']
+            tree=['#,@', 'copy-spec']
         )
 
         dtree = lcs_to_dtree([rescan_rule, subst_rule], lcs)
 
-        assert_that(dtree, equal_to([XSpecTag({'some-tag': 'some-tag'})]))
+        assert_that(dtree, equal_to(['X-SPEC', ['tag', 'some-tag']]))
+
+    @staticmethod
+    def test_subst_in_returned_tree():
+        lcs = lexp_to_tree(
+            ['N-MAX', ['N-SPEC', ['tag', 'from-spec']],
+             ['N-BAR', ['N', 'aaa']]])
+
+        def subst_func(lcs):
+            return ['subst', ['#,@', 'copy-spec']]
+
+        subst_rule = Rule(
+            x=XType.N,
+            head='aaa',
+            tree=['#,@', 'subst-func'],
+            vars={'subst-func': subst_func},
+        )
+
+        dtree = lcs_to_dtree([subst_rule], lcs)
+
+        assert_that(dtree, equal_to(['X-SPEC', ['tag', 'from-spec']]))
+
+    # --
+
+    @staticmethod
+    def wrap_with_d(det_tag: str, lexp_n):
+        return ['D-MAX', ['D-BAR',
+                          ['D', ['tag', det_tag]],
+                          lexp_n]]
+
+    @staticmethod
+    def test_determiner():
+        lcs = lexp_to_tree(LcsToDtreeTest.wrap_with_d('le', lexp_n_aaa))
+
+        dtree = lcs_to_dtree(RULES_EN, lcs)
+
+        assert_that(dtree, equal_to(
+            ['D-MAX', ['D-BAR', ['D', None,
+                                 ['tag', 'Num', 'NumSg'],
+                                 ['tag', 'Quant', 'DefArt'],
+                                 ], ['TODO(no_rule_N-MAX<aaa>)']]]))
+    # --
+
+    manner_rule = Rule(
+        x=XType.V,
+        head='do',
+        vars=None,
+        tree=['#,@', 'manner-x3']
+    )
+
+    manner_dtree = ['D-MAX',
+                    ['D-BAR',
+                     ['D', ['tag', 'loi']],
+                     ['N-MAX', ['N-BAR',
+                                ['N', ['tag', 'manner', 'x3'], 'do']]]]]
+
+    @classmethod
+    def test_manner_meaning(cls):
+        lexp = ['V-MAX', ['V-FRAME', ['V', 'do'],
+                          ['N-MAX', ['N-BAR', ['N', 'x2']]],
+                          ['N-MAX', ['N-BAR', ['N', 'x3']]],
+                          ]]
+        lcs = lexp_to_tree(lexp)
+
+        dtree = lcs_to_dtree([LcsToDtreeTest.manner_rule], lcs)
+
+        assert_that(dtree, equal_to(LcsToDtreeTest.manner_dtree))
+
+    @classmethod
+    def test_manner_meaning_with_det(cls):
+        lexp = ['V-MAX', ['V-FRAME', ['V', 'do'],
+                          ['N-MAX', ['N-BAR', ['N', 'x2']]],
+                          ['D-MAX', ['D-BAR', ['D', ['tag', 'le']],
+                                     ['N-MAX', ['N-BAR', ['N', 'x3']]]]],
+                          ]]
+        lcs = lexp_to_tree(lexp)
+
+        dtree = lcs_to_dtree([LcsToDtreeTest.manner_rule], lcs)
+
+        assert_that(dtree, equal_to(LcsToDtreeTest.manner_dtree))
+
+    @classmethod
+    def test_from_manner_to_n(cls):
+        lcs = lexp_to_tree(
+            ['N-MAX', ['N-BAR', ['N', ['tag', 'manner', 'int'], 'ext']]])
+
+        dtree = lcs_to_dtree([], lcs)
+
+        assert_that(dtree, equal_to(['N-MAX', ['N-BAR', ['N', 'ext_int_N']]]))
 
 
 class LcsToDtreeExamplesTest(unittest.TestCase):
@@ -136,6 +226,9 @@ class LcsToDtreeExamplesTest(unittest.TestCase):
 
     def test_break_forzar_es(self):
         self.do_lcs_test(RULES_ES, 'break_forzar', 'es')
+
+    def test_stab_dar_es(self):
+        self.do_lcs_test(RULES_ES, 'stab_dar', 'es')
 
 
 if '__main__' == __name__:

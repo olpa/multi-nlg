@@ -47,7 +47,7 @@ bapli_V = Rule(
     vars=None,
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
-          ['V-BAR', ['V', 'force_V2'], '#,', 'x2']]
+          ['V-BAR', ['V', 'force_V'], '#,', 'x2']]
 )
 
 nerkla_N = Rule(
@@ -77,11 +77,43 @@ djan_N = Rule(
     vars=None,
 )
 
+darxi_V = Rule(
+    x=XType.V,
+    head='darxi',
+    vars=None,
+    tree=['#,lcs',
+          'V-MAX',
+          '#,', 'copy-spec',
+          ['V-FRAME',
+           ['V', 'dunda'],
+           '#,', 'copy-x2',
+           '#,', 'manner-x3',
+           ]]
+)
+
+dunda_V = Rule(
+    x=XType.V,
+    head='dunda',
+    vars=None,
+    tree=['V-MAX',
+          ['V-SPEC', '#,', 'spec'],
+          ['V-BAR',
+           ['V', 'give_V3'],
+           ['V-MAX',
+            ['V-SPEC', '#,', 'x2'],
+            ['V-BAR',
+             ['V', ['tag', 'trace']],
+             '#,', 'x3'
+             ]]]]
+)
+
 RULES = [
     tense_rule,
     *RULES_RGL,
     gutnerkla_V,
     bapli_V,
+    darxi_V,
+    dunda_V,
     nerkla_N,
     kumfa_N,
     djan_N,
