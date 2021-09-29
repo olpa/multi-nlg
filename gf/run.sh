@@ -4,7 +4,7 @@ export GF_LIB_PATH=~/nlg/opt/gf-rgl
 
 # John broke into the room.
 into_the_room_NP='(PrepNP into_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N)))'
-break_VP="(AdvVP (UseV2 break_V2) ${into_the_room_NP})"
+break_VP="(ComplSlash (SlashV2a break_V2) (CastAdvToNP ${into_the_room_NP}))"
 break_Cl="(PredVP (UsePN john_PN) ${break_VP})"
 break_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos ${break_Cl})) NoVoc) TEmpty)"
 
@@ -27,10 +27,10 @@ stab_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) P
 
 #
 
-#X="${break_es_S}"
-X="${stab_es_S}"
-#Lang=Eng
-Lang=Spa
+X="${break_S}"
+#X="${stab_es_S}"
+Lang=Eng
+#Lang=Spa
 
 run_gf() {
   lang=$1

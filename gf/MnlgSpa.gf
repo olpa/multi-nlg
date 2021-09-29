@@ -14,6 +14,11 @@ lin
   CastVtoV2 v = mkV2 (v ** { lock_V = <> });
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
 
+  CastAdvToNP adv = heavyNP {
+    s = table { _ => adv.s } ;
+    a = agrP3 Masc Sg ;
+  } ;
+
   MassLoi cn = DetCN (DetQuant IndefArt NumPl) cn ;
 
   TPasseSimple = ExtraRomanceSpa.TPasseSimple ;

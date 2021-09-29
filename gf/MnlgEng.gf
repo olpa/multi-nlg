@@ -10,6 +10,10 @@ lin
   UseV2 v2 = predV v2 ;
   CastVtoV2 v = mkV2 (v ** { lock_V=<> }) ;
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
+  CastAdvToNP adv = {
+    s = table { _ => adv.s } ;
+    a = agrP3 Sg ;
+  } ;
 
   MassLoi cn = DetCN (DetQuant IndefArt NumPl) cn ;
 

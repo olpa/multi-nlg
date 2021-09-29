@@ -6,6 +6,7 @@ fun
   UseV2 : V2 -> VP ;
   CastVtoV2 : V -> V2 ;
   CastV3toV : V3 -> V ;
+  CastAdvToNP : Adv -> NP ;
 
   VPshell : V -> NP -> NP -> VP ; -- NPs: dative (becomes "to"), accusative
   VPshellDirect : V -> NP -> NP -> VP ; -- NPs: dative (becomes an object), accusative
