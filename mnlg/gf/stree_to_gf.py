@@ -8,6 +8,23 @@ from mnlg.xbar import XMax, XType, XHead
 PgfExpr = object
 
 
+def adjunct_np_one(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
+    if xmax.type != XType.P:
+        print('adjunct_np_one: only P-MAX is supported', file=sys.stderr)
+        return gf_np
+    gf_pp = pmax_to_gf(xmax)
+    if not gf_pp:
+        print('adjunct_np_one: P-MAX is not converted', file=sys.stderr)
+        return gf_np
+    return pgf.Expr('AdvCN', [gf_np, gf_pp])
+
+
+def adjunct_np(nmax: XMax, gf_np: PgfExpr) -> PgfExpr:
+    for adj in nmax.to_adj():
+        gf_np = adjunct_np_one(adj, gf_np)
+    return gf_np
+
+
 def nmax_to_gf(nmax: XMax) -> PgfExpr:
     head = nmax.to_head()
     if not head:
@@ -20,13 +37,20 @@ def nmax_to_gf(nmax: XMax) -> PgfExpr:
               file=sys.stderr)
         name = 'none_PN'
 
+    compl = nmax.to_complement()
+    if compl:
+        print('nmax_to_gf: ignoring a complement:', compl,
+              file=sys.stderr)
+
     cmd = 'UseN'
     if name.endswith('_Pron'):
         cmd = 'UsePron'
     if name.endswith('_PN'):
         cmd = 'UsePN'
 
-    return pgf.Expr(cmd, [pgf.Expr(name, [])])
+    gf_cn = pgf.Expr(cmd, [pgf.Expr(name, [])])
+    gf_cn = adjunct_np(nmax, gf_cn)
+    return gf_cn
 
 
 def dmax_to_gf(dmax: XMax) -> PgfExpr:

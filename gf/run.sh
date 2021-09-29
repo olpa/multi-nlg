@@ -15,8 +15,8 @@ stab_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos ${stab
 
 # Juan forzó la entrada al cuarto
 into_the_room_es_NP="(PrepNP to_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N)))"
-the_entrance_es_NP="(DetCN (DetQuant DefArt NumSg) (UseN entrance_N))"
-break_es_VP="(AdvVP (ComplSlash (SlashV2a (CastVtoV2 force_V)) ${the_entrance_es_NP}) ${into_the_room_es_NP})"
+the_entrance_into_room_es_NP="(DetCN (DetQuant DefArt NumSg) (AdvCN (UseN entrance_N) ${into_the_room_es_NP}))"
+break_es_VP="(ComplSlash (SlashV2a (CastVtoV2 force_V)) ${the_entrance_into_room_es_NP})"
 break_es_Cl="(PredVP (UsePN john_PN) ${break_es_VP})"
 break_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos ${break_es_Cl})) NoVoc) TEmpty)"
 
@@ -27,10 +27,10 @@ stab_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) P
 
 #
 
-X="${break_S}"
+X="${break_es_S}"
 #X="${stab_es_S}"
-Lang=Eng
-#Lang=Spa
+#Lang=Eng
+Lang=Spa
 
 run_gf() {
   lang=$1

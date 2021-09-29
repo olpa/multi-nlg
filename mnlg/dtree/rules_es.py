@@ -58,12 +58,13 @@ nerkla_N = Rule(
     head='nerkla',
     vars=None,
     tree=['N-MAX',
-          ['N-BAR', ['N', 'entrance_N'],
-           ['P-MAX',
-            ['P-BAR',
-             ['P', 'to_Prep'],
-             '#,', 'x2']]]],
-    adj=[],
+          ['N-BAR', ['N', 'entrance_N']]],
+    adj=[
+        ['P-MAX',
+         ['P-BAR',
+          ['P', 'to_Prep'],
+          '#,', 'x2']]
+    ],
 )
 
 kumfa_N = Rule(
