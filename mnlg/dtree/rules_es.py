@@ -17,7 +17,7 @@ tense_rule = Rule(
     x=XType.I,
     head=None,
     tree=['I-MAX', ['I-BAR',
-                    ['I', None, '#,@', 'tags'], '#,@', 'compl']],
+                    ['I', '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags_es,
     },

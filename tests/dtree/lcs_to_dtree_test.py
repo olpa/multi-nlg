@@ -26,13 +26,13 @@ class LcsToDtreeTest(unittest.TestCase):
     @classmethod
     def test_run_tag_function(cls):
         rules = [tense_rule]
-        lcs = lexp_to_tree(['I-MAX', ['I-BAR', ['I', None, ['tag', 'pu']]]])
+        lcs = lexp_to_tree(['I-MAX', ['I-BAR', ['I', ['tag', 'pu']]]])
 
         dtree = lcs_to_dtree(rules, lcs)
 
         assert_that(dtree, equal_to(
             ['I-MAX', ['I-BAR',
-                       ['I', None,
+                       ['I',
                         ['tag', 'Ant', 'ASimul'],
                         ['tag', 'Tense', 'TPast']]]]))
 
@@ -52,7 +52,7 @@ class LcsToDtreeTest(unittest.TestCase):
 
         assert_that(dtree, equal_to(
             ['I-MAX', ['I-BAR',
-                       ['I', None,
+                       ['I',
                         ['tag', 'Ant', 'ASimul'],
                         ['tag', 'Tense', 'TPres']],
                        ['bbb']]]))
@@ -170,7 +170,7 @@ class LcsToDtreeTest(unittest.TestCase):
         dtree = lcs_to_dtree(RULES_EN, lcs)
 
         assert_that(dtree, equal_to(
-            ['D-MAX', ['D-BAR', ['D', None,
+            ['D-MAX', ['D-BAR', ['D',
                                  ['tag', 'Num', 'NumSg'],
                                  ['tag', 'Quant', 'DefArt'],
                                  ], ['TODO(no_rule_N-MAX<aaa>)']]]))

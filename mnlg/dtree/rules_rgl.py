@@ -7,7 +7,7 @@ tense_rule = Rule(
     x=XType.I,
     head=None,
     tree=['I-MAX', ['I-BAR',
-                    ['I', None, '#,@', 'tags'], '#,@', 'compl']],
+                    ['I', '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags,
     },
@@ -18,7 +18,7 @@ det_rule = Rule(
     x=XType.D,
     head=None,
     tree=['D-MAX', ['D-BAR',
-                    ['D', None, '#,@', 'tags'], '#,@', 'compl']],
+                    ['D', '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_det_tags,
     },
