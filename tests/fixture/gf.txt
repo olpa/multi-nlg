@@ -4,4 +4,4 @@ break_forzar_es = (TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple AS
 
 # mi pu darxi la djan. le dakfu
 stab_dar_en = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) (ComplSlash (SlashV2a stab_V2) (UsePN john_PN))))) NoVoc) TEmpty
-stab_dar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) (VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi (UseN darxi_dakfu_N)))))) NoVoc) TEmpty
+stab_dar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) (WithIndirectClitic (UsePN john_PN) (VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi (UseN darxi_dakfu_N))))))) NoVoc) TEmpty

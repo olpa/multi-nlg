@@ -10,6 +10,8 @@ fun
   VPshell : V -> NP -> NP -> VP ; -- NPs: dative (becomes "to"), accusative
   VPshellDirect : V -> NP -> NP -> VP ; -- NPs: dative (becomes an object), accusative
 
+  WithIndirectClitic : NP -> VP -> VP ;
+
   MassLoi : CN -> NP ;
 
   TPasseSimple : Tense ;

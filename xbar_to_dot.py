@@ -4,7 +4,7 @@ import sys
 import typing
 
 from mnlg.xbar.types import XBarBase, XSpecTag, XMax, XSpec, XHead, str_tag
-from mnlg.xbar.types import isinstance_xspec, XBarFrame
+from mnlg.xbar.types import isinstance_xspec, XBarFrame, XBarRec
 from mnlg.xbar import lexp
 
 
@@ -59,10 +59,10 @@ def to_graphviz_xhead(h: typing.TextIO,
     write_node(h, label, level, id_, parent_id)
 
 
-def to_graphviz_xbar_common(h: typing.TextIO,
-                            xbar: typing.Union[XBarBase, XBarFrame],
-                            level: int,
-                            parent_id: typing.Union[str, None]) -> None:
+def to_graphviz_xbar_base(h: typing.TextIO,
+                          xbar: typing.Union[XBarBase, XBarFrame],
+                          level: int,
+                          parent_id: typing.Union[str, None]) -> None:
     id_ = str(id(xbar))
     write_node(h, str(xbar.type) + "'", level, id_, parent_id)
     if isinstance(xbar.head, XHead):
@@ -77,18 +77,29 @@ def to_graphviz_xbar_common(h: typing.TextIO,
             to_graphviz_unknown(h, compl, level + 1, id_)
 
 
-def to_graphviz_xbar_base(h: typing.TextIO,
-                          xbar: XBarBase,
-                          level: int,
-                          parent_id: typing.Union[str, None]) -> None:
-    to_graphviz_xbar_common(h, xbar, level, parent_id)
+def to_graphviz_xbar_rec(h: typing.TextIO,
+                         xbar: XBarRec,
+                         level: int,
+                         parent_id: typing.Union[str, None]) -> None:
+    id_ = str(id(xbar))
+    write_node(h, str(xbar.type) + "'", level, id_, parent_id)
+    to_graphviz_xbar(h, xbar.bar, level + 1, id_)
+    if isinstance(xbar.adj, XMax):
+        to_graphviz_xmax(h, xbar.adj, level + 1, id_)
+    else:
+        to_graphviz_unknown(h, xbar.adj, level + 1, id_)
 
 
-def to_graphviz_xbar_frame(h: typing.TextIO,
-                           xbar: XBarFrame,
-                           level: int,
-                           parent_id: typing.Union[str, None]) -> None:
-    to_graphviz_xbar_common(h, xbar, level, parent_id)
+def to_graphviz_xbar(h: typing.TextIO,
+                     xbar: typing.Union[XBarBase, XBarFrame, XBarRec],
+                     level: int,
+                     parent_id: typing.Union[str, None]) -> None:
+    if isinstance(xbar, XBarBase) or isinstance(xbar, XBarFrame):
+        to_graphviz_xbar_base(h, xbar, level, parent_id)
+    elif isinstance(xbar, XBarRec):
+        to_graphviz_xbar_rec(h, xbar, level, parent_id)
+    else:
+        to_graphviz_unknown(h, xbar, level, str(id(xbar)))
 
 
 def to_graphviz_xspec(h: typing.TextIO,
@@ -116,12 +127,7 @@ def to_graphviz_xmax(h: typing.TextIO,
         to_graphviz_xspec(h, xmax.spec, level + 1, id_)
     elif xmax.spec is not None:
         to_graphviz_unknown(h, xmax.spec, level + 1, id_)
-    if isinstance(xmax.xbar, XBarFrame):
-        to_graphviz_xbar_frame(h, xmax.xbar, level + 1, id_)
-    elif isinstance(xmax.xbar, XBarBase):
-        to_graphviz_xbar_base(h, xmax.xbar, level + 1, id_)
-    else:
-        to_graphviz_unknown(h, xmax.xbar, level + 1, id_)
+    to_graphviz_xbar(h, xmax.xbar, level + 1, id_)
 
 
 def to_graphviz(h: typing.TextIO, xmax: XMax) -> None:

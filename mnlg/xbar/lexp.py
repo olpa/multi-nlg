@@ -2,7 +2,7 @@ import sys
 import typing
 
 from ..transform import TreeNode
-from .types import XBarFrame, XSpec, XBar, isinstance_xbar
+from .types import XBarFrame, XSpec, XBar, isinstance_xbar, XBarRec
 from .types import XBarBase, XType, XSpecTag, XMax, XHead
 
 
@@ -109,14 +109,51 @@ def get_head_and_compl(
     return xhead, typing.cast(list[XMax], compl)
 
 
-def load_bar(type_: XType,
-             kids: list[TreeNode]) -> typing.Union[XBarBase, XBarFrame]:
-    xhead, ls_compl = get_head_and_compl(type_, kids)
-    if len(ls_compl) > 1:
-        print('load_bar: expected at most one complement, got:',
-              list(map(str, ls_compl)))
-    compl = ls_compl[0] if ls_compl else None
-    return XBarBase(xhead, compl)
+def lsstr(ls: list) -> list:
+    return list(map(str, ls))
+
+
+def load_bar(kids: list[TreeNode]) -> typing.Union[XBarBase, XBarRec, None]:
+    x_kids = {}
+    for x_kid in map(lexp_to_tree, kids):
+        cls = type(x_kid)
+        if cls in x_kids:
+            print(f'load_bar: kids of type {cls}',
+                  f'is seen already: {x_kids[cls]}.',
+                  f'Dup: {x_kid}, all kids: {lsstr(x_kids)}',
+                  file=sys.stderr)
+            return None
+        x_kids[cls] = x_kid
+
+    if not x_kids or len(x_kids) > 2:
+        print('load_bar: expected 1 or 2 children, got:',
+              f'{len(x_kids)}, {lsstr(x_kids)}',
+              file=sys.stderr)
+        return None
+
+    if XHead in x_kids:
+        compl = x_kids.get(XMax)
+        if compl is None and len(x_kids) == 2:
+            print('load_bar: in addition to XHead, expected an XMax,',
+                  f'got: {lsstr(x_kids)}',
+                  file=sys.stderr)
+            return None
+        return XBarBase(x_kids[XHead], compl)
+
+    x_bar = (x_kids.get(XBarBase)
+             or x_kids.get(XBarFrame)
+             or x_kids.get(XBarRec))
+    if x_bar:
+        if XMax not in x_kids:
+            print('load_bar: in addition to XBar, expected an XMax,',
+                  f'got: {lsstr(x_kids)}',
+                  file=sys.stderr)
+        return XBarRec(x_bar, x_kids[XMax])
+
+    print('load_bar: should have XHead or XBar among children,',
+          f'got: {lsstr(x_kids)}',
+          file=sys.stderr)
+    return None
 
 
 def load_frame(
@@ -144,7 +181,7 @@ def lexp_to_tree(le: TreeNode
     kids = list(map(lexp_to_tree, le[1:]))
     if head.endswith('-BAR'):
         type_ = prefix_to_type(head)
-        return load_bar(type_, kids)
+        return load_bar(kids)
     if head == 'V-FRAME':
         return load_frame(XType.V, kids)
     if head.endswith('-SPEC'):

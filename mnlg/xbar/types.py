@@ -90,6 +90,15 @@ class XBarRec:
     def __init__(self, bar: 'XBar', adj: 'XMax'):
         self.bar = bar
         self.adj = adj
+        self.type = bar.type
+
+    def __str__(self) -> str:
+        return f'{self.type}-BAR-REC<{self.adj.to_head()},...>'
+
+    def to_lexp(self) -> list:
+        return [f'{self.type}-BAR',
+                self.bar.to_lexp(),
+                self.adj.to_lexp()]
 
 
 XBar = typing.Union[XBarBase, XBarFrame, XBarRec]
@@ -158,3 +167,11 @@ class XMax:
         while isinstance(bar, XBarRec):
             bar = bar.bar
         return bar
+
+    def to_adj(self) -> list['XMax']:
+        adj = []
+        bar = self.xbar
+        while isinstance(bar, XBarRec):
+            adj.append(bar.adj)
+            bar = bar.bar
+        return adj

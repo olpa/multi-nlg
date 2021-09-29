@@ -41,15 +41,13 @@ def to_complement(xmax: XMax) -> typing.Tuple[str, list[XMax]]:
 
 
 def to_spec(xmax: XMax
-            ) -> typing.Tuple[str, typing.Union[XMax, None, TreeNode]]:
+            ) -> typing.Tuple[str, typing.Union[None, TreeNode]]:
     spec = xmax.to_spec()
     if isinstance(spec, XSpecTag):
-        if spec.tags and 'le' in spec.tags:
-            return 'node', dict_to_tags({'Det': 'DetSg'})
-        return 'none', None
-    if not isinstance(spec, XMax):
-        return 'none', None
-    return 'map', spec
+        return 'node', spec.to_lexp()[1:]  # Drop 'X-SPEC' prefix
+    if isinstance(spec, XMax):
+        return 'map', spec.to_lexp()
+    return 'none', None
 
 
 def to_x2(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
@@ -113,3 +111,38 @@ def manner_x3(xmax: XMax) -> typing.Optional[TreeNode]:
     dtree_d = ['D-MAX', ['D-BAR', ['D', ['tag', 'loi']], dtree_n]]
 
     return dtree_d
+
+
+def tag_clitic_indirect(_: XMax,
+                        lexp_xmax: TreeNode
+                        ) -> typing.Optional[TreeNode]:
+    nmax_seen = False
+    clitic_added = False
+
+    def augment_tree_rec(tree: TreeNode) -> TreeNode:
+        nonlocal nmax_seen
+        if not isinstance(tree, list):
+            return tree
+        if not len(tree):
+            return []
+        ename = tree[0]
+        if (ename.endswith('-BAR')
+                or ename.endswith('-FRAME')
+                or (ename.endswith('-MAX') and (not nmax_seen))):
+            nmax_seen = True
+            return list(map(augment_tree_rec, tree))
+
+        def maybe_expand():
+            nonlocal clitic_added
+            level = iter(tree)
+            yield next(level)
+            if len(ename) == 1:
+                clitic_added = True
+                yield ['tag', 'clitic', 'indirect']
+            yield from level
+        return list(maybe_expand())
+
+    back = augment_tree_rec(lexp_xmax)
+    if not clitic_added:
+        print('tag_clitic_indirect: clitic was not added', file=sys.stderr)
+    return back

@@ -49,6 +49,7 @@ def generate_one_sentence(mnlg: MnlgInit, interlingua: str, lang: str) -> str:
     stree = dtree
     gf = stree_to_gf_fullstop(stree)
     s = grammar.linearize(gf)
+    s = s[0].upper() + s[1:]
     return s
 
 

@@ -21,8 +21,8 @@ break_es_Cl="(PredVP (UsePN john_PN) ${break_es_VP})"
 break_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos ${break_es_Cl})) NoVoc) TEmpty)"
 
 # Yo le di puñaladas a Juan.
-# TODO: "le"
-give_stab_es_VP="(VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi (UseN darxi_dakfu_N)))"
+give_stab_es_shell="(VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi (UseN darxi_dakfu_N)))"
+give_stab_es_VP="(WithIndirectClitic (UsePN john_PN) ${give_stab_es_shell})"
 stab_es_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) ${give_stab_es_VP}))) NoVoc) TEmpty)"
 
 #

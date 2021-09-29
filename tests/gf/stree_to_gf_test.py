@@ -9,12 +9,12 @@ from mnlg.transform import TreeNode
 
 
 n_max = ['N-MAX', ['N-BAR', ['N', 'word_N']]]
-d_max = ['D-MAX', ['D-BAR', n_max]]
+d_max = ['D-MAX', ['D-BAR', ['D'], n_max]]
 d_np = '(DetCN (DetQuant IndefArt NumSg) (UseN word_N))'
 
 
 def mk_d_max(word: str) -> TreeNode:
-    return ['D-MAX', ['D-BAR', ['N-MAX', ['N-BAR', ['N', word]]]]]
+    return ['D-MAX', ['D-BAR', ['D'], ['N-MAX', ['N-BAR', ['N', word]]]]]
 
 
 def str_d_max(word: str) -> str:
@@ -119,6 +119,12 @@ class StreeToGfTest(unittest.TestCase):
 
     @staticmethod
     def mk_lexp_vp_shell(inner_spec: TreeNode) -> XMax:
+        lexp_to_tree(mk_d_max('theme_N'))
+        lexp_to_tree(['V-MAX',
+                      ['V-SPEC', inner_spec],
+                      ['V-BAR',
+                       ['V', None, ['tag', 'trace']],
+                       mk_d_max('theme_N')]])
         # subject_N gives theme_N to recipient_N
         return lexp_to_tree(
             ['V-MAX', ['V-SPEC', mk_d_max('subject_N')],
@@ -152,6 +158,21 @@ class StreeToGfTest(unittest.TestCase):
             'VPshellDirect', '(UsePron i_Pron)')
 
         e = stree_to_gf(stree)
+
+        assert_that(str(e), equal_to(expected_gf))
+
+    @staticmethod
+    def test_indirect_clitic():
+        clitic_tag = ['tag', 'clitic', 'indirect']
+        lexp = ['V-MAX',
+                ['V-SPEC', d_max],
+                ['V-BAR',
+                 ['V-BAR', ['V', 'do_V']],
+                 ['N-MAX', ['N-BAR', ['N', 'john_PN', clitic_tag]]]]]
+        expected_gf = f'PredVP {d_np} (WithIndirectClitic ' + \
+                      '(UsePN john_PN) (UseV do_V))'
+
+        e = stree_to_gf(lexp_to_tree(lexp))
 
         assert_that(str(e), equal_to(expected_gf))
 

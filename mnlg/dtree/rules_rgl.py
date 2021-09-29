@@ -10,7 +10,8 @@ tense_rule = Rule(
                     ['I', None, '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags,
-    }
+    },
+    adj=[],
 )
 
 det_rule = Rule(
@@ -20,7 +21,8 @@ det_rule = Rule(
                     ['D', None, '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_det_tags,
-    }
+    },
+    adj=[],
 )
 
 mi_Pron = Rule(
@@ -28,6 +30,7 @@ mi_Pron = Rule(
     head='mi',
     tree=['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'i_Pron']]],
     vars=None,
+    adj=[],
 )
 
 RULES_RGL = [

@@ -141,6 +141,26 @@ def vp_shell_to_gf(
     return pgf.Expr(cmd, [gf_v, gf_subj, gf_compl])
 
 
+def adjunct_vp_one(xmax: XMax, gf_vp: PgfExpr) -> PgfExpr:
+    if xmax.type != XType.N:
+        print('adjunct_vp_one: only N-MAX is supported', file=sys.stderr)
+        return gf_vp
+    head = xmax.to_head()
+    clitic = head.tags.get('clitic')
+    if clitic != 'indirect':
+        print('adjunct_vp_one: only N-MAX indirect clitic is supported',
+              file=sys.stderr)
+        return gf_vp
+    gf_np = nmax_to_gf(xmax)
+    return pgf.Expr('WithIndirectClitic', [gf_np, gf_vp])
+
+
+def adjunct_vp(vmax: XMax, gf_vp: PgfExpr) -> PgfExpr:
+    for adj in vmax.to_adj():
+        gf_vp = adjunct_vp_one(adj, gf_vp)
+    return gf_vp
+
+
 def vmax_to_gf(vmax: XMax) -> PgfExpr:
     gf_spec = stree_to_gf(vmax.to_spec())
     if not gf_spec:
@@ -167,7 +187,9 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
             gf_head = head_to_gf_v(head)
             gf_vp = pgf.Expr('UseV', [gf_head])
 
-    return pgf.Expr('PredVP', [gf_spec, gf_vp])
+    gf_adj_vp = adjunct_vp(vmax, gf_vp)
+
+    return pgf.Expr('PredVP', [gf_spec, gf_adj_vp])
 
 
 def stree_to_gf(stree: typing.Optional[XMax]) -> typing.Optional[PgfExpr]:

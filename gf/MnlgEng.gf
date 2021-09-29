@@ -18,6 +18,8 @@ lin
   VPshell v goal thema = ComplSlash (Slash2V3 (mkV3 (v ** {lock_V=<>}) noPrep toP) thema) goal ;
   VPshellDirect v goal thema = ComplSlash (Slash2V3 (mkV3 (v ** {lock_V=<>}) noPrep noPrep) goal) thema ;
 
+  WithIndirectClitic np vp = vp ;
+
   force_V = mkV "force" ;
 
   entrance_N = mkN "entrance" "entrances" ;

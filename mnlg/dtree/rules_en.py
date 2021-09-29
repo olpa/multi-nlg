@@ -8,7 +8,8 @@ darxi_V = Rule(
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
           ['V-BAR', ['V', 'stab_V2'], '#,', 'x2']],
-    vars=None
+    vars=None,
+    adj=[],
 )
 
 djan_N = Rule(
@@ -16,6 +17,7 @@ djan_N = Rule(
     head='djan',
     tree=['N-MAX', ['N-BAR', ['N', 'john_PN']]],
     vars=None,
+    adj=[],
 )
 
 kumfa_N = Rule(
@@ -23,6 +25,7 @@ kumfa_N = Rule(
     head='kumfa',
     tree=['N-MAX', ['N-SPEC', '#,', 'spec'], ['N-BAR', ['N', 'room_N']]],
     vars=None,
+    adj=[],
 )
 
 gutnerkla_V = Rule(
@@ -32,7 +35,8 @@ gutnerkla_V = Rule(
           ['V-SPEC', '#,', 'spec'],
           ['V-BAR', ['V', 'break_V2'],
            ['P-MAX', ['P-BAR', ['P', 'into_Prep'], '#,', 'x2']]]],
-    vars=None
+    vars=None,
+    adj=[],
 )
 
 RULES = [

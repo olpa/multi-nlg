@@ -74,14 +74,6 @@ class LoadLexpTest(unittest.TestCase):
         assert_that(tree.spec.tags, equal_to({'tag1': 'tag1', 'tag2': 'val2'}))
 
     @staticmethod
-    def test_load_headless_bar():
-        tree: XBarBase = lexp_to_tree(['I-BAR'])
-
-        assert_that(typing.cast(object, tree), instance_of(XBarBase))
-        assert_that(typing.cast(object, tree.head), instance_of(XHead))
-        assert_that(tree.head.s, none())
-
-    @staticmethod
     def test_load_head_with_tags():
         tree: XHead = lexp_to_tree(['N', ['tag', 'tagN1'],
                                     'name_n', ['tag', 'tagN2', 'valN2']])
@@ -134,6 +126,26 @@ class ToLexpTest(unittest.TestCase):
     def test_max(self):
         lexp = ['V-MAX', ['V-SPEC', self.n_max],
                 ['V-BAR', ['V', 'do'], self.n_max]]
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
+
+    def test_bar_rec_base(self):
+        lexp = ['V-MAX',
+                ['V-BAR',
+                 ['V-BAR', ['V', 'do'], self.n_max],
+                 self.n_max]]
+
+        back = lexp_to_tree(lexp).to_lexp()
+
+        assert_that(back, equal_to(lexp))
+
+    def test_bar_rec_frame(self):
+        lexp = ['V-MAX',
+                ['V-BAR',
+                 ['V-FRAME', ['V', 'do'], self.n_max, self.n_max],
+                 self.n_max]]
 
         back = lexp_to_tree(lexp).to_lexp()
 

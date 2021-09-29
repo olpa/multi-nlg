@@ -20,7 +20,8 @@ tense_rule = Rule(
                     ['I', None, '#,@', 'tags'], '#,@', 'compl']],
     vars={
         'tags': to_tense_tags_es,
-    }
+    },
+    adj=[],
 )
 
 gutnerkla_V = Rule(
@@ -38,7 +39,8 @@ gutnerkla_V = Rule(
               ['N-BAR',
                ['N', 'nerkla'],
                '#,', 'copy-x2']]]]]],
-    vars=None
+    vars=None,
+    adj=[],
 )
 
 bapli_V = Rule(
@@ -47,7 +49,8 @@ bapli_V = Rule(
     vars=None,
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
-          ['V-BAR', ['V', 'force_V'], '#,', 'x2']]
+          ['V-BAR', ['V', 'force_V'], '#,', 'x2']],
+    adj=[],
 )
 
 nerkla_N = Rule(
@@ -60,6 +63,7 @@ nerkla_N = Rule(
             ['P-BAR',
              ['P', 'to_Prep'],
              '#,', 'x2']]]],
+    adj=[],
 )
 
 kumfa_N = Rule(
@@ -67,7 +71,8 @@ kumfa_N = Rule(
     head='kumfa',
     vars=None,
     tree=['N-MAX',
-          ['N-BAR', ['N', 'room_N']]]
+          ['N-BAR', ['N', 'room_N']]],
+    adj=[],
 )
 
 djan_N = Rule(
@@ -75,6 +80,7 @@ djan_N = Rule(
     head='djan',
     tree=['N-MAX', ['N-BAR', ['N', 'john_PN']]],
     vars=None,
+    adj=[],
 )
 
 darxi_V = Rule(
@@ -88,7 +94,8 @@ darxi_V = Rule(
            ['V', 'dunda'],
            '#,', 'copy-x2',
            '#,', 'manner-x3',
-           ]]
+           ]],
+    adj=[],
 )
 
 dunda_V = Rule(
@@ -104,7 +111,10 @@ dunda_V = Rule(
             ['V-BAR',
              ['V', ['tag', 'trace']],
              '#,', 'x3'
-             ]]]]
+             ]]]],
+    adj=[
+        ['#,@', ['tag-clitic-indirect', ['#,@', 'x2']]],
+    ],
 )
 
 RULES = [
