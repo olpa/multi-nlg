@@ -33,8 +33,8 @@ gutnerkla_V = Rule(
     head='gutnerkla',
     tree=['V-MAX',
           ['V-SPEC', '#,', 'spec'],
-          ['V-BAR', ['V', 'break_V2'],
-           ['P-MAX', ['P-BAR', ['P', 'into_Prep'], '#,', 'x2']]]],
+          ['V-BAR', ['V', 'break_into_V'],
+           '#,', 'x2']],
     vars=None,
     adj=[],
 )

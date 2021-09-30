@@ -14,7 +14,10 @@ def load_string_file(file_name: str) -> Mapping[str, str]:
             if '=' not in line:
                 continue
             (id_, s) = line.split('=', 2)
-            mapping[id_.strip()] = s.strip()
+            s = s.strip()
+            if s.startswith('$'):
+                s = mapping[s[1:]]
+            mapping[id_.strip()] = s
     return mapping
 
 

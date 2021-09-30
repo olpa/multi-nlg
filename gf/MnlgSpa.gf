@@ -10,8 +10,8 @@ concrete MnlgSpa of Mnlg =
 in
 {
 lin
-  UseV2 v2 = predV v2 ;
   CastVtoV2 v = mkV2 (v ** { lock_V = <> });
+  CastV2toV v2 = v2 ** { lock_V2=<> } ;
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
 
   CastAdvToNP adv = heavyNP {
@@ -34,6 +34,7 @@ lin
     vp ** { clit2 = clitCase.c2 ++ vp.clit2 }
   ;
 
+  break_into_V = mkV "entrar" ; -- not used
   force_V = I.forzar_V ;
 
   entrance_N = mkN "entrada" ;

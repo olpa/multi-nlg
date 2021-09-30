@@ -32,7 +32,7 @@ class Example(unittest.TestCase):
     def test_stab_dar(self):
         s_in = "mi pu darxi la djan. le dakfu"
         expected_translations = {
-                'de': 'Ich erstach Johann.',
+                'de': 'Ich stach Johann.',
                 'en': 'I stabbed John.',
                 'es': 'Yo le di puñaladas a Juan.',
                 'ru': 'Я ударил Джона ножом.',

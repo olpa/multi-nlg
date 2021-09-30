@@ -3,8 +3,8 @@ abstract Mnlg =
 **
 {
 fun
-  UseV2 : V2 -> VP ;
   CastVtoV2 : V -> V2 ;
+  CastV2toV : V2 -> V ;
   CastV3toV : V3 -> V ;
   CastAdvToNP : Adv -> NP ;
 
@@ -24,6 +24,7 @@ fun
   -- break_V2: V2 ;
   -- stab_V2: V2 ;
 
+  break_into_V : V ;
   force_V : V;
 
   entrance_N : N ;

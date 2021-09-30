@@ -4,6 +4,7 @@ from hamcrest import assert_that, equal_to
 from mnlg.dtree.rules_rgl import tense_rule
 from mnlg.dtree.rules_en import RULES as RULES_EN, darxi_V
 from mnlg.dtree.rules_es import RULES as RULES_ES
+from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree import lcs_to_dtree, Rule
 from mnlg.xbar import lexp_to_tree, XType, XMax
 from tests.util.fixture import load_lcs, load_dtree
@@ -310,6 +311,12 @@ class LcsToDtreeExamplesTest(unittest.TestCase):
 
     def test_stab_dar_es(self):
         self.do_lcs_test(RULES_ES, 'stab_dar', 'es')
+
+    def test_break_forzar_de(self):
+        self.do_lcs_test(RULES_DE, 'break_forzar', 'de')
+
+    def test_stab_dar_de(self):
+        self.do_lcs_test(RULES_DE, 'stab_dar', 'de')
 
 
 if '__main__' == __name__:

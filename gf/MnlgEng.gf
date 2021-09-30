@@ -7,8 +7,8 @@ concrete MnlgEng of Mnlg =
 in
 {
 lin
-  UseV2 v2 = predV v2 ;
   CastVtoV2 v = mkV2 (v ** { lock_V=<> }) ;
+  CastV2toV v2 = v2 ** { lock_V2=<> } ;
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
   CastAdvToNP adv = {
     s = table { _ => adv.s } ;
@@ -24,6 +24,7 @@ lin
 
   WithIndirectClitic np vp = vp ;
 
+  break_into_V = partV (CastV2toV break_V2) "into" ;
   force_V = mkV "force" ;
 
   entrance_N = mkN "entrance" "entrances" ;
