@@ -9,6 +9,7 @@ from mnlg.dtree import lcs_to_dtree
 from mnlg.dtree.rules_en import RULES as RULES_EN
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
+from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.camxes_to_lcs import camxes_to_lcs
 from mnlg.xbar import lexp_to_tree
 
@@ -28,6 +29,8 @@ class MnlgInit:
             lang = 'Spa'
         elif lang == 'de':
             lang = 'Ger'
+        elif lang == 'ru':
+            lang = 'Rus'
         else:
             raise ValueError(f'Language not supported: {lang}')
         return self.grammar.languages[self.grammar_name + lang]
@@ -40,6 +43,8 @@ class MnlgInit:
             return RULES_ES
         if lang == 'de':
             return RULES_DE
+        if lang == 'ru':
+            return RULES_RU
         raise ValueError(f'Language not supported: {lang}')
 
 
@@ -62,12 +67,13 @@ def generate(mnlg: MnlgInit, interlingua: str) -> typing.Mapping[str, str]:
     s_en = generate_one_sentence(mnlg, interlingua, 'en')
     s_es = generate_one_sentence(mnlg, interlingua, 'es')
     s_de = generate_one_sentence(mnlg, interlingua, 'de')
+    s_ru = generate_one_sentence(mnlg, interlingua, 'ru')
     if 'nerkla' in interlingua:
         return {
                 'en': s_en,
                 'es': s_es,
                 'de': s_de,
-                'ru': 'Джон ворвался в комнату.',
+                'ru': s_ru,
                 'zh': '约翰闯进房间。',
                 }
     if 'dakfu' in interlingua:
@@ -75,6 +81,6 @@ def generate(mnlg: MnlgInit, interlingua: str) -> typing.Mapping[str, str]:
                 'en': s_en,
                 'es': s_es,
                 'de': s_de,
-                'ru': 'Я ударил Джона ножом.',
+                'ru': s_ru,
                 'zh': '我刺伤了约翰。',
                 }

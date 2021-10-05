@@ -28,7 +28,7 @@ def make_manner_rule(xmax: XMax) -> typing.Optional[Rule]:
         x=xhead.type,
         head=xhead.s,
         vars=None,
-        tree=['N-MAX', ['N-BAR', ['N', f'{xhead.s}_{manner}_N']]],
+        tree=['N-MAX', ['N-BAR', ['N', f'{xhead.s}_{manner}_CN']]],
         adj=[],
     )
 

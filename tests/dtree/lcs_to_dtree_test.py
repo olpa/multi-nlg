@@ -2,9 +2,10 @@ import unittest
 from hamcrest import assert_that, equal_to
 
 from mnlg.dtree.rules_rgl import tense_rule
-from mnlg.dtree.rules_en import RULES as RULES_EN, darxi_V
+from mnlg.dtree.rules_en import RULES as RULES_EN
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
+from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.dtree import lcs_to_dtree, Rule
 from mnlg.xbar import lexp_to_tree, XType, XMax
 from tests.util.fixture import load_lcs, load_dtree
@@ -58,40 +59,52 @@ class LcsToDtreeTest(unittest.TestCase):
                         ['tag', 'Tense', 'TPres']],
                        ['bbb']]]))
 
+    b_to_some_rule = Rule(
+        x=XType.N,
+        head='bbb',
+        tree=['some-bbb'],
+        vars=None,
+        adj=[],)
+
+    c_to_some_rule = Rule(
+        x=XType.N,
+        head='ccc',
+        tree=['some-ccc'],
+        vars=None,
+        adj=[],)
+
     @classmethod
     def test_subst_spec(cls):
         subst_rule = Rule(
             x=XType.N,
             head='aaa',
-            tree=['bbb'],
+            tree=['expect-bbb', '#,@', 'spec'],
             vars=None,
             adj=[],)
-        n_max = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
-        rules = [darxi_V, subst_rule]
+        n_max = ['N-MAX', ['N-BAR', ['N', 'bbb']]]
+        rules = [LcsToDtreeTest.b_to_some_rule, subst_rule]
         lcs = lexp_to_tree(
-            ['V-MAX', ['V-SPEC', n_max], ['V-BAR', ['V', 'darxi']]])
+            ['N-MAX', ['N-SPEC', n_max], ['N-BAR', ['N', 'aaa']]])
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(
-            ['V-MAX', ['V-SPEC', ['bbb']], ['V-BAR', ['V', 'stab_V2']]]))
+        assert_that(dtree, equal_to(['expect-bbb', 'some-bbb']))
 
     @classmethod
-    def test_subst_x1(cls):
+    def test_subst_x2(cls):
         subst_rule = Rule(
-            x=XType.N,
+            x=XType.V,
             head='aaa',
-            tree=['bbb'],
+            tree=['expect-bbb', '#,@', 'x2'],
             vars=None,
             adj=[],)
-        n_max = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
-        rules = [darxi_V, subst_rule]
-        lcs = lexp_to_tree(['V-MAX', ['V-BAR', ['V', 'darxi'], n_max]])
+        n_max = ['N-MAX', ['N-BAR', ['N', 'bbb']]]
+        rules = [LcsToDtreeTest.b_to_some_rule, subst_rule]
+        lcs = lexp_to_tree(['V-MAX', ['V-BAR', ['V', 'aaa'], n_max]])
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(
-            ['V-MAX', ['V-SPEC'], ['V-BAR', ['V', 'stab_V2'], ['bbb']]]))
+        assert_that(dtree, equal_to(['expect-bbb', 'some-bbb']))
 
     @classmethod
     def test_copy_spec_and_x(cls):
@@ -223,7 +236,7 @@ class LcsToDtreeTest(unittest.TestCase):
 
         dtree = lcs_to_dtree([], lcs)
 
-        assert_that(dtree, equal_to(['N-MAX', ['N-BAR', ['N', 'ext_int_N']]]))
+        assert_that(dtree, equal_to(['N-MAX', ['N-BAR', ['N', 'ext_int_CN']]]))
 
     # -
 
@@ -300,7 +313,7 @@ class LcsToDtreeExamplesTest(unittest.TestCase):
 
         assert_that(dtree, equal_to(expected_dtree))
 
-    def test_break_forzar(self):
+    def test_break_forzar_en(self):
         self.do_lcs_test(RULES_EN, 'break_forzar', 'en')
 
     def test_stab_dar_en(self):
@@ -317,6 +330,12 @@ class LcsToDtreeExamplesTest(unittest.TestCase):
 
     def test_stab_dar_de(self):
         self.do_lcs_test(RULES_DE, 'stab_dar', 'de')
+
+    def test_break_forzar_ru(self):
+        self.do_lcs_test(RULES_RU, 'break_forzar', 'ru')
+
+    def test_stab_dar_ru(self):
+        self.do_lcs_test(RULES_RU, 'stab_dar', 'ru')
 
 
 if '__main__' == __name__:

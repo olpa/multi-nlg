@@ -5,19 +5,13 @@ concrete MnlgGer of Mnlg =
   ParadigmsGer
   , (R=ResGer)
   , (T=TenseGer)
+  , (I=IrregGer)
 in
 {
 lin
   CastVtoV2 v = mkV2 (v ** { lock_V=<> });
   CastV2toV v2 = v2 ** { lock_V2=<> } ;
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
-  CastAdvToNP adv = {
-    s = table { _ => adv.s } ;
-    rc = [] ;
-    ext = [] ;
-    a = R.agrP3 R.Sg ;
-    w = ResGer.WHeavy ;
-  } ;
 
   MassLoi cn = DetCN (DetQuant IndefArt NumPl) cn ;
 
@@ -28,13 +22,16 @@ lin
 
   WithIndirectClitic np vp = vp ;
 
-  break_into_V = prefixV "ein" (irregV "brechen" "brecht" "brach" "bräche" "gebrochen") ;
-  force_V = irregV "zwingen" "zwingt" "zwang" "zwänge" "gezwungen" ;
+  break_into_V = prefixV "ein" I.brechen_V ;
+  force_V = I.zwingen_V ;
+  hit_V = I.schlagen_V ;
 
   entrance_N = mkN  "Eingang" "Eingänge" masculine ;
   knife_N = mkN  "Messer" "Messer" neuter ;
   room_N = mkN  "Zimmer" "Zimmer" neuter ;
-  darxi_dakfu_N = mkN  "Stich" "Stiche" masculine ;
+  darxi_dakfu_CN = UseN (mkN "Stich" "Stiche" masculine) ;
 
   into_Prep = inAcc_Prep ;
+  no_Prep = accPrep ;
+  ins_Prep = with_Prep ;
 }

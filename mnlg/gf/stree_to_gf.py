@@ -48,7 +48,11 @@ def nmax_to_gf(nmax: XMax) -> PgfExpr:
     if name.endswith('_PN'):
         cmd = 'UsePN'
 
-    gf_cn = pgf.Expr(cmd, [pgf.Expr(name, [])])
+    if name.endswith('_CN'):
+        gf_cn = pgf.Expr(name, [])
+    else:
+        gf_cn = pgf.Expr(cmd, [pgf.Expr(name, [])])
+
     gf_cn = adjunct_np(nmax, gf_cn)
     return gf_cn
 
@@ -165,17 +169,48 @@ def vp_shell_to_gf(
     return pgf.Expr(cmd, [gf_v, gf_subj, gf_compl])
 
 
+def adjunct_pp_to_vp(pmax: XMax, gf_vp: PgfExpr) -> PgfExpr:
+    head = pmax.to_head()
+    s_head = head and head.s
+    if not s_head:
+        print('adjunct_pp_to_vp: need a P-HEAD in P-MAX',
+              pmax, file=sys.stderr)
+        return gf_vp
+
+    compl = pmax.to_complement()
+    if not compl:
+        print('adjunct_pp_to_vp: need a complement in P-MAX',
+              pmax, file=sys.stderr)
+        return gf_vp
+
+    gf_compl = stree_to_gf(compl)
+    gf_adv = pgf.Expr('PrepNP', [pgf.Expr(s_head, []), gf_compl])
+    return pgf.Expr('AdvVP', [gf_vp, gf_adv])
+
+
 def adjunct_vp_one(xmax: XMax, gf_vp: PgfExpr) -> PgfExpr:
-    if xmax.type != XType.N:
-        print('adjunct_vp_one: only N-MAX is supported', file=sys.stderr)
+    if xmax.type == XType.P:
+        return adjunct_pp_to_vp(xmax, gf_vp)
+
+    if xmax.type != XType.N and xmax.type != XType.D:
+        print('adjunct_vp_one: only N/D/P-MAX is supported', file=sys.stderr)
         return gf_vp
     head = xmax.to_head()
-    clitic = head.tags.get('clitic')
+    tags = head.tags or {}
+
+    clitic = tags.get('clitic')
+
     if clitic != 'indirect':
-        print('adjunct_vp_one: only N-MAX indirect clitic is supported',
+        print('adjunct_vp_one: support only:',
+              'N/D-MAX indirect clitic',
               file=sys.stderr)
         return gf_vp
-    gf_np = nmax_to_gf(xmax)
+
+    if xmax.type == XType.N:
+        gf_np = nmax_to_gf(xmax)
+    else:
+        gf_np = dmax_to_gf(xmax)
+
     return pgf.Expr('WithIndirectClitic', [gf_np, gf_vp])
 
 
@@ -196,20 +231,27 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
         print('vmax_to_gf: head is required in v-max:', vmax, file=sys.stderr)
 
     compl = vmax.to_complement()
-    if is_lower_vp_shell(compl):
-        gf_vp = vp_shell_to_gf(head, compl.to_spec(), compl)
-    else:
-        gf_compl = stree_to_gf(compl)
+    while True:
+        if is_lower_vp_shell(compl):
+            gf_vp = vp_shell_to_gf(head, compl.to_spec(), compl)
+            break
 
+        gf_compl = stree_to_gf(compl)
         if gf_compl:
-            if compl.type == XType.P:
-                gf_compl = pgf.Expr('CastAdvToNP', [gf_compl])
-            gf_head = head_to_gf_v2(head)
-            sv = pgf.Expr('SlashV2a', [gf_head])
-            gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
-        else:
+            if compl.type != XType.D and compl.type != XType.N:
+                print('vmax_to_gf: complement should be D/N-MAX in v-max',
+                      vmax, file=sys.stderr)
+
+        if not gf_compl:
             gf_head = head_to_gf_v(head)
             gf_vp = pgf.Expr('UseV', [gf_head])
+            break
+
+        gf_head = head_to_gf_v2(head)
+        sv = pgf.Expr('SlashV2a', [gf_head])
+        gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
+
+        break
 
     gf_adj_vp = adjunct_vp(vmax, gf_vp)
 

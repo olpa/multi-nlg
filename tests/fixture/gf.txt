@@ -1,8 +1,11 @@
 # la djan. pu gutnerkla le kumfa
 break_forzar_en = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePN john_PN) (ComplSlash (SlashV2a (CastVtoV2 break_into_V)) (DetCN (DetQuant DefArt NumSg) (UseN room_N)))))) NoVoc) TEmpty
 break_forzar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePN john_PN) (ComplSlash (SlashV2a (CastVtoV2 force_V)) (DetCN (DetQuant DefArt NumSg) (AdvCN (UseN entrance_N) (PrepNP to_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N))))))))) NoVoc) TEmpty
-break_forzar_de = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePN john_PN) (ComplSlash (SlashV2a (CastVtoV2 break_into_V)) (CastAdvToNP (PrepNP into_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N)))))))) NoVoc) TEmpty
+break_forzar_de = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePN john_PN) (AdvVP (UseV break_into_V) (PrepNP into_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N))))))) NoVoc) TEmpty
+break_forzar_ru = $break_forzar_de
 
 # mi pu darxi la djan. le dakfu
 stab_dar_en = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) (ComplSlash (SlashV2a stab_V2) (UsePN john_PN))))) NoVoc) TEmpty
-stab_dar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) (WithIndirectClitic (UsePN john_PN) (VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi (UseN darxi_dakfu_N))))))) NoVoc) TEmpty
+stab_dar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) (WithIndirectClitic (UsePN john_PN) (VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi darxi_dakfu_CN)))))) NoVoc) TEmpty
+stab_dar_ru = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) (AdvVP (ComplSlash (SlashV2a (CastVtoV2 hit_V)) (UsePN john_PN)) (PrepNP ins_Prep (DetCN (DetQuant DefArt NumSg) (UseN knife_N))))))) NoVoc) TEmpty
+stab_dar_de = $stab_dar_en

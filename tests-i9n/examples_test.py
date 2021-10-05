@@ -23,7 +23,7 @@ class Example(unittest.TestCase):
                 'de': 'Johann brach ins Zimmer ein.',
                 'en': 'John broke into the room.',
                 'es': 'Juan forzó la entrada al cuarto.',
-                'ru': 'Джон ворвался в комнату.',
+                'ru': 'Иван ворвался в комнату.',
                 'zh': '约翰闯进房间。',
                 }
 
@@ -35,7 +35,7 @@ class Example(unittest.TestCase):
                 'de': 'Ich stach Johann.',
                 'en': 'I stabbed John.',
                 'es': 'Yo le di puñaladas a Juan.',
-                'ru': 'Я ударил Джона ножом.',
+                'ru': 'Я ударил Ивана ножом.',
                 'zh': '我刺伤了约翰。',
                 }
 

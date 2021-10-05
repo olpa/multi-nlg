@@ -113,11 +113,11 @@ def manner_x3(xmax: XMax) -> typing.Optional[TreeNode]:
     return dtree_d
 
 
-def tag_clitic_indirect(_: XMax,
-                        lexp_xmax: TreeNode
-                        ) -> typing.Optional[TreeNode]:
+def tag_xmax(lexp_xmax: TreeNode,
+             tag_expr: list[str],  # ['tag', 'tag-name', 'tag-value']
+             ) -> typing.Optional[TreeNode]:
     nmax_seen = False
-    clitic_added = False
+    tag_added = False
 
     def augment_tree_rec(tree: TreeNode) -> TreeNode:
         nonlocal nmax_seen
@@ -133,16 +133,23 @@ def tag_clitic_indirect(_: XMax,
             return list(map(augment_tree_rec, tree))
 
         def maybe_expand():
-            nonlocal clitic_added
+            nonlocal tag_added
             level = iter(tree)
             yield next(level)
             if len(ename) == 1:
-                clitic_added = True
-                yield ['tag', 'clitic', 'indirect']
+                tag_added = True
+                yield tag_expr
             yield from level
         return list(maybe_expand())
 
     back = augment_tree_rec(lexp_xmax)
-    if not clitic_added:
-        print('tag_clitic_indirect: clitic was not added', file=sys.stderr)
+    if not tag_added:
+        print('tag_xmax: could not find a place for tags in the tree',
+              lexp_xmax, file=sys.stderr)
     return back
+
+
+def tag_clitic_indirect(_: XMax,
+                        lexp_xmax: TreeNode
+                        ) -> typing.Optional[TreeNode]:
+    return tag_xmax(lexp_xmax, ['tag', 'clitic', 'indirect'])

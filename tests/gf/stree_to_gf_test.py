@@ -49,6 +49,14 @@ class StreeToGfTest(unittest.TestCase):
         assert_that(str(e), equal_to('UsePron i_Pron'))
 
     @staticmethod
+    def test_noun_that_is_already_common():
+        stree = lexp_to_tree(['N-MAX', ['N-BAR', ['N', 'some_CN']]])
+
+        e = stree_to_gf(stree)
+
+        assert_that(str(e), equal_to('some_CN'))
+
+    @staticmethod
     def test_det():
         e = stree_to_gf(lexp_to_tree(d_max))
 
@@ -95,18 +103,19 @@ class StreeToGfTest(unittest.TestCase):
             f'PredVP {d_np} (ComplSlash (SlashV2a pred_V2) {d_np})'))
 
     @staticmethod
-    def test_verb_wrap_prep_complement():
-        stree = lexp_to_tree(['V-MAX',
-                              ['V-SPEC', d_max],
-                              ['V-BAR', ['V', 'pred_V2'],
-                               ['P-MAX', ['P-BAR', ['P', 'in_Prep'], d_max]]]])
+    def test_verb_with_pp_adjunct():
+        stree = lexp_to_tree(
+            ['V-MAX',
+             ['V-SPEC', d_max],
+             ['V-BAR',
+              ['V-BAR', ['V', 'some_V']],
+              ['P-MAX', ['P-BAR', ['P', 'some_P'], d_max
+                         ]]]])
 
         e = stree_to_gf(stree)
 
-        p_np = f'(PrepNP in_Prep {d_np})'
         assert_that(str(e), equal_to(
-            f'PredVP {d_np} (ComplSlash (SlashV2a pred_V2) '
-            f'(CastAdvToNP {p_np}))'))
+            f'PredVP {d_np} (AdvVP (UseV some_V) (PrepNP some_P {d_np}))'))
 
     @staticmethod
     def test_prep():
@@ -205,6 +214,15 @@ class StreeToGfExamplesTest(unittest.TestCase):
 
     def test_break_forzar_de(self):
         self.do_gf_test('break_forzar_de')
+
+    def test_stab_dar_de(self):
+        self.do_gf_test('stab_dar_de')
+
+    def test_break_forzar_ru(self):
+        self.do_gf_test('break_forzar_ru')
+
+    def test_stab_dar_ru(self):
+        self.do_gf_test('stab_dar_ru')
 
 
 if '__main__' == __name__:

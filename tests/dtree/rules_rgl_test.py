@@ -8,7 +8,7 @@ from mnlg.xbar import lexp_to_tree
 lexp_n_max = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
 
 
-class TenseTaggingTest(unittest.TestCase):
+class FunctionsTest(unittest.TestCase):
 
     @staticmethod
     def test_no_tags_to_present_simul():
@@ -80,13 +80,15 @@ class TenseTaggingTest(unittest.TestCase):
         assert_that(lexp_xspec, equal_to(tags))
 
     @staticmethod
+    def mk_nmax_lexp_with_tags(*tag):
+        return ['N-MAX',
+                ['N-SPEC'], ['N-BAR', ['N', *tag, 'aaa'],
+                             ['N-MAX', ['N-BAR', ['N', 'bbb']]]]]
+
+    @staticmethod
     def test_clitic_indirect():
-        def mk_nmax_lexp_with_tags(*tag):
-            return ['N-MAX',
-                    ['N-SPEC'], ['N-BAR', ['N', *tag, 'aaa'],
-                                 ['N-MAX', ['N-BAR', ['N', 'bbb']]]]]
-        lexp = mk_nmax_lexp_with_tags()
-        expected_clitic_lexp = mk_nmax_lexp_with_tags(
+        lexp = FunctionsTest.mk_nmax_lexp_with_tags()
+        expected_clitic_lexp = FunctionsTest.mk_nmax_lexp_with_tags(
             ['tag', 'clitic', 'indirect'])
 
         clitic_lexp = tag_clitic_indirect(None, lexp)
