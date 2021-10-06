@@ -24,7 +24,7 @@ class Example(unittest.TestCase):
                 'en': 'John broke into the room.',
                 'es': 'Juan forzó la entrada al cuarto.',
                 'ru': 'Иван ворвался в комнату.',
-                'zh': '约翰闯进房间。',
+                'zh': '约翰闯进了房间。',
                 }
 
         assert_example(self.mnlg, s_in, expected_translations)

@@ -6,6 +6,7 @@ from mnlg.dtree.rules_en import RULES as RULES_EN
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
+from mnlg.dtree.rules_zh import RULES as RULES_ZH
 from mnlg.dtree import lcs_to_dtree, Rule
 from mnlg.xbar import lexp_to_tree, XType, XMax
 from tests.util.fixture import load_lcs, load_dtree
@@ -336,6 +337,12 @@ class LcsToDtreeExamplesTest(unittest.TestCase):
 
     def test_stab_dar_ru(self):
         self.do_lcs_test(RULES_RU, 'stab_dar', 'ru')
+
+    def test_break_forzar_zh(self):
+        self.do_lcs_test(RULES_ZH, 'break_forzar', 'zh')
+
+    def test_stab_dar_zh(self):
+        self.do_lcs_test(RULES_ZH, 'stab_dar', 'zh')
 
 
 if '__main__' == __name__:

@@ -224,6 +224,12 @@ class StreeToGfExamplesTest(unittest.TestCase):
     def test_stab_dar_ru(self):
         self.do_gf_test('stab_dar_ru')
 
+    def test_break_forzar_zh(self):
+        self.do_gf_test('break_forzar_zh')
+
+    def test_stab_dar_zh(self):
+        self.do_gf_test('stab_dar_zh')
+
 
 if '__main__' == __name__:
     unittest.main()

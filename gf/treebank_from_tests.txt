@@ -15,37 +15,43 @@ Built on darwin/x86_64 with ghc-8.6, flags: interrupt server c-runtime
 License: see help -license.   
 
 Mnlg> Mnlg> break_forzar_en = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePN john_PN) (ComplSlash (SlashV2a (CastVtoV2 break_into_V)) (DetCN (DetQuant DefArt NumSg) (UseN room_N)))))) NoVoc) TEmpty
-Mnlg> John broke into the room .
+Mnlg> 约 翰 闯 进 了 房 间 。
+John broke into the room .
 Johann brach das Zimmer ein .
 Иван ворвал &+ ся комнату .
 Juan entraba con fuerza el cuarto .
 
 Mnlg> break_forzar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePN john_PN) (ComplSlash (SlashV2a (CastVtoV2 force_V)) (DetCN (DetQuant DefArt NumSg) (AdvCN (UseN entrance_N) (PrepNP to_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N))))))))) NoVoc) TEmpty
-Mnlg> John forced the entrance to the room .
+Mnlg> 约 翰 迫 使 了 往 房 间 的 入 口 。
+John forced the entrance to the room .
 Johann zwang den Eingang nach dem Zimmer .
 Иван заставил вход к комнате .
 Juan forzó la entrada al cuarto .
 
 Mnlg> break_forzar_de = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePN john_PN) (AdvVP (UseV break_into_V) (PrepNP into_Prep (DetCN (DetQuant DefArt NumSg) (UseN room_N))))))) NoVoc) TEmpty
-Mnlg> John broke into into the room .
+Mnlg> 约 翰 在 往 房 间 闯 进 了 。
+John broke into into the room .
 Johann brach ins Zimmer ein .
 Иван ворвал &+ ся в комнату .
 Juan entraba con fuerza en el cuarto .
 
 Mnlg> stab_dar_en = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) (ComplSlash (SlashV2a stab_V2) (UsePN john_PN))))) NoVoc) TEmpty
-Mnlg> I stabbed John .
+Mnlg> 我 刺 伤 了 约 翰 。
+I stabbed John .
 ich stach Johann .
 я колол Ивана .
 yo apuñalaba Juan .
 
 Mnlg> stab_dar_es = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPasseSimple ASimul) PPos (PredVP (UsePron i_Pron) (WithIndirectClitic (UsePN john_PN) (VPshell (CastV3toV give_V3) (UsePN john_PN) (MassLoi darxi_dakfu_CN)))))) NoVoc) TEmpty
-Mnlg> I gave stabs to John .
+Mnlg> 我 给 了 约 翰 些 刀 伤 。
+I gave stabs to John .
 ich gab Stiche zu Johann .
 я давал ножевые раны Ивану .
 yo le di puñaladas a Juan .
 
 Mnlg> stab_dar_ru = TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) (AdvVP (ComplSlash (SlashV2a (CastVtoV2 hit_V)) (UsePN john_PN)) (PrepNP ins_Prep (DetCN (DetQuant DefArt NumSg) (UseN knife_N))))))) NoVoc) TEmpty
-Mnlg> I hit John with the knife .
+Mnlg> 我 在 把 刀 击 了 约 翰 。
+I hit John with the knife .
 ich schlug Johann mit dem Messer .
 я ударил Ивана ножом .
 yo pegaba Juan con el cuchillo .

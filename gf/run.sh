@@ -48,10 +48,18 @@ stab_john_ru_VP="(ComplSlash (SlashV2a (CastVtoV2 hit_V)) (UsePN john_PN))"
 stab_with_knife_ru_VP="(AdvVP ${stab_john_ru_VP} (PrepNP ins_Prep (DetCN (DetQuant DefArt NumSg) (UseN knife_N))))"
 stab_ru_S="(TFullStop (PhrUtt NoPConj (UttS (UseCl (TTAnt TPast ASimul) PPos (PredVP (UsePron i_Pron) ${stab_with_knife_ru_VP}))) NoVoc) TEmpty)"
 
+# zh
+
+# 约翰闯进了房间。
+# same as English
+
+# 我刺伤了约翰。
+# same as English
+
 #
 
-#X="${break_de_S}"
-X="${stab_S}"
+#X="${break_zh_S}"
+X="${stab_es_S}"
 Lang=Eng # Spa, Ger, ...
 
 run_gf() {
