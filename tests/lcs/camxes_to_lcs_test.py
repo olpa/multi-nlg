@@ -1,8 +1,8 @@
 import unittest
 from hamcrest import assert_that, equal_to
-from util.fixture import load_camxes_parses, load_lcs
+from tests.util.fixture import load_camxes_parses, load_lcs
 
-from mnlg.camxes_to_lcs import camxes_to_lcs, SumtiAllocator
+from mnlg.lcs.camxes_to_lcs import camxes_to_lcs, SumtiAllocator
 
 
 def wrap_i_max(v_max):

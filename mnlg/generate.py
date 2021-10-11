@@ -11,7 +11,7 @@ from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.dtree.rules_zh import RULES as RULES_ZH
-from mnlg.camxes_to_lcs import camxes_to_lcs
+from mnlg.lcs.camxes_to_lcs import camxes_to_lcs
 from mnlg.xbar import lexp_to_tree
 
 PgfLang = object
