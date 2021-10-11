@@ -50,31 +50,47 @@ def to_spec(xmax: XMax
     return 'none', None
 
 
-def to_x2(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
+def to_x1(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
     func, compl = to_complement(xmax)
     if func == 'mapls' and compl:
         return 'map', compl[0]
 
 
-def to_x3(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
+def to_x2(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
     func, compl = to_complement(xmax)
     if func == 'mapls' and len(compl) >= 2:
         return 'map', compl[1]
 
 
+def to_x3(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
+    func, compl = to_complement(xmax)
+    if func == 'mapls' and len(compl) >= 3:
+        return 'map', compl[2]
+
+
 def copy_spec(xmax: XMax) -> typing.Optional[XSpec]:
-    return xmax.to_spec().to_lexp()
+    xspec = xmax.to_spec()
+    return xspec.to_lexp() if xspec else None
 
 
-def copy_x2(xmax: XMax) -> typing.Optional[XSpec]:
+def copy_xn(xmax: XMax, n: int) -> typing.Optional[XSpec]:
     bar = xmax.to_bar()
     if isinstance(bar, XBarBase):
         return bar.compl.to_lexp()
     if isinstance(bar, XBarFrame):
         compl = bar.compl
         if isinstance(compl, tuple) and compl:
-            return compl[0].to_lexp()
+            if len(compl) > n - 1:
+                return compl[n - 1].to_lexp()
     return None
+
+
+def copy_x1(xmax: XMax) -> typing.Optional[XSpec]:
+    return copy_xn(xmax, 1)
+
+
+def copy_x2(xmax: XMax) -> typing.Optional[XSpec]:
+    return copy_xn(xmax, 2)
 
 
 def manner_x3(xmax: XMax) -> typing.Optional[TreeNode]:
@@ -86,12 +102,12 @@ def manner_x3(xmax: XMax) -> typing.Optional[TreeNode]:
         return None
 
     compl = xmax.to_complement()
-    if len(compl) < 2:
+    if len(compl) < 3:
         print('manner_meaning_x3: required: x3 for xmax:',
               xmax, file=sys.stderr)
         return None
 
-    x_int_max = compl[1]
+    x_int_max = compl[2]
     if x_int_max.type == XType.D:
         x_int_max = x_int_max.to_complement()
         if not x_int_max:

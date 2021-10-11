@@ -27,3 +27,27 @@ def debug_print(prefix: str, node_set: IterableNodeSet) -> IterableNodeSet:
     bak = list(node_set)
     print(prefix, bak)
     return bak
+
+
+# Unwrap camxes constructions like [['time', [['time_offset' ... ]]]]
+def normalize_level(node: TreeNode) -> typing.Generator[TreeNode, None, None]:
+    if is_node(node):
+        yield node
+        return
+    if not is_node_set(node):
+        yield node
+        return
+    for kid in node:
+        if is_node_set(kid):
+            yield from normalize_level(kid)
+        else:
+            yield kid
+
+
+def normalize_node(node: TreeNode) -> typing.Optional[TreeNode]:
+    node_after = list(normalize_level(node))
+    if len(node_after) != 1:
+        print('normalize_node: after normalization, got several nodes.'
+              f'before: {node}, after: {node_after}')
+        return None
+    return node_after[0]

@@ -1,5 +1,5 @@
 # la djan. pu gutnerkla le kumfa
-break_forzar = ["I-MAX", ["I-BAR", ["I", ["tag", "pu"]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", ["tag", "pn"], "djan"]]]], ["V-FRAME", ["V", "gutnerkla"], ["D-MAX", ["D-BAR", ["D", ["tag", "le"]], ["N-MAX", ["N-BAR", ["N", "kumfa"]]]]]]]]]
+break_forzar = ["I-MAX", ["I-BAR", ["I", ["tag", "pu"]], ["V-MAX", ["V-FRAME", ["V", "gutnerkla"], ["N-MAX", ["N-BAR", ["N", ["tag", "pn"], "djan"]]], ["D-MAX", ["D-BAR", ["D", ["tag", "le"]], ["N-MAX", ["N-BAR", ["N", "kumfa"]]]]]]]]]
 
 # mi pu darxi la djan. le dakfu
-stab_dar = ["I-MAX", ["I-BAR", ["I", ["tag", "pu"]], ["V-MAX", ["V-SPEC", ["N-MAX", ["N-BAR", ["N", ["tag", "pron"], "mi"]]]], ["V-FRAME", ["V", "darxi"], ["N-MAX", ["N-BAR", ["N", ["tag", "pn"], "djan"]]], ["D-MAX", ["D-BAR", ["D", ["tag", "le"]], ["N-MAX", ["N-BAR", ["N", "dakfu"]]]]]]]]]
+stab_dar = ["I-MAX", ["I-BAR", ["I", ["tag", "pu"]], ["V-MAX", ["V-FRAME", ["V", "darxi"], ["N-MAX", ["N-BAR", ["N", ["tag", "pron"], "mi"]]], ["N-MAX", ["N-BAR", ["N", ["tag", "pn"], "djan"]]], ["D-MAX", ["D-BAR", ["D", ["tag", "le"]], ["N-MAX", ["N-BAR", ["N", "dakfu"]]]]]]]]]

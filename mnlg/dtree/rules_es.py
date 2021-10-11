@@ -29,9 +29,9 @@ gutnerkla_V = Rule(
     head='gutnerkla',
     tree=['#,lcs',
           'V-MAX',
-          '#,', 'copy-spec',
           ['V-FRAME',
            ['V', 'bapli'],
+           '#,', 'copy-x1',
            ['D-MAX',
             ['D-BAR',
              ['D', ["tag", "le"]],
@@ -48,7 +48,7 @@ bapli_V = Rule(
     head='bapli',
     vars=None,
     tree=['V-MAX',
-          ['V-SPEC', '#,', 'spec'],
+          ['V-SPEC', '#,', 'x1'],
           ['V-BAR', ['V', 'force_V'], '#,', 'x2']],
     adj=[],
 )
@@ -63,7 +63,7 @@ nerkla_N = Rule(
         ['P-MAX',
          ['P-BAR',
           ['P', 'to_Prep'],
-          '#,', 'x2']]
+          '#,', 'x1']]
     ],
 )
 
@@ -90,9 +90,9 @@ darxi_V = Rule(
     vars=None,
     tree=['#,lcs',
           'V-MAX',
-          '#,', 'copy-spec',
           ['V-FRAME',
            ['V', 'dunda'],
+           '#,', 'copy-x1',
            '#,', 'copy-x2',
            '#,', 'manner-x3',
            ]],
@@ -104,7 +104,7 @@ dunda_V = Rule(
     head='dunda',
     vars=None,
     tree=['V-MAX',
-          ['V-SPEC', '#,', 'spec'],
+          ['V-SPEC', '#,', 'x1'],
           ['V-BAR',
            ['V', 'give_V3'],
            ['V-MAX',

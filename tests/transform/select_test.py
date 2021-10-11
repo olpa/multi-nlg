@@ -2,7 +2,7 @@ import unittest
 from hamcrest import assert_that, equal_to
 
 from mnlg.transform import Children, Projector, TreeNode, IterableNodeSet
-from mnlg.transform import MatchName, SelectStep, select
+from mnlg.transform import MatchName, SelectStep, select, SelectStepNorm
 
 tree = ['tree', ['child1', 'a'], ['child2', 'b'], ['child1', 'c'],
         ['child2', ['sub-child2', 'd']], ['child2']]
@@ -60,6 +60,13 @@ class SelectTest(unittest.TestCase):
                              SelectStep(MatchName('sub-child2'))])
 
         assert_that(list(back), equal_to([['sub-child2', 'd']]))
+
+    @staticmethod
+    def test_camxes_tree():
+        ctree = [['time', [['time_offset', 'etc']]]]
+        back = select(ctree, [SelectStepNorm(MatchName('time_offset'))])
+
+        assert_that(list(back), equal_to([['time_offset', 'etc']]))
 
 
 if '__main__' == __name__:

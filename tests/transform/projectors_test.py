@@ -25,14 +25,14 @@ class DeepDiveTest(unittest.TestCase):
 
     def test_find_several_on_deep_level(self):
         tree = ['root', ['child',
-                         ['child', 'level2',
-                          ['child', 'level3'],
+                         ['child', ['level2'],
+                          ['child', ['level3']],
                           ['child', ['child', 'levelN']]]]]
 
         back = self.diver.project(tree)
 
         assert_that(list(back), equal_to(
-            [['child', 'level3'], ['child', 'levelN']]))
+            [['child', ['level3']], ['child', 'levelN']]))
 
     def test_stop_dive_on_mismatch(self):
         tree = ['root', ['child', ['stop-dive', ['child', 'nested']]]]
@@ -41,6 +41,14 @@ class DeepDiveTest(unittest.TestCase):
 
         assert_that(list(back), equal_to(
             [['child', ['stop-dive', ['child', 'nested']]]]))
+
+    def test_dive_on_headless_nodes(self):
+        tree = [[['child', [[['child', ['child', ['x', 'aaa']]]]]]]]
+
+        back = self.diver.project(tree)
+
+        assert_that(list(back), equal_to(
+            [['child', ['x', 'aaa']]]))
 
 
 if '__main__' == __name__:

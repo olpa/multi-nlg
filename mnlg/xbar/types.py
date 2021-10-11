@@ -9,7 +9,8 @@ class XType(Enum):
     A = 4
     P = 5
     D = 6
-    C = 7
+    C = 7,
+    J = 8,  # conjunction, non-standard type
 
     def __str__(self):
         return self.name

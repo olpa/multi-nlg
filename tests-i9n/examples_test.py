@@ -41,6 +41,26 @@ class Example(unittest.TestCase):
 
         assert_example(self.mnlg, s_in, expected_translations)
 
+    @staticmethod
+    def xtest_san_francisco_sent1():
+        s_in = "la sanfransiskos goi ko'a cu kulnu je" \
+               "canja je jdini midju la nosenkalifornos"
+        print(s_in)
+
+    @staticmethod
+    def xtest_san_francisco_sent2_adj():
+        accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
+        determiner = f"ke ka {accidental} ke'e vomoi fi le nilxa'ugri"
+        phrase = f"ko'a ke ka {determiner} ke'e tcadu la kalifornos"
+        print(phrase)
+
+    @staticmethod
+    def xtest_san_francisco_sent2_poi():
+        accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
+        determiner = f"vomoi ba zo'e noi {accidental} fi le nilxa'ugri"
+        phrase = f"ko'a tcadu ba zo'e poi {determiner} la kalifornos"
+        print(phrase)
+
 
 if '__main__' == __name__:
     unittest.main()

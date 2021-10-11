@@ -55,6 +55,7 @@ def to_graphviz_xhead(h: typing.TextIO,
     ls.extend(str_tags_iter(xhead.tags))
     if not ls:
         return
+    ls = map(str, ls)
     label = '\\n'.join(ls)
     write_node(h, label, level, id_, parent_id)
 
@@ -166,7 +167,6 @@ def read_input(args):
     if h and h is not sys.stdin:
         h.close()
 
-    s_in = s_in.replace("'", '"')
     le = json.loads(s_in)
     return lexp.lexp_to_tree(le)
 

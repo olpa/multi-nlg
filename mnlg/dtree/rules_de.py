@@ -7,7 +7,7 @@ gutnerkla_V = Rule(
     x=XType.V,
     head='gutnerkla',
     tree=['V-MAX',
-          ['V-SPEC', '#,', 'spec'],
+          ['V-SPEC', '#,', 'x1'],
           ['V-BAR',
            ['V-BAR', ['V', 'break_into_V']],
            ['P-MAX', ['P-BAR', ['P', 'into_Prep'], '#,', 'x2']]

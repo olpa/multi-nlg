@@ -1,6 +1,7 @@
 import functools
 import typing
-from .nodeset import to_node_set, flatten_node_sets
+from .nodeset import to_node_set, flatten_node_sets,\
+    normalize_node, normalize_level
 from .projectors import Children
 from .matchers import MatchAlways
 from .types import TreeNode, NodeSet, Matcher, Projector, IterableNodeSet
@@ -31,6 +32,17 @@ class SelectStep(Projector):
         return filter(
             lambda kid: self.matcher.is_match(kid),
             self.projector.project(node)
+        )
+
+
+class SelectStepNorm(SelectStep):
+    def project(self, node: TreeNode) -> IterableNodeSet:
+        node = normalize_node(node)
+        if not node:
+            return []
+        return filter(
+            lambda kid: self.matcher.is_match(kid),
+            normalize_level(self.projector.project(node))
         )
 
 

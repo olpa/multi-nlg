@@ -1,7 +1,8 @@
 import typing
 
-from .functions import to_complement, to_spec, to_x2, to_x3
-from .functions import copy_spec, copy_x2, manner_x3, tag_clitic_indirect
+from .functions import to_complement, to_spec, to_x1, to_x2, to_x3
+from .functions import copy_spec, copy_x1, copy_x2, manner_x3
+from .functions import tag_clitic_indirect
 from .types import Rule
 from ..transform import TreeNode
 from mnlg.xbar import lexp_to_tree, XMax, XType
@@ -51,12 +52,16 @@ def eval_var(rules: list[Rule],
             func = to_complement
         elif func == 'spec':
             func = to_spec
+        elif func == 'x1':
+            func = to_x1
         elif func == 'x2':
             func = to_x2
         elif func == 'x3':
             func = to_x3
         elif func == 'copy-spec':
             func = copy_spec
+        elif func == 'copy-x1':
+            func = copy_x1
         elif func == 'copy-x2':
             func = copy_x2
         elif func == 'manner-x3':
