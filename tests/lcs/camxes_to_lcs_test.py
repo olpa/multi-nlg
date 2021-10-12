@@ -140,6 +140,24 @@ class CamxesToLcsTest(unittest.TestCase):
                            j_maha]])))
 
     @staticmethod
+    def test_poi():
+        tree = CamxesToLcsTest.trees['lo_prami_poi_barda_kuho_klama']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_v_max(
+                'klama',
+                ['D-MAX', ['D-BAR',
+                           ['D', ['tag', 'lo']],
+                           ['N-MAX',
+                            ['N-BAR',
+                             ['N-BAR', ['N', 'prami']],
+                             ['C-MAX', ['C-BAR', ['C', 'poi'],
+                                        wrap_i_v_max('barda')]]
+                             ]]]])))
+
+    @staticmethod
     def test_ja():
         tree = CamxesToLcsTest.trees['kulnu_je_canja_je_jdini_midju']
 

@@ -153,7 +153,10 @@ class TransformSumti(Transformer):
             print('TransformSumti: no kids after transformation',
                   file=sys.stderr)
             return []
-        kids = kids[:2]
+        if len(kids) > 2:
+            print('TransformSumti: at most 2 kids are expected, got:',
+                  kids, file=sys.stderr)
+            kids = kids[:2]
 
         nbar = kids.pop()
         if not is_node_name(nbar, 'N-BAR'):
@@ -165,10 +168,10 @@ class TransformSumti(Transformer):
 
         dmax = None
         if kids:
-            dbar = kids[0]
-            if is_node_name(dbar, 'D-BAR'):
-                dbar.append(nmax)
-                dmax = ['D-MAX', dbar]
+            det = kids[0]
+            if is_node_name(det, 'D'):
+                det = ['D', ['tag', det[1]]]
+                dmax = ['D-MAX', ['D-BAR', det, nmax]]
             else:
                 print('TransformSumti: after transform,',
                       'the first kid should be D-BAR, got:',
@@ -214,7 +217,36 @@ class TransformSumti2(Transformer):
         return [['J-MAX', bar]]
 
 
+class TransformSumtiTail(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
+        relative = filter(lambda kid: is_node_name(kid, 'C-MAX'), kids)
+        base = filter(lambda kid: not is_node_name(kid, 'C-MAX'), kids)
+        bar = ['N-BAR', *base]
+        for rel in relative:
+            bar = ['N-BAR', bar, rel]
+        return [bar]
+
+
 TransformSelbri4 = TransformSumti2
+
+
+class TransformRelativeClause(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
+        cmax = [['C-MAX', ['C-BAR', *kids]]]
+        if len(kids) != 2:
+            print('TransformRelativeClause: exactly two children required,'
+                  f'got {len(kids)} of them:', kids, file=sys.stderr)
+            return cmax
+        chead, xmax = kids
+        if not is_node_name(chead, 'C'):
+            print('TransformRelativeClause: the first children should be C, got:',
+                  chead, file=sys.stderr)
+        elif not is_max_node(xmax):
+            print('TransformRelativeClause: the second children should be MAX, got:',
+                  xmax, file=sys.stderr)
+        return cmax
 
 
 class TransformCmevla(Transformer):
@@ -251,12 +283,12 @@ def camxes_to_lcs(tree) -> list:
     rule_pu = Rule(MatchName('PU_clause'), Replace([['tag', 'pu']]))
     rule_sumti = Rule(MatchName('sumti_6'), TransformSumti())
     rule_sumti2 = Rule(MatchName('sumti_2'), TransformSumti2())
-    rule_sumti_nbar = Rule(MatchName('sumti_tail'), TransformRename('N-BAR'))
+    rule_sumti_nbar = Rule(MatchName('sumti_tail'), TransformSumtiTail())
     skip_sumti = Rule(match_name_begin('sumti'), TransformChildren())
     rule_la = Rule(MatchName('LA_clause'), TransformChildren())
     drop_la = Rule(MatchName('LA'), Drop())
-    rule_le = Rule(MatchName('LE_clause'), TransformRename('D-BAR'))
-    drop_le = Rule(MatchName('LE'), Replace([['D', ['tag', 'le']]]))
+    rule_le = Rule(MatchName('LE_clause'), TransformRename('D'))
+    drop_le = Rule(MatchName('LE'), TransformWord())
     drop_ku = Rule(MatchName('KU'), Drop())
     skip_koha = Rule(MatchName('KOhA_clause'), TransformRename('N-BAR'))
     rule_koha = Rule(MatchName('KOhA'), TransformKoha())
@@ -275,6 +307,7 @@ def camxes_to_lcs(tree) -> list:
     drop_nu_klause = Rule(MatchName('NU_clause'), Drop())
     drop_kei = Rule(MatchName('KEI'), Drop())
     drop_kehe = Rule(MatchName('KEhE'), Drop())
+    drop_kuho = Rule(MatchName('KUhO'), Drop())
     skip_subsentence = Rule(MatchName('subsentence'), TransformChildren())
     rule_pa_clause = Rule(MatchName('PA_clause'), TransformRename('V'))
     rule_pa = Rule(MatchName('PA'), TransformWord())
@@ -283,13 +316,17 @@ def camxes_to_lcs(tree) -> list:
     skip_joik = Rule(match_name_begin('joik'), TransformChildren())
     skip_jek = Rule(match_name_begin('jek'), TransformChildren())
     rule_joi_clause = Rule(MatchName('JOI_clause'), TransformRename('J'))
+    rule_noi_clause = Rule(MatchName('NOI_clause'), TransformRename('C'))
     rule_ja_clause = Rule(MatchName('JA_clause'), TransformRename('J'))
     rule_joi = Rule(MatchName('JOI'), TransformWord())
+    rule_noi = Rule(MatchName('NOI'), TransformWord())
     skip_term = Rule(match_name_begin('term'), TransformChildren())
     skip_abs_term = Rule(match_name_begin('abs_term'), TransformChildren())
     skip_abs_tag_term = Rule(MatchName('abs_tag_term'), TransformChildren())
     rule_fa = Rule(MatchName('FA'), TransformWord())
     rule_ja = Rule(MatchName('JA'), TransformWord())
+    rule_relative_clause = Rule(MatchName('relative_clause'), TransformRelativeClause())
+    skip_relative_clause = Rule(match_name_begin('relative_clause'), TransformChildren())
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
@@ -310,6 +347,8 @@ def camxes_to_lcs(tree) -> list:
         skip_joik, skip_jek, rule_joi, rule_joi_clause, rule_ja_clause,
         skip_abs_term, skip_abs_tag_term, skip_term,
         rule_fa, rule_ja,
+        rule_noi, rule_noi_clause,
+        rule_relative_clause, skip_relative_clause, drop_kuho,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]
