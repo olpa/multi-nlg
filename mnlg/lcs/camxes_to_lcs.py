@@ -33,6 +33,7 @@ class SumtiAllocator:
             self.pos = ('fa', 'fe', 'fi', 'fo', 'fu').index(node[1])
             return
         self.allocate_next_position()
+        node = to_max_node(node)
         self.sumti[self.pos] = node
         self.pos += 1
         while len(self.sumti) > self.pos and self.sumti[self.pos]:
@@ -136,14 +137,29 @@ def is_node_name(node: TreeNode, name: str) -> bool:
     return node[0] == name
 
 
-def is_max_node(node: TreeNode) -> bool:
+def _is_ending(node: TreeNode, ending: str) -> bool:
     if not isinstance(node, Sequence):
         return False
     if not node:
         return False
     if not isinstance(node[0], str):
         return False
-    return node[0].endswith('-MAX')
+    return node[0].endswith(ending)
+
+
+def is_max_node(node: TreeNode) -> bool:
+    return _is_ending(node, '-MAX')
+
+
+def is_bar_node(node: TreeNode) -> bool:
+    return _is_ending(node, '-BAR')
+
+
+def to_max_node(node: TreeNode) -> TreeNode:
+    if is_bar_node(node):
+        max_name = f'{node[0][0]}-MAX'
+        node = [max_name, node]
+    return node
 
 
 class TransformSumti(Transformer):
@@ -203,6 +219,8 @@ class TransformSumti2(Transformer):
                       kids, file=sys.stderr)
             if is_node_name(xmax, 'N'):  # 'je' case
                 xmax = ['N-MAX', ['N-BAR', xmax]]
+            else:
+                xmax = to_max_node(xmax)
             if not is_max_node(xmax):
                 print('In (conj, x-max) pair, the second element should be',
                       'an x-max node, got:', xmax, 'in the list of nodes',
@@ -217,14 +235,37 @@ class TransformSumti2(Transformer):
         return [['J-MAX', bar]]
 
 
-class TransformSumtiTail(Transformer):
+class TransformSumtiWithRelative(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        """ produce D-BAR and N-BAR """
+        # can be nested through sumti_5 and sumti_tail
         kids = apply_templates(rules, node[1:])
-        relative = filter(lambda kid: is_node_name(kid, 'C-MAX'), kids)
-        base = filter(lambda kid: not is_node_name(kid, 'C-MAX'), kids)
-        bar = ['N-BAR', *base]
+        relative = list(filter(lambda kid: is_node_name(kid, 'C-MAX'), kids))
+        base_kids = list(filter(
+            lambda kid: not is_node_name(kid, 'C-MAX'), kids))
+        if len(base_kids) == 0:
+            if len(relative):
+                print('TransformSumtiWithRelative: no base kids, can not',
+                      'attach relatives. kids are:', kids, file=sys.stderr)
+            return []
+        if len(base_kids) == 1:
+            first_kid = base_kids[0]
+            if is_max_node(first_kid):
+                if len(first_kid) != 2:
+                    print('TransformSumtiWithRelative: attach relatives to',
+                          'X-MAX, should be without SPEC:',
+                          first_kid, 'with kids:', kids, file=sys.stderr)
+                    return base_kids
+                first_kid = first_kid[1]  # x-bar
+                base_kids = [first_kid]
+        # first kid, then node name, then first letter
+        bar_name = f'{base_kids[0][0][0]}-BAR'
+        if len(base_kids) == 1 and is_bar_node(base_kids[0]):
+            bar = base_kids[0]
+        else:
+            bar = [bar_name, *base_kids]
         for rel in relative:
-            bar = ['N-BAR', bar, rel]
+            bar = [bar_name, bar, rel]
         return [bar]
 
 
@@ -261,6 +302,7 @@ class TransformLinkedSumti(Transformer):
 
         def is_expected_node(lnode):
             is_expected = (is_node_name(lnode, 'N-MAX')
+                           or is_node_name(lnode, 'N-BAR')
                            or is_node_name(lnode, 'FA_clause'))
             if not is_expected:
                 print('TransformLinkedSumti: expected only N-MAX and',
@@ -273,6 +315,8 @@ class TransformLinkedSumti(Transformer):
 
         sumti = SumtiAllocator()
         for node in kids[1:]:
+            if is_node_name(node, 'N-BAR'):
+                node = ['N-MAX', node]
             sumti.push(node)
 
         verb = ['V', noun[1]]
@@ -315,7 +359,6 @@ def camxes_to_lcs(tree) -> list:
     rule_pu = Rule(MatchName('PU_clause'), Replace([['tag', 'pu']]))
     rule_sumti = Rule(MatchName('sumti_6'), TransformSumti())
     rule_sumti2 = Rule(MatchName('sumti_2'), TransformSumti2())
-    rule_sumti_nbar = Rule(MatchName('sumti_tail'), TransformSumtiTail())
     skip_sumti = Rule(match_name_begin('sumti'), TransformChildren())
     rule_la = Rule(MatchName('LA_clause'), TransformChildren())
     drop_la = Rule(MatchName('LA'), Drop())
@@ -368,12 +411,17 @@ def camxes_to_lcs(tree) -> list:
     drop_bei = Rule(MatchName('BEI_clause'), Drop())
     rule_be_clause = Rule(MatchName('BE_clause'),
                           Replace([['FA_clause', 'fa']]))
+    rule_sumti_5_with_relative = Rule(MatchName('sumti_5'),
+                                      TransformSumtiWithRelative())
+    rule_sumti_tail_with_relative = Rule(MatchName('sumti_tail'),
+                                         TransformSumtiWithRelative())
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
         skip_tag, skip_tense_modal, skip_simple_tense_modal,
         skip_time, rule_pu,
-        rule_sumti, rule_sumti2, rule_sumti_nbar, skip_sumti, rule_la,
+        rule_sumti_tail_with_relative, rule_sumti_5_with_relative,
+        rule_sumti, rule_sumti2, skip_sumti, rule_la,
         drop_la, rule_le,
         drop_le, drop_ku,
         rule_brivla, skip_brivla,

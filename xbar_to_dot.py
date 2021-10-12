@@ -17,6 +17,7 @@ def write_node(h: typing.TextIO,
                level: int,
                id_: str,
                parent_id: typing.Union[str, None]) -> None:
+    label = label.replace('"', "'")
     indent = get_indent(level)
     h.write(f'{indent}{id_} [label="{label}"]\n')
     if parent_id:

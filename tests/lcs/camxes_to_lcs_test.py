@@ -212,6 +212,30 @@ class CamxesToLcsTest(unittest.TestCase):
                     ]]]]
             )))
 
+    @staticmethod
+    def test_mix_bei_poi():
+        tree = CamxesToLcsTest.trees['sutra_be_zohe_poi_barda_beho_klama']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_max(
+                ['V-MAX',
+                 ['V-BAR',
+                  ['V-FRAME', ['V', 'klama']],
+                  ['V-MAX',
+                   ['V-FRAME',
+                    ['V', 'sutra'],
+                    ['N-MAX',
+                     ['N-BAR',
+                      ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']],
+                      ['C-MAX', ['C-BAR', ['C', 'poi'], wrap_i_v_max('barda')]]
+                      ]
+                     ]
+                    ]]
+                  ]]
+            )))
+
 
 class SumtiAllocatorTest(unittest.TestCase):
     n1 = ['N-MAX', ['N-BAR', ['N', 'n1_N']]]
