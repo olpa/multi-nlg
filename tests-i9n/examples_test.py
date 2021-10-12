@@ -57,8 +57,8 @@ class Example(unittest.TestCase):
     @staticmethod
     def xtest_san_francisco_sent2_poi():
         accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
-        determiner = f"vomoi ba zo'e noi {accidental} fi le nilxa'ugri"
-        phrase = f"ko'a tcadu ba zo'e poi {determiner} la kalifornos"
+        determiner = f"vomoi be zo'e noi {accidental} fi le nilxa'ugri"
+        phrase = f"ko'a tcadu be zo'e poi {determiner} la kalifornos"
         print(phrase)
 
 

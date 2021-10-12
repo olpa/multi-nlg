@@ -241,12 +241,44 @@ class TransformRelativeClause(Transformer):
             return cmax
         chead, xmax = kids
         if not is_node_name(chead, 'C'):
-            print('TransformRelativeClause: the first children should be C, got:',
-                  chead, file=sys.stderr)
+            print('TransformRelativeClause: the first children',
+                  'should be C, got:', chead, file=sys.stderr)
         elif not is_max_node(xmax):
-            print('TransformRelativeClause: the second children should be MAX, got:',
-                  xmax, file=sys.stderr)
+            print('TransformRelativeClause: the second children',
+                  'should be MAX, got:', xmax, file=sys.stderr)
         return cmax
+
+
+class TransformLinkedSumti(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
+        if len(kids) < 2:
+            return kids
+        # 'vomoi' gets in kids: [['V', 'vo'], ['tag', 'moi']]
+        noun = kids[0]
+        if not is_node_name(noun, 'N'):
+            return kids
+
+        def is_expected_node(lnode):
+            is_expected = (is_node_name(lnode, 'N-MAX')
+                           or is_node_name(lnode, 'FA_clause'))
+            if not is_expected:
+                print('TransformLinkedSumti: expected only N-MAX and',
+                      'FA_clause, got:', lnode, 'in the kids list ',
+                      kids, file=sys.stderr)
+            return is_expected
+
+        if not all(map(is_expected_node, kids[1:])):
+            return kids
+
+        sumti = SumtiAllocator()
+        for node in kids[1:]:
+            sumti.push(node)
+
+        verb = ['V', noun[1]]
+        vmax = ['V-MAX', ['V-FRAME', verb, *sumti.get_sumti()]]
+
+        return [vmax]
 
 
 class TransformCmevla(Transformer):
@@ -298,6 +330,7 @@ def camxes_to_lcs(tree) -> list:
                               TransformRename('N-BAR'))
     rule_brivla = Rule(MatchName('BRIVLA'), TransformRename('N'))
     skip_brivla = Rule(match_name_begin('BRIVLA'), TransformChildren())
+    rule_tanru_unit1 = Rule(MatchName('tanru_unit_1'), TransformLinkedSumti())
     skip_tanru_unit = Rule(match_name_begin('tanru_unit'), TransformChildren())
     rule_lujvo = Rule(MatchName('lujvo'), TransformWord())
     rule_gismu = Rule(MatchName('gismu'), TransformWord())
@@ -325,8 +358,16 @@ def camxes_to_lcs(tree) -> list:
     skip_abs_tag_term = Rule(MatchName('abs_tag_term'), TransformChildren())
     rule_fa = Rule(MatchName('FA'), TransformWord())
     rule_ja = Rule(MatchName('JA'), TransformWord())
-    rule_relative_clause = Rule(MatchName('relative_clause'), TransformRelativeClause())
-    skip_relative_clause = Rule(match_name_begin('relative_clause'), TransformChildren())
+    rule_relative_clause = Rule(MatchName('relative_clause'),
+                                TransformRelativeClause())
+    skip_relative_clause = Rule(match_name_begin('relative_clause'),
+                                TransformChildren())
+    skip_linkargs = Rule(match_name_begin('linkargs'), TransformChildren())
+    skip_links = Rule(match_name_begin('links'), TransformChildren())
+    drop_beho = Rule(MatchName('BEhO'), Drop())
+    drop_bei = Rule(MatchName('BEI_clause'), Drop())
+    rule_be_clause = Rule(MatchName('BE_clause'),
+                          Replace([['FA_clause', 'fa']]))
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
@@ -338,7 +379,7 @@ def camxes_to_lcs(tree) -> list:
         rule_brivla, skip_brivla,
         rule_smevla, rule_smevla_wrapper, rule_smevla_clause,
         rule_lujvo, rule_gismu,
-        skip_tanru_unit,
+        rule_tanru_unit1, skip_tanru_unit,
         rule_selbri4, skip_selbri,
         skip_koha, rule_koha,
         drop_ke_klause, drop_nu_klause, drop_kei,
@@ -349,6 +390,7 @@ def camxes_to_lcs(tree) -> list:
         rule_fa, rule_ja,
         rule_noi, rule_noi_clause,
         rule_relative_clause, skip_relative_clause, drop_kuho,
+        skip_linkargs, skip_links, drop_beho, drop_bei, rule_be_clause,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]
