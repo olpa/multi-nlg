@@ -267,30 +267,19 @@ class CamxesToLcsTest(unittest.TestCase):
             )))
 
     @staticmethod
-    def test_mix_moi_noi():
-        tree = CamxesToLcsTest.trees['tcadu_be_zohe_poi_vomoi_beho_lidne']
+    def test_goi():
+        tree = CamxesToLcsTest.trees['mi_goi_koha_klama']
 
         lcs = camxes_to_lcs(tree)
 
         assert_that(lcs, equal_to(
-            wrap_i_max(
-                ['V-MAX',
-                 ['V-BAR',
-                  ['V-FRAME', ['V', 'lidne']],
-                  ['V-MAX',
-                   ['V-FRAME',
-                    ['V', 'tcadu'],
-                    ['N-MAX',
-                     ['N-BAR',
-                      ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']],
-                      ['C-MAX',
-                       ['C-BAR',
-                        ['C', 'poi'],
-                        wrap_i_max(
-                            ['V-MAX',
-                             ['N-MAX', ['N-BAR', ['N', 'vo']]],
-                             ['V-FRAME', ['V', 'moi']]]
-                        )]]]]]]]])))
+            wrap_i_v_max(
+                'klama',
+                ['N-MAX', ['N-BAR', ['N',
+                                     ['tag', 'id', "ko'a"],
+                                     ['tag', 'pron'], 'mi']]]
+            )
+        ))
 
 
 class SumtiAllocatorTest(unittest.TestCase):

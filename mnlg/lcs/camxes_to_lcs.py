@@ -25,8 +25,8 @@ class SumtiAllocator:
         if len(self.sumti) > self.pos:
             existing = self.sumti[self.pos]
             if existing is not None:
-                print(f'SumtiAllocator: position {self.pos} is already allocated,',
-                      'list of sumti:', self.sumti, file=sys.stderr)
+                print(f'SumtiAllocator: position {self.pos} is already'
+                      'allocated, list of sumti:', self.sumti, file=sys.stderr)
         while len(self.sumti) <= self.pos:
             self.sumti.append(None)
 
@@ -204,28 +204,6 @@ class TransformSentence(Transformer):
         return v_bar
 
 
-def split_on_processing_tags(
-        node: TreeNode
-) -> typing.Tuple[dict[str, object], TreeNode]:
-    """
-     Remove tags that start with hash symbol from the node.
-     Return such tags and the rewritten node
-    """
-    tags = {}
-    back_node = []
-    for item in node:
-        if (isinstance(item, Sequence)
-                and (len(item) > 1)
-                and item[0] == 'tag'
-                and isinstance(item[1], str)
-                and item[1].startswith('#')):
-            tag_value = item[2] if len(item) > 2 else None
-            tags[item[1]] = tag_value
-        else:
-            back_node.append(item)
-    return tags, back_node
-
-
 def is_node_name(node: TreeNode, name: str) -> bool:
     if not isinstance(node, Sequence):
         return False
@@ -257,6 +235,24 @@ def to_max_node(node: TreeNode) -> TreeNode:
         max_name = f'{node[0][0]}-MAX'
         node = [max_name, node]
     return node
+
+
+def to_bar_node(node: TreeNode) -> TreeNode:
+    if is_bar_node(node) or is_max_node(node):
+        return node
+    bar_name = f'{node[0][0]}-BAR'
+    return [bar_name, node]
+
+
+def inject_tag(tag: list, node: TreeNode) -> TreeNode:
+    node_name = node[0]
+    if len(node_name) == 1:
+        return [node_name, tag, *node[1:]]
+    if not is_bar_node(node):
+        print('inject_tag: if not X, then should be X-BAR, got:',
+              node, file=sys.stderr)
+        return node
+    return [node[0], inject_tag(tag, node[1]), *node[2:]]
 
 
 class TransformSumti(Transformer):
@@ -337,14 +333,22 @@ class TransformSumtiWithRelative(Transformer):
         """ produce D-BAR and N-BAR """
         # can be nested through sumti_5 and sumti_tail
         kids = apply_templates(rules, node[1:])
+
+        goi = list(filter(lambda kid: is_node_name(kid, 'GOI_clause'), kids))
         relative = list(filter(lambda kid: is_node_name(kid, 'C-MAX'), kids))
         base_kids = list(filter(
-            lambda kid: not is_node_name(kid, 'C-MAX'), kids))
+            lambda kid: (not (is_node_name(kid, 'C-MAX')
+                              or is_node_name(kid, 'GOI_clause'))), kids))
+
+        if not goi and not relative:
+            return list(map(to_bar_node, kids))
+
         if len(base_kids) == 0:
             if len(relative):
                 print('TransformSumtiWithRelative: no base kids, can not',
                       'attach relatives. kids are:', kids, file=sys.stderr)
             return []
+
         if len(base_kids) == 1:
             first_kid = base_kids[0]
             if is_max_node(first_kid):
@@ -354,7 +358,21 @@ class TransformSumtiWithRelative(Transformer):
                           first_kid, 'with kids:', kids, file=sys.stderr)
                     return base_kids
                 first_kid = first_kid[1]  # x-bar
-                base_kids = [first_kid]
+
+            # [['GOI_clause', ['N-MAX', ['N-BAR',
+            #       ['N', ['tag', 'pron'], "ko'a"]]]]]
+            if goi:
+                if len(goi) > 1:
+                    print('TransformSumtiWithRelative: only one goi-relative',
+                          'is expected, with kids:', kids, file=sys.stderr)
+                goi_tag = TransformSumtiWithRelative.get_tag_from_goi(
+                    goi[0][1], kids
+                )
+                if goi_tag:
+                    first_kid = inject_tag(['tag', 'id', goi_tag], first_kid)
+
+            base_kids = [first_kid]
+
         # first kid, then node name, then first letter
         bar_name = f'{base_kids[0][0][0]}-BAR'
         if len(base_kids) == 1 and is_bar_node(base_kids[0]):
@@ -365,6 +383,35 @@ class TransformSumtiWithRelative(Transformer):
             bar = [bar_name, bar, rel]
         return [bar]
 
+    @staticmethod
+    def get_tag_from_goi(
+            goi_max: TreeNode, kids: list[TreeNode]
+    ) -> typing.Optional[str]:
+        if not is_max_node(goi_max):
+            print('TransformSumtiWithRelative: the child of goi',
+                  'should be X-MAX, but got:', goi_max,
+                  'with kids:', kids, file=sys.stderr)
+            return None
+        goi_bar = goi_max[1]
+        if not is_max_node(goi_max):
+            print('TransformSumtiWithRelative: the child-child of goi',
+                  'should be X-BAR, but got:', goi_bar,
+                  'with kids:', kids, file=sys.stderr)
+            return None
+        goi_x = goi_bar[1]
+        if not is_node_name(goi_x, 'N'):
+            print('TransformSumtiWithRelative: the child-child-child of goi',
+                  'should be N, but got:', goi_x,
+                  'with kids:', kids, file=sys.stderr)
+            return None
+        goi_tag = goi_x[-1]
+        if not isinstance(goi_tag, str):
+            print('TransformSumtiWithRelative: the child-child-child-child',
+                  'of goi should be text, but got:', goi_tag,
+                  'with kids:', kids, file=sys.stderr)
+            return None
+        return goi_tag
+
 
 TransformSelbri4 = TransformSumti2
 
@@ -372,18 +419,22 @@ TransformSelbri4 = TransformSumti2
 class TransformRelativeClause(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         kids = apply_templates(rules, node[1:])
-        cmax = [['C-MAX', ['C-BAR', *kids]]]
         if len(kids) != 2:
             print('TransformRelativeClause: exactly two children required,'
                   f'got {len(kids)} of them:', kids, file=sys.stderr)
-            return cmax
-        chead, xmax = kids
-        if not is_node_name(chead, 'C'):
+            return kids
+        relative, base = kids
+
+        if is_node_name(relative, 'GOI_clause'):
+            return [['GOI_clause', base]]
+
+        cmax = [['C-MAX', ['C-BAR', *kids]]]
+        if not is_node_name(relative, 'C'):
             print('TransformRelativeClause: the first children',
-                  'should be C, got:', chead, file=sys.stderr)
-        elif not is_max_node(xmax):
+                  'should be C or GOI_clause, got:', relative, file=sys.stderr)
+        elif not is_max_node(base):
             print('TransformRelativeClause: the second children',
-                  'should be MAX, got:', xmax, file=sys.stderr)
+                  'should be MAX, got:', base, file=sys.stderr)
         return cmax
 
 
@@ -477,6 +528,7 @@ def camxes_to_lcs(tree) -> list:
     rule_ja_clause = Rule(MatchName('JA_clause'), TransformRename('J'))
     rule_joi = Rule(MatchName('JOI'), TransformWord())
     rule_noi = Rule(MatchName('NOI'), TransformWord())
+    rule_goi = Rule(MatchName('GOI'), TransformWord())
     skip_term = Rule(match_name_begin('term'), TransformChildren())
     skip_abs_term = Rule(match_name_begin('abs_term'), TransformChildren())
     skip_abs_tag_term = Rule(MatchName('abs_tag_term'), TransformChildren())
@@ -496,6 +548,7 @@ def camxes_to_lcs(tree) -> list:
                                       TransformSumtiWithRelative())
     rule_sumti_tail_with_relative = Rule(MatchName('sumti_tail'),
                                          TransformSumtiWithRelative())
+    drop_gehu = Rule(MatchName('GEhU'), Drop())
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
@@ -521,6 +574,7 @@ def camxes_to_lcs(tree) -> list:
         rule_relative_clause, skip_relative_clause, drop_kuho,
         skip_linkargs_n,
         skip_links, drop_beho, drop_bei, drop_be_clause,
+        drop_gehu, rule_goi,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]
