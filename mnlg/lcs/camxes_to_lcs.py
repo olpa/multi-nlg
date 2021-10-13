@@ -15,7 +15,7 @@ def match_name_begin(name: str) -> Matcher:
 
 
 class SumtiAllocator:
-    zohe = ['N-MAX', ['N-BAR', ['N', ['tag', "zo'e"], '']]]
+    zohe = ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], "zo'e"]]]
 
     def __init__(self):
         self.sumti = []

@@ -205,7 +205,7 @@ class CamxesToLcsTest(unittest.TestCase):
             wrap_i_v_max(
                 'klama',
                 ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'do']]],
-                ['N-MAX', ['N-BAR', ['N', ['tag', 'zo\'e'], '']]],
+                ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]],
                 ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'mi']]]
             )))
 
@@ -224,7 +224,7 @@ class CamxesToLcsTest(unittest.TestCase):
                    ['V-FRAME',
                     ['V', 'barda'],
                     ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'mi']]],
-                    ['N-MAX', ['N-BAR', ['N', ['tag', 'zo\'e'], '']]],
+                    ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]],
                     ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'do']]]
                     ]]]]
             )))
@@ -297,7 +297,7 @@ class SumtiAllocatorTest(unittest.TestCase):
     n1 = ['N-MAX', ['N-BAR', ['N', 'n1_N']]]
     n2 = ['N-MAX', ['N-BAR', ['N', 'n2_N']]]
     n3 = ['N-MAX', ['N-BAR', ['N', 'n3_N']]]
-    zohe = ['N-MAX', ['N-BAR', ['N', ['tag', 'zo\'e'], '']]]
+    zohe = ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]]
 
     def test_fill_in_order(self):
         sa = SumtiAllocator()
