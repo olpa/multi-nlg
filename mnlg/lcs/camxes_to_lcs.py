@@ -1,3 +1,4 @@
+import collections
 import sys
 import typing
 from collections.abc import Sequence
@@ -73,83 +74,139 @@ class TransformSentence(Transformer):
 
         i_head = apply_templates_iter(rules, camxes_i_head)
 
-        #
-        # Complement
-        #
-        lcs_before_selbri = flatten_node_sets(map(
+        selbri_parts = apply_templates(rules, camxes_selbri)
+        sumti_before_selbri = flatten_node_sets(map(
             lambda sumti_branch: apply_templates(rules, sumti_branch),
             camxes_before_selbri
         ))
-        lcs_after_selbri = flatten_node_sets(map(
+        sumti_after_selbri = flatten_node_sets(map(
             lambda sumti_branch: apply_templates(rules, sumti_branch),
             camxes_after_selbri
         ))
 
-        sumti = SumtiAllocator()
-
-        for node in lcs_before_selbri:
-            sumti.push(node)
-        sumti.push_selbri()
-        for node in lcs_after_selbri:
-            sumti.push(node)
-
         #
-        # V-BAR with V-HEAD
+        # Combine transformed children
         #
 
-        def rewrite_n_to_v(name_node):
-            if is_node_name(name_node[0], 'N'):
-                return ['V', name_node[1]]
-            else:
-                return name_node
+        compound_selbri = TransformSentence.group_selbri_components(
+            selbri_parts
+        )
 
-        lcs_selbri = apply_templates(rules, camxes_selbri)
-        lcs_selbri = list(map(rewrite_n_to_v, lcs_selbri))
+        if not compound_selbri:
+            print('TransformSentence: should extract selbri but have not,'
+                  'from:', camxes_selbri)
+            return []
+        selbri_base = compound_selbri.pop()
 
-        tags = [node for node in lcs_selbri if is_node_name(node, 'tag')]
-        lcs_selbri = [node for node in lcs_selbri
-                      if not is_node_name(node, 'tag')]
+        v_bar = TransformSentence.selbri_to_frame(
+            selbri_base.v, selbri_base.tags, sumti_before_selbri,
+            sumti_after_selbri, selbri_base.linked)
 
-        v_max = None
-        proc_tags = {}
-        if not lcs_selbri:
-            print('TransformSentence: no selbri among kids', file=sys.stderr)
-            v_bar = ['V-FRAME']
-        else:
-            v = lcs_selbri.pop()
-            # Code could already build V-MAX in linked sumti branch
-            if is_max_node(v):
-                if lcs_selbri:
-                    print('TransformSentence: selbri leftover for already built V-MAX:',
-                          lcs_selbri, file=sys.stderr)
-                if sumti.get_sumti():
-                    print('TransformSentence: sumti leftover for already built V-MAX:',
-                          sumti.get_sumti(), file=sys.stderr)
-                v_max = v
-            else:
-                proc_tags, v = split_on_processing_tags(v)
-                if tags and is_node_name(v, 'V'):
-                    v = [v[0], *tags, *v[1:]]
-                v_bar = ['V-FRAME', v, *sumti.get_sumti()]
+        while compound_selbri:
+            adj_selbri = compound_selbri.pop()
 
-        while lcs_selbri:
-            v = lcs_selbri.pop()
-            if not is_max_node(v):
-                v = ['V-MAX', ['V-FRAME', v]]
-            v_bar = ['V-BAR', v_bar, v]
+            if is_max_node(adj_selbri.v):  # J-MAX is possible
+                if adj_selbri.tags or adj_selbri.linked:
+                    print('selbri_to_frame: X-MAX node can not be augmented.',
+                          'Selbri components:', adj_selbri)
+                v_bar = ['V-BAR', v_bar, adj_selbri.v]
+                continue
 
-        spec_node = proc_tags.get('#specifier')
-        if spec_node:
-            spec_node = to_max_node(spec_node)
-        v_spec = [spec_node] if spec_node else []
+            adj_bar = TransformSentence.selbri_to_frame(
+                adj_selbri.v, adj_selbri.tags, [], [], adj_selbri.linked
+            )
+            adj_spec = []
+            if adj_selbri.spec:
+                adj_spec = [to_max_node(adj_selbri.spec)]
+            adj_max = ['V-MAX', *adj_spec, adj_bar]
+            v_bar = ['V-BAR', v_bar, adj_max]
 
-        if not v_max:
-            v_max = ['V-MAX', *v_spec, v_bar]
+        v_spec = []
+        if selbri_base.spec:
+            v_spec = [to_max_node(selbri_base.spec)]
 
+        v_max = ['V-MAX', *v_spec, v_bar]
         return [['I-MAX', ['I-BAR', ['I', *i_head], v_max]]]
 
+    SelbriParts = collections.namedtuple('SelbriParts', 'linked spec tags v')
 
-def split_on_processing_tags(node: TreeNode) -> typing.Tuple[dict[str, object], TreeNode]:
+    @staticmethod
+    def group_selbri_components(selbri_list) -> list[SelbriParts]:
+        collected = []
+        linked = []
+        spec = None
+        tags = []
+        v = None
+
+        def commit():
+            nonlocal v, linked, spec, tags
+            if v or linked or spec or tags:
+                if not v:
+                    print('group_selbri_component: selbri without v,',
+                          '(linked, tags, v):', (linked, tags, v),
+                          'in the list', selbri_list, file=sys.stderr)
+                collected.append(
+                    TransformSentence.SelbriParts(linked, spec, tags, v))
+            linked = []
+            spec = None
+            tags = []
+            v = None
+
+        for item in selbri_list:
+            if is_node_name(item, '#specifier'):
+                if spec:
+                    print('group_selbri_component: duplicate spec:',
+                          item, 'in the list', selbri_list, file=sys.stderr)
+                if len(item) != 2:
+                    print('group_selbri_component: spec should bring',
+                          'only one node:', item, 'in the list',
+                          selbri_list, file=sys.stderr)
+                if len(item) > 1:
+                    spec = item[1]
+                continue
+            if is_node_name(item, 'tag'):
+                tags.append(item)
+                continue
+            if is_node_name(item, 'linkargs'):
+                if linked:
+                    print('group_selbri_component: duplicate linkargs:',
+                          item, 'in the list', selbri_list, file=sys.stderr)
+                linked = item[1:]
+                continue
+            commit()
+            v = item
+
+        commit()
+        return collected
+
+    @staticmethod
+    def selbri_to_frame(verb_node: TreeNode,
+                        tags: list,
+                        sumti_before_selbri,
+                        sumti_after_selbri, sumti_linked
+                        ) -> TreeNode:
+        sumti = SumtiAllocator()
+
+        for node in sumti_before_selbri:
+            sumti.push(node)
+        for node in sumti_linked:
+            sumti.push(node)
+        sumti.push_selbri()
+        for node in sumti_after_selbri:
+            sumti.push(node)
+
+        (node_name, *node_compl) = verb_node
+        if node_name == 'N':
+            node_name = 'V'
+        v = [node_name, *tags, *node_compl]
+        v_bar = ['V-FRAME', v, *sumti.get_sumti()]
+
+        return v_bar
+
+
+def split_on_processing_tags(
+        node: TreeNode
+) -> typing.Tuple[dict[str, object], TreeNode]:
     """
      Remove tags that start with hash symbol from the node.
      Return such tags and the rewritten node
@@ -330,53 +387,6 @@ class TransformRelativeClause(Transformer):
         return cmax
 
 
-class TransformLinkedSumti(Transformer):
-    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
-        kids = apply_templates(rules, node[1:])
-        if not kids:
-            return []
-
-        # 'vomoi' gets in kids: ['tag', '#specifier', ['N-BAR', ['N', 'vo']]], 'moi']]
-        processing_tags, first_node = split_on_processing_tags(kids[0])
-        if len(kids) < 2 and not processing_tags:
-            return kids
-
-        if not is_node_name(first_node, 'V'):
-            if not is_node_name(first_node, 'N'):
-                print('TransformLintedSumti: the first child is not N or V:', first_node,
-                      ', in the kids list', kids, file=sys.stderr)
-                return kids
-            first_node = ['V', *first_node[1:]]
-
-        def is_expected_node(lnode):
-            is_expected = (is_node_name(lnode, 'N-MAX')
-                           or is_node_name(lnode, 'N-BAR')
-                           or is_node_name(lnode, 'FA_clause'))
-            if not is_expected:
-                print('TransformLinkedSumti: expected only N-MAX and',
-                      'FA_clause, got:', lnode, 'in the kids list ',
-                      kids, file=sys.stderr)
-            return is_expected
-
-        if not all(map(is_expected_node, kids[1:])):
-            return kids
-
-        sumti = SumtiAllocator()
-        for node in kids[1:]:
-            if is_node_name(node, 'N-BAR'):
-                node = ['N-MAX', node]
-            sumti.push(node)
-
-        vspec_node = processing_tags.get('#specifier')
-        if vspec_node:
-            vspec_node = to_max_node(vspec_node)
-        vspec = [vspec_node] if vspec_node else []
-
-        vmax = ['V-MAX', *vspec, ['V-FRAME', first_node, *sumti.get_sumti()]]
-
-        return [vmax]
-
-
 class TransformVerbWithSpecifier(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         kids = apply_templates(rules, node[1:])
@@ -387,7 +397,7 @@ class TransformVerbWithSpecifier(Transformer):
             return kids
         if not is_verb_with_specifier(verb_node[-1]):
             return kids
-        return [['V', ['tag', '#specifier', spec_node], *verb_node[1:]]]
+        return [verb_node, ['#specifier', spec_node]]
 
 
 def is_verb_with_specifier(name):
@@ -442,8 +452,9 @@ def camxes_to_lcs(tree) -> list:
                               TransformRename('N-BAR'))
     rule_brivla = Rule(MatchName('BRIVLA'), TransformRename('N'))
     skip_brivla = Rule(match_name_begin('BRIVLA'), TransformChildren())
-    rule_tanru_unit1 = Rule(MatchName('tanru_unit_1'), TransformLinkedSumti())
-    rule_tanru_unit2 = Rule(MatchName('tanru_unit_2'), TransformVerbWithSpecifier())
+    skip_tanru_unit1 = Rule(MatchName('tanru_unit_1'), TransformChildren())
+    rule_tanru_unit2 = Rule(MatchName('tanru_unit_2'),
+                            TransformVerbWithSpecifier())
     skip_tanru_unit = Rule(match_name_begin('tanru_unit'), TransformChildren())
     rule_lujvo = Rule(MatchName('lujvo'), TransformWord())
     rule_gismu = Rule(MatchName('gismu'), TransformWord())
@@ -475,7 +486,8 @@ def camxes_to_lcs(tree) -> list:
                                 TransformRelativeClause())
     skip_relative_clause = Rule(match_name_begin('relative_clause'),
                                 TransformChildren())
-    skip_linkargs = Rule(match_name_begin('linkargs'), TransformChildren())
+    # retain 'linkargs' as is, skip 'linkargs_N'
+    skip_linkargs_n = Rule(match_name_begin('linkargs_'), TransformChildren())
     skip_links = Rule(match_name_begin('links'), TransformChildren())
     drop_beho = Rule(MatchName('BEhO'), Drop())
     drop_bei = Rule(MatchName('BEI_clause'), Drop())
@@ -497,7 +509,7 @@ def camxes_to_lcs(tree) -> list:
         rule_brivla, skip_brivla,
         rule_smevla, rule_smevla_wrapper, rule_smevla_clause,
         rule_lujvo, rule_gismu,
-        rule_tanru_unit1, rule_tanru_unit2, skip_tanru_unit,
+        skip_tanru_unit1, rule_tanru_unit2, skip_tanru_unit,
         rule_selbri4, skip_selbri,
         skip_koha, rule_koha,
         drop_ke_klause, drop_nu_klause, drop_kei,
@@ -508,7 +520,8 @@ def camxes_to_lcs(tree) -> list:
         rule_fa, rule_ja,
         rule_noi, rule_noi_clause,
         rule_relative_clause, skip_relative_clause, drop_kuho,
-        skip_linkargs, skip_links, drop_beho, drop_bei, rule_be_clause,
+        skip_linkargs_n,
+        skip_links, drop_beho, drop_bei, rule_be_clause,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]

@@ -100,6 +100,22 @@ class CamxesToLcsTest(unittest.TestCase):
                         ['V-FRAME', ['V', 'moi']]]]]))
 
     @staticmethod
+    def test_compound_selbri_moi():
+        tree = CamxesToLcsTest.trees['vomoi_klama']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            ['I-MAX', ['I-BAR', ['I'],
+                       ['V-MAX',
+                        ['V-BAR',
+                         ['V-FRAME', ['V', 'klama']],
+                         ['V-MAX',
+                          ['N-MAX', ['N-BAR', ['N', 'vo']]],
+                          ['V-FRAME', ['V', 'moi']]
+                          ]]]]]))
+
+    @staticmethod
     def test_nu_clause():
         tree = CamxesToLcsTest.trees['nu_prami_kei_klama']
 
@@ -211,6 +227,19 @@ class CamxesToLcsTest(unittest.TestCase):
                     ['N-MAX', ['N-BAR', ['N', ['tag', 'zo\'e'], '']]],
                     ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'do']]]
                     ]]]]
+            )))
+
+    @staticmethod
+    def test_sumti_with_be():
+        tree = CamxesToLcsTest.trees['mi_klama_be_fe_do']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_v_max(
+                'klama',
+                ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'mi']]],
+                ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'do']]]
             )))
 
     @staticmethod
