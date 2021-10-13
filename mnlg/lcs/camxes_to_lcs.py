@@ -25,8 +25,8 @@ class SumtiAllocator:
         if len(self.sumti) > self.pos:
             existing = self.sumti[self.pos]
             if existing is not None:
-                print('SumtiAllocator: position {} is already allocated',
-                      file=sys.stderr)
+                print(f'SumtiAllocator: position {self.pos} is already allocated,',
+                      'list of sumti:', self.sumti, file=sys.stderr)
         while len(self.sumti) <= self.pos:
             self.sumti.append(None)
 
@@ -491,8 +491,7 @@ def camxes_to_lcs(tree) -> list:
     skip_links = Rule(match_name_begin('links'), TransformChildren())
     drop_beho = Rule(MatchName('BEhO'), Drop())
     drop_bei = Rule(MatchName('BEI_clause'), Drop())
-    rule_be_clause = Rule(MatchName('BE_clause'),
-                          Replace([['FA_clause', 'fa']]))
+    drop_be_clause = Rule(MatchName('BE_clause'), Drop())
     rule_sumti_5_with_relative = Rule(MatchName('sumti_5'),
                                       TransformSumtiWithRelative())
     rule_sumti_tail_with_relative = Rule(MatchName('sumti_tail'),
@@ -521,7 +520,7 @@ def camxes_to_lcs(tree) -> list:
         rule_noi, rule_noi_clause,
         rule_relative_clause, skip_relative_clause, drop_kuho,
         skip_linkargs_n,
-        skip_links, drop_beho, drop_bei, rule_be_clause,
+        skip_links, drop_beho, drop_bei, drop_be_clause,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]
