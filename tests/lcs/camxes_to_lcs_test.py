@@ -95,8 +95,9 @@ class CamxesToLcsTest(unittest.TestCase):
 
         assert_that(lcs, equal_to(
             ['I-MAX', ['I-BAR', ['I'],
-                       ['V-MAX', ['V-FRAME',
-                                  ['V', ['tag', 'moi'], 'vo']]]]]))
+                       ['V-MAX',
+                        ['N-MAX', ['N-BAR', ['N', 'vo']]],
+                        ['V-FRAME', ['V', 'moi']]]]]))
 
     @staticmethod
     def test_nu_clause():
@@ -235,6 +236,32 @@ class CamxesToLcsTest(unittest.TestCase):
                     ]]
                   ]]
             )))
+
+    @staticmethod
+    def test_mix_moi_noi():
+        tree = CamxesToLcsTest.trees['tcadu_be_zohe_poi_vomoi_beho_lidne']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_max(
+                ['V-MAX',
+                 ['V-BAR',
+                  ['V-FRAME', ['V', 'lidne']],
+                  ['V-MAX',
+                   ['V-FRAME',
+                    ['V', 'tcadu'],
+                    ['N-MAX',
+                     ['N-BAR',
+                      ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']],
+                      ['C-MAX',
+                       ['C-BAR',
+                        ['C', 'poi'],
+                        wrap_i_max(
+                            ['V-MAX',
+                             ['N-MAX', ['N-BAR', ['N', 'vo']]],
+                             ['V-FRAME', ['V', 'moi']]]
+                        )]]]]]]]])))
 
 
 class SumtiAllocatorTest(unittest.TestCase):

@@ -1,4 +1,5 @@
 import sys
+import typing
 from collections.abc import Sequence
 
 from mnlg.transform import MatchNameCondition, Rule, TransformChildren,\
@@ -109,14 +110,27 @@ class TransformSentence(Transformer):
         lcs_selbri = [node for node in lcs_selbri
                       if not is_node_name(node, 'tag')]
 
+        v_max = None
+        proc_tags = {}
         if not lcs_selbri:
             print('TransformSentence: no selbri among kids', file=sys.stderr)
             v_bar = ['V-FRAME']
         else:
             v = lcs_selbri.pop()
-            if tags and is_node_name(v, 'V'):
-                v = [v[0], *tags, *v[1:]]
-            v_bar = ['V-FRAME', v, *sumti.get_sumti()]
+            # Code could already build V-MAX in linked sumti branch
+            if is_max_node(v):
+                if lcs_selbri:
+                    print('TransformSentence: selbri leftover for already built V-MAX:',
+                          lcs_selbri, file=sys.stderr)
+                if sumti.get_sumti():
+                    print('TransformSentence: sumti leftover for already built V-MAX:',
+                          sumti.get_sumti(), file=sys.stderr)
+                v_max = v
+            else:
+                proc_tags, v = split_on_processing_tags(v)
+                if tags and is_node_name(v, 'V'):
+                    v = [v[0], *tags, *v[1:]]
+                v_bar = ['V-FRAME', v, *sumti.get_sumti()]
 
         while lcs_selbri:
             v = lcs_selbri.pop()
@@ -124,9 +138,35 @@ class TransformSentence(Transformer):
                 v = ['V-MAX', ['V-FRAME', v]]
             v_bar = ['V-BAR', v_bar, v]
 
-        return [['I-MAX', ['I-BAR', ['I', *i_head],
-                           ['V-MAX', v_bar],
-                           ]]]
+        spec_node = proc_tags.get('#specifier')
+        if spec_node:
+            spec_node = to_max_node(spec_node)
+        v_spec = [spec_node] if spec_node else []
+
+        if not v_max:
+            v_max = ['V-MAX', *v_spec, v_bar]
+
+        return [['I-MAX', ['I-BAR', ['I', *i_head], v_max]]]
+
+
+def split_on_processing_tags(node: TreeNode) -> typing.Tuple[dict[str, object], TreeNode]:
+    """
+     Remove tags that start with hash symbol from the node.
+     Return such tags and the rewritten node
+    """
+    tags = {}
+    back_node = []
+    for item in node:
+        if (isinstance(item, Sequence)
+                and (len(item) > 1)
+                and item[0] == 'tag'
+                and isinstance(item[1], str)
+                and item[1].startswith('#')):
+            tag_value = item[2] if len(item) > 2 else None
+            tags[item[1]] = tag_value
+        else:
+            back_node.append(item)
+    return tags, back_node
 
 
 def is_node_name(node: TreeNode, name: str) -> bool:
@@ -293,12 +333,20 @@ class TransformRelativeClause(Transformer):
 class TransformLinkedSumti(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         kids = apply_templates(rules, node[1:])
-        if len(kids) < 2:
+        if not kids:
+            return []
+
+        # 'vomoi' gets in kids: ['tag', '#specifier', ['N-BAR', ['N', 'vo']]], 'moi']]
+        processing_tags, first_node = split_on_processing_tags(kids[0])
+        if len(kids) < 2 and not processing_tags:
             return kids
-        # 'vomoi' gets in kids: [['V', 'vo'], ['tag', 'moi']]
-        noun = kids[0]
-        if not is_node_name(noun, 'N'):
-            return kids
+
+        if not is_node_name(first_node, 'V'):
+            if not is_node_name(first_node, 'N'):
+                print('TransformLintedSumti: the first child is not N or V:', first_node,
+                      ', in the kids list', kids, file=sys.stderr)
+                return kids
+            first_node = ['V', *first_node[1:]]
 
         def is_expected_node(lnode):
             is_expected = (is_node_name(lnode, 'N-MAX')
@@ -319,10 +367,31 @@ class TransformLinkedSumti(Transformer):
                 node = ['N-MAX', node]
             sumti.push(node)
 
-        verb = ['V', noun[1]]
-        vmax = ['V-MAX', ['V-FRAME', verb, *sumti.get_sumti()]]
+        vspec_node = processing_tags.get('#specifier')
+        if vspec_node:
+            vspec_node = to_max_node(vspec_node)
+        vspec = [vspec_node] if vspec_node else []
+
+        vmax = ['V-MAX', *vspec, ['V-FRAME', first_node, *sumti.get_sumti()]]
 
         return [vmax]
+
+
+class TransformVerbWithSpecifier(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
+        if len(kids) != 2:
+            return kids
+        spec_node, verb_node = kids
+        if not is_node_name(verb_node, 'V'):
+            return kids
+        if not is_verb_with_specifier(verb_node[-1]):
+            return kids
+        return [['V', ['tag', '#specifier', spec_node], *verb_node[1:]]]
+
+
+def is_verb_with_specifier(name):
+    return name in ('moi',)
 
 
 class TransformCmevla(Transformer):
@@ -374,6 +443,7 @@ def camxes_to_lcs(tree) -> list:
     rule_brivla = Rule(MatchName('BRIVLA'), TransformRename('N'))
     skip_brivla = Rule(match_name_begin('BRIVLA'), TransformChildren())
     rule_tanru_unit1 = Rule(MatchName('tanru_unit_1'), TransformLinkedSumti())
+    rule_tanru_unit2 = Rule(MatchName('tanru_unit_2'), TransformVerbWithSpecifier())
     skip_tanru_unit = Rule(match_name_begin('tanru_unit'), TransformChildren())
     rule_lujvo = Rule(MatchName('lujvo'), TransformWord())
     rule_gismu = Rule(MatchName('gismu'), TransformWord())
@@ -385,10 +455,10 @@ def camxes_to_lcs(tree) -> list:
     drop_kehe = Rule(MatchName('KEhE'), Drop())
     drop_kuho = Rule(MatchName('KUhO'), Drop())
     skip_subsentence = Rule(MatchName('subsentence'), TransformChildren())
-    rule_pa_clause = Rule(MatchName('PA_clause'), TransformRename('V'))
+    rule_pa_clause = Rule(MatchName('PA_clause'), TransformRename('N'))
     rule_pa = Rule(MatchName('PA'), TransformWord())
-    skip_number = Rule(match_name_begin('number'), TransformChildren())
-    rule_moi = Rule(MatchName('MOI_clause'), Replace([['tag', 'moi']]))
+    skip_number = Rule(match_name_begin('number'), TransformRename('N-BAR'))
+    rule_moi = Rule(MatchName('MOI_clause'), Replace([['V', 'moi']]))
     skip_joik = Rule(match_name_begin('joik'), TransformChildren())
     skip_jek = Rule(match_name_begin('jek'), TransformChildren())
     rule_joi_clause = Rule(MatchName('JOI_clause'), TransformRename('J'))
@@ -427,7 +497,7 @@ def camxes_to_lcs(tree) -> list:
         rule_brivla, skip_brivla,
         rule_smevla, rule_smevla_wrapper, rule_smevla_clause,
         rule_lujvo, rule_gismu,
-        rule_tanru_unit1, skip_tanru_unit,
+        rule_tanru_unit1, rule_tanru_unit2, skip_tanru_unit,
         rule_selbri4, skip_selbri,
         skip_koha, rule_koha,
         drop_ke_klause, drop_nu_klause, drop_kei,
