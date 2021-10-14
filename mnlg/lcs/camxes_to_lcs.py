@@ -404,60 +404,84 @@ class TransformSumti2(Transformer):
         return [['J-MAX', bar]]
 
 
-class TransformSumtiWithRelative(Transformer):
+class TransformSumti5WithRelative(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
-        """ produce D-BAR and N-BAR """
+        """ produce D-BAR and N-BAR, but also X-MAX for a specifier """
         # can be nested through sumti_5 and sumti_tail
         kids = apply_templates(rules, node[1:])
 
         goi = list(filter(lambda kid: is_node_name(kid, 'GOI_clause'), kids))
         relative = list(filter(lambda kid: is_node_name(kid, 'C-MAX'), kids))
+        quantifier = list(filter(
+            lambda kid: is_node_name(kid, 'quantifier'), kids))
         base_kids = list(filter(
             lambda kid: (not (is_node_name(kid, 'C-MAX')
+                              or is_node_name(kid, 'quantifier')
                               or is_node_name(kid, 'GOI_clause'))), kids))
 
-        if not goi and not relative:
+        if not goi and not relative and not quantifier:
             return list(map(to_bar_node, kids))
 
         if len(base_kids) == 0:
-            if len(relative):
+            if len(relative) or len(quantifier):
                 print('TransformSumtiWithRelative: no base kids, can not',
                       'attach relatives. kids are:', kids, file=sys.stderr)
             return []
 
-        if len(base_kids) == 1:
-            first_kid = base_kids[0]
-            if is_max_node(first_kid):
-                if len(first_kid) != 2:
-                    print('TransformSumtiWithRelative: attach relatives to',
-                          'X-MAX, should be without SPEC:',
-                          first_kid, 'with kids:', kids, file=sys.stderr)
-                    return base_kids
-                first_kid = first_kid[1]  # x-bar
+        base = base_kids.pop()
+        base = to_bar_node(base)
 
-            # [['GOI_clause', ['N-MAX', ['N-BAR',
-            #       ['N', ['tag', 'pron'], "ko'a"]]]]]
-            if goi:
-                if len(goi) > 1:
-                    print('TransformSumtiWithRelative: only one goi-relative',
-                          'is expected, with kids:', kids, file=sys.stderr)
-                goi_tag = TransformSumtiWithRelative.get_tag_from_goi(
-                    goi[0][1], kids
-                )
-                if goi_tag:
-                    first_kid = inject_tag(['tag', 'id', goi_tag], first_kid)
+        if is_max_node(base):
+            if len(base) != 2:
+                print('TransformSumtiWithRelative: attach relatives to',
+                      'X-MAX, should be without SPEC:',
+                      base, 'with kids:', kids, file=sys.stderr)
+                return base_kids
+            base = base[1]  # x-bar
 
-            base_kids = [first_kid]
+        #
+        # Attach goi-tag
+        # [['GOI_clause', ['N-MAX', ['N-BAR',
+        #     ['N', ['tag', 'pron'], "ko'a"]]]]]
+        #
+        if goi:
+            if len(goi) > 1:
+                print('TransformSumtiWithRelative: only one goi-relative',
+                      'is expected, with kids:', kids, file=sys.stderr)
+            goi_tag = TransformSumti5WithRelative.get_tag_from_goi(
+                goi[0][1], kids
+            )
+            if goi_tag:
+                base = inject_tag(['tag', 'id', goi_tag], base)
 
-        # first kid, then node name, then first letter
-        bar_name = f'{base_kids[0][0][0]}-BAR'
-        if len(base_kids) == 1 and is_bar_node(base_kids[0]):
-            bar = base_kids[0]
-        else:
-            bar = [bar_name, *base_kids]
+        #
+        # Attach adjuncts
+        #
+        x_type = base[0][0]
+        bar_name = f'{x_type}-BAR'
+
+        while base_kids:
+            adj = base_kids.pop()
+            adj = to_max_node(adj)
+            base = [bar_name, base, adj]
+
+        #
+        # Attach relatives
+        #
         for rel in relative:
-            bar = [bar_name, bar, rel]
-        return [bar]
+            base = [bar_name, base, rel]
+
+        #
+        # Attach quantifier
+        #
+        if quantifier:
+            if len(quantifier) > 1:
+                print('TransformSumtiWithRelative: only one quantifier',
+                      'is expected, with kids:', kids, file=sys.stderr)
+            spec = to_max_node(quantifier[0][1])
+            base = [f'{x_type}-MAX', spec, base]
+
+        return [base]
 
     @staticmethod
     def get_tag_from_goi(
@@ -531,17 +555,6 @@ def is_verb_with_specifier(name):
     return name in ('moi',)
 
 
-class TransformQuantifier(Transformer):
-    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
-        kids = apply_templates(rules, node[1:])
-        if len(kids) != 1:
-            print('TransformQuantifier: exactly one child is expected, got:',
-                  kids, file=sys.stderr)
-        if not kids:
-            return []
-        return [['#specifier', kids[0]]]
-
-
 class TransformSeTag(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         kids = apply_templates(rules, node[1:])
@@ -593,6 +606,9 @@ def camxes_to_lcs(tree) -> list:
     rule_sumti6 = Rule(MatchName('sumti_6'), TransformSumti6())
     rule_sumti2 = Rule(MatchName('sumti_2'), TransformSumti2())
     skip_sumti = Rule(match_name_begin('sumti_'), TransformChildren())
+    rule_sumti5 = Rule(MatchName('sumti_5'), TransformSumti5WithRelative())
+    rule_sumti_tail_with_relative = Rule(MatchName('sumti_tail'),
+                                         TransformSumti5WithRelative())
     rule_la = Rule(MatchName('LA_clause'), TransformChildren())
     drop_la = Rule(MatchName('LA'), Drop())
     rule_le = Rule(MatchName('LE_clause'), TransformRename('D'))
@@ -647,14 +663,9 @@ def camxes_to_lcs(tree) -> list:
     drop_beho = Rule(MatchName('BEhO'), Drop())
     drop_bei = Rule(MatchName('BEI_clause'), Drop())
     drop_be_clause = Rule(MatchName('BE_clause'), Drop())
-    rule_sumti_5_with_relative = Rule(MatchName('sumti_5'),
-                                      TransformSumtiWithRelative())
-    rule_sumti_tail_with_relative = Rule(MatchName('sumti_tail'),
-                                         TransformSumtiWithRelative())
     drop_gehu = Rule(MatchName('GEhU'), Drop())
     drop_me_clause = Rule(MatchName('ME_clause'), Drop())
     drop_mehu = Rule(MatchName('MEhU'), Drop())
-    rule_quantifier = Rule(MatchName('quantifier'), TransformQuantifier())
     drop_boi = Rule(MatchName('BOI'), Drop())
     drop_vau = Rule(MatchName('VAU'), Drop())
     rule_se = Rule(MatchName('SE'), TransformWord())
@@ -664,7 +675,7 @@ def camxes_to_lcs(tree) -> list:
         skip_text, skip_paragraph, skip_statement, rule_sentence,
         skip_tag, skip_tense_modal, skip_simple_tense_modal,
         skip_time, rule_pu,
-        rule_sumti_tail_with_relative, rule_sumti_5_with_relative,
+        rule_sumti_tail_with_relative, rule_sumti5,
         rule_sumti, rule_sumti6, rule_sumti2, skip_sumti, rule_la,
         drop_la, rule_le,
         drop_le, drop_ku,
@@ -686,7 +697,7 @@ def camxes_to_lcs(tree) -> list:
         skip_links, drop_beho, drop_bei, drop_be_clause,
         drop_gehu, rule_goi,
         drop_me_clause, drop_mehu, drop_vau,
-        rule_quantifier, drop_boi,
+        drop_boi,
         rule_se, rule_se_clause,
     ], tree)
     assert len(s_tree) == 1

@@ -326,7 +326,7 @@ class CamxesToLcsTest(unittest.TestCase):
         ))
 
     @staticmethod
-    def test_quantifier_in_adjunct():
+    def test_quantifier_with_compound_selbri():
         tree = CamxesToLcsTest.trees['re_sutra_klama']
 
         lcs = camxes_to_lcs(tree)
@@ -335,8 +335,9 @@ class CamxesToLcsTest(unittest.TestCase):
             ['fragment',
              ['N-MAX',
               ['N-MAX', ['N-BAR', ['N', 're']]],
-              ['N-BAR', ['N', 'sutra']]],
-             ['N-BAR', ['N', 'klama']]]
+              ['N-BAR',
+               ['N-BAR', ['N', 'klama']],
+               ['N-MAX', ['N-BAR', ['N', 'sutra']]]]]]
         ))
 
     @staticmethod
