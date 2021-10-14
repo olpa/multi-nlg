@@ -45,21 +45,51 @@ class Example(unittest.TestCase):
     def xtest_san_francisco_sent1():
         s_in = "la sanfransiskos goi ko'a cu kulnu je" \
                "canja je jdini midju la nosenkalifornos"
-        print(s_in)
+        expected_translations = {
+            'de': 'San Francisco ist das kulturelle, kommerzielle und '
+                  'finanzielle Zentrum Nordkaliforniens.',
+            'en': 'San Francisco is the cultural, commercial, and financial '
+                  'center of Northern California.',
+            'es': 'San Francisco es el centro cultural, comercial y '
+                  'financiero del norte de California.',
+            'ru': 'Сан-Франциско - культурный, коммерческий и финансовый '
+                  'центр Северной Калифорнии.',
+            'zh': '旧金山是北加州的文化、商业和金融中心。',
+        }
+        print(s_in, expected_translations)
 
     @staticmethod
-    def xtest_san_francisco_sent2_adj():
+    def xtest_san_francisco_sent2():
         accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
         determiner = f"ke ka {accidental} ke'e vomoi fi le nilxa'ugri"
-        phrase = f"ko'a ke ka {determiner} ke'e tcadu la kalifornos"
-        print(phrase)
+        s_in = f"ko'a ke ka {determiner} ke'e tcadu la kalifornos"
+        expected_translations = {
+            'de': 'Es ist die viertgrößte Stadt in Kalifornien, nach Los '
+                  'Angeles, San Diego und San Jose.',
+            'en': 'It is the fourth-most populous city in California, after '
+                  'Los Angeles, San Diego and San Jose.',
+            'es': 'Es la cuarta ciudad más poblada de California, después '
+                  'de Los Ángeles, San Diego y San José.',
+            'ru': 'Это четвертый по численности населения город в Калифорнии '
+                  'после Лос-Анджелеса, Сан-Диего и Сан-Хосе.',
+            'zh': '它是加利福尼亚州人口第四大的城市， 仅次于洛杉矶，圣地亚哥和圣何塞。',
+        }
+        print(s_in, expected_translations)
 
     @staticmethod
-    def xtest_san_francisco_sent2_poi():
+    def xtest_marie_curie():
         accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
         determiner = f"vomoi be zo'e noi {accidental} fi le nilxa'ugri"
-        phrase = f"ko'a tcadu be zo'e poi {determiner} la kalifornos"
-        print(phrase)
+        s_in = f"ko'a tcadu be zo'e poi {determiner} la kalifornos"
+        expected_translations = {
+            'de': '',
+            'en': 'Marie Curie was the only person to receive the Nobel '
+                  'Prize in two different scientific categories.',
+            'es': '',
+            'ru': '',
+            'zh': '',
+        }
+        print(s_in, expected_translations)
 
 
 if '__main__' == __name__:
