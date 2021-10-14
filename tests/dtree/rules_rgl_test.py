@@ -2,7 +2,7 @@ import unittest
 from hamcrest import assert_that, equal_to, instance_of, all_of, has_length
 
 from mnlg.dtree.functions import tag_clitic_indirect, to_spec
-from mnlg.dtree.rules_rgl import to_tense_tags, to_det_tags
+from mnlg.dtree.rules_rgl import to_tense_tags
 from mnlg.xbar import lexp_to_tree
 
 lexp_n_max = ['N-MAX', ['N-BAR', ['N', 'aaa']]]
@@ -30,28 +30,6 @@ class FunctionsTest(unittest.TestCase):
         assert_that(rlg_tags, equal_to([
             ['tag', 'Ant', 'ASimul'],
             ['tag', 'Tense', 'TPast'],
-        ]))
-
-    @staticmethod
-    def test_det_default():
-        xmax = lexp_to_tree(['D-MAX', ['D-BAR', ['D']]])
-
-        rlg_tags = to_det_tags(xmax)
-
-        assert_that(rlg_tags, equal_to([
-            ['tag', 'Num', 'NumSg'],
-            ['tag', 'Quant', 'IndefArt'],
-        ]))
-
-    @staticmethod
-    def test_det_tags():
-        xmax = lexp_to_tree(['D-MAX', ['D-BAR', ['D', ['tag', 'le']]]])
-
-        rlg_tags = to_det_tags(xmax)
-
-        assert_that(rlg_tags, equal_to([
-            ['tag', 'Num', 'NumSg'],
-            ['tag', 'Quant', 'DefArt'],
         ]))
 
     @staticmethod

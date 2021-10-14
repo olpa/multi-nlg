@@ -176,7 +176,7 @@ class LcsToDtreeTest(unittest.TestCase):
     @staticmethod
     def wrap_with_d(det_tag: str, lexp_n):
         return ['D-MAX', ['D-BAR',
-                          ['D', ['tag', det_tag]],
+                          ['D', det_tag],
                           lexp_n]]
 
     @staticmethod
@@ -202,7 +202,7 @@ class LcsToDtreeTest(unittest.TestCase):
 
     manner_dtree = ['D-MAX',
                     ['D-BAR',
-                     ['D', ['tag', 'loi']],
+                     ['D', 'loi'],
                      ['N-MAX', ['N-BAR',
                                 ['N', ['tag', 'manner', 'x3'], 'do']]]]]
 

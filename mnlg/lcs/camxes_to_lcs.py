@@ -334,7 +334,6 @@ class TransformSumti6(Transformer):
         if kids:
             det = kids[0]
             if is_node_name(det, 'D'):
-                det = ['D', ['tag', det[1]]]
                 dmax = ['D-MAX', ['D-BAR', det, xmax]]
             else:
                 print('TransformSumti: after transform,',

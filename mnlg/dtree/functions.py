@@ -19,18 +19,6 @@ def to_tense_tags(xmax: XMax) -> list[list[str, str]]:
     })
 
 
-def to_det_tags(xmax: XMax) -> list[list[str, str]]:
-    tags = xmax.to_head().tags or {}
-    if 'loi' in tags:
-        return dict_to_tags({'mass': 'mass'})
-    quant = 'DefArt' if 'le' in tags else 'IndefArt'
-    num = 'NumSg'
-    return dict_to_tags({
-        'Quant': quant,
-        'Num': num,
-    })
-
-
 def to_complement(xmax: XMax) -> typing.Tuple[str, list[XMax]]:
     compl = xmax.to_complement()
     if not compl:
@@ -124,7 +112,7 @@ def manner_x3(xmax: XMax) -> typing.Optional[TreeNode]:
         return None
 
     dtree_n = ['N-MAX', ['N-BAR', ['N', ['tag', 'manner', s_int], s_ext]]]
-    dtree_d = ['D-MAX', ['D-BAR', ['D', ['tag', 'loi']], dtree_n]]
+    dtree_d = ['D-MAX', ['D-BAR', ['D', 'loi'], dtree_n]]
 
     return dtree_d
 

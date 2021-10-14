@@ -53,7 +53,7 @@ class CamxesToLcsTest(unittest.TestCase):
         lcs = camxes_to_lcs(tree)
 
         assert_that(lcs, equal_to(
-            ['D-MAX', ['D-BAR', ['D', ['tag', 'le']],
+            ['D-MAX', ['D-BAR', ['D', 'le'],
                        ['N-MAX', ['N-BAR', ['N', 'kumfa']]]]]))
 
     @staticmethod
@@ -166,7 +166,7 @@ class CamxesToLcsTest(unittest.TestCase):
             wrap_i_v_max(
                 'klama',
                 ['D-MAX', ['D-BAR',
-                           ['D', ['tag', 'lo']],
+                           ['D', 'lo'],
                            ['N-MAX',
                             ['N-BAR',
                              ['N-BAR', ['N', 'prami']],
@@ -292,7 +292,7 @@ class CamxesToLcsTest(unittest.TestCase):
                  ['V-BAR',
                   ['V-FRAME', ['V', 'klama']],
                   ['D-MAX', ['D-BAR',
-                             ['D', ['tag', 'lo']],
+                             ['D', 'lo'],
                              ['N-MAX', ['N-BAR', ['N', 'sutra']]]]]]]
             )))
 
@@ -319,7 +319,7 @@ class CamxesToLcsTest(unittest.TestCase):
             ['fragment',
              ['D-MAX',
               ['D-BAR',
-               ['D', ['tag', 'lo']],
+               ['D', 'lo'],
                ['N-MAX',
                 ['N-MAX', ['N-BAR', ['N', 're']]],
                 ['N-BAR', ['N', 'prenu']]]]]]

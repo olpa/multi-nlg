@@ -34,7 +34,7 @@ gutnerkla_V = Rule(
            '#,', 'copy-x1',
            ['D-MAX',
             ['D-BAR',
-             ['D', ["tag", "le"]],
+             ['D', 'le'],
              ['N-MAX',
               ['N-BAR',
                ['N', 'nerkla'],

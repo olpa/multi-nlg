@@ -1,4 +1,4 @@
-from .functions import to_tense_tags, to_det_tags
+from .functions import to_tense_tags
 from .types import Rule
 from mnlg.xbar import XType
 
@@ -14,14 +14,25 @@ tense_rule = Rule(
     adj=[],
 )
 
-det_rule = Rule(
+le_Det = Rule(
     x=XType.D,
-    head=None,
+    head='le',
     tree=['D-MAX', ['D-BAR',
-                    ['D', '#,@', 'tags'], '#,@', 'compl']],
-    vars={
-        'tags': to_det_tags,
-    },
+                    ['D',
+                     ['tag', 'Num', 'NumSg'],
+                     ['tag', 'Quant', 'DefArt']],
+                    '#,@', 'compl']],
+    vars=None,
+    adj=[],
+)
+
+loi_Det = Rule(
+    x=XType.D,
+    head='loi',
+    tree=['D-MAX', ['D-BAR',
+                    ['D', ['tag', 'mass']],
+                    '#,@', 'compl']],
+    vars=None,
     adj=[],
 )
 
@@ -35,6 +46,7 @@ mi_Pron = Rule(
 
 RULES_RGL = [
     tense_rule,
-    det_rule,
+    le_Det,
+    loi_Det,
     mi_Pron,
 ]
