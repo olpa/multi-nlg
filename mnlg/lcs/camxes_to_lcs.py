@@ -549,6 +549,8 @@ def camxes_to_lcs(tree) -> list:
     rule_sumti_tail_with_relative = Rule(MatchName('sumti_tail'),
                                          TransformSumtiWithRelative())
     drop_gehu = Rule(MatchName('GEhU'), Drop())
+    drop_me_clause = Rule(MatchName('ME_clause'), Drop())
+    drop_mehu = Rule(MatchName('MEhU'), Drop())
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
@@ -575,6 +577,7 @@ def camxes_to_lcs(tree) -> list:
         skip_linkargs_n,
         skip_links, drop_beho, drop_bei, drop_be_clause,
         drop_gehu, rule_goi,
+        drop_me_clause, drop_mehu,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]

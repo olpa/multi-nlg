@@ -278,8 +278,23 @@ class CamxesToLcsTest(unittest.TestCase):
                 ['N-MAX', ['N-BAR', ['N',
                                      ['tag', 'id', "ko'a"],
                                      ['tag', 'pron'], 'mi']]]
-            )
-        ))
+            )))
+
+    @staticmethod
+    def test_me():
+        tree = CamxesToLcsTest.trees['me_lo_sutra_mehu_klama']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_max(
+                ['V-MAX',
+                 ['V-BAR',
+                  ['V-FRAME', ['V', 'klama']],
+                  ['D-MAX', ['D-BAR',
+                             ['D', ['tag', 'lo']],
+                             ['N-MAX', ['N-BAR', ['N', 'sutra']]]]]]]
+            )))
 
 
 class SumtiAllocatorTest(unittest.TestCase):
