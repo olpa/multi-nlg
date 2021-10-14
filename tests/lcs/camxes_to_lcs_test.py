@@ -339,6 +339,25 @@ class CamxesToLcsTest(unittest.TestCase):
              ['N-BAR', ['N', 'klama']]]
         ))
 
+    @staticmethod
+    def test_se():
+        tree = CamxesToLcsTest.trees['mi_xe_dunda']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_max(
+                ['V-MAX',
+                 ['V-FRAME',
+                  ['V', ['tag', 'se', 'xe'], 'dunda'],
+                  ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]],
+                  ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]],
+                  ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]],
+                  ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'zo\'e']]],
+                  ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'mi']]],
+                  ]]
+            )))
+
 
 class SumtiAllocatorTest(unittest.TestCase):
     n1 = ['N-MAX', ['N-BAR', ['N', 'n1_N']]]
@@ -374,6 +393,26 @@ class SumtiAllocatorTest(unittest.TestCase):
 
         assert_that(sa.get_sumti(),
                     equal_to([self.zohe, self.zohe, self.n1, self.n2]))
+
+    def test_swap_position(self):
+        sa = SumtiAllocator()
+
+        sa.push(self.n1)
+        sa.push(self.n2)
+        sa.push_se('se')
+
+        assert_that(sa.get_sumti(),
+                    equal_to([self.n2, self.n1]))
+
+    def test_swap_position_far(self):
+        sa = SumtiAllocator()
+
+        sa.push(self.n1)
+        sa.push_se('xe')
+
+        assert_that(sa.get_sumti(),
+                    equal_to(
+                        [self.zohe, self.zohe, self.zohe, self.zohe, self.n1]))
 
     def test_start_find_next_free_position(self):
         sa = SumtiAllocator()

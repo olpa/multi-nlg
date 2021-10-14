@@ -20,8 +20,9 @@ class SumtiAllocator:
     def __init__(self):
         self.sumti = []
         self.pos = 0
+        self.se = None
 
-    def allocate_next_position(self):
+    def _allocate_next_position(self):
         if len(self.sumti) > self.pos:
             existing = self.sumti[self.pos]
             if existing is not None:
@@ -34,7 +35,7 @@ class SumtiAllocator:
         if is_node_name(node, 'FA_clause'):
             self.pos = ('fa', 'fe', 'fi', 'fo', 'fu').index(node[1])
             return
-        self.allocate_next_position()
+        self._allocate_next_position()
         node = to_max_node(node)
         self.sumti[self.pos] = node
         self.pos += 1
@@ -45,7 +46,23 @@ class SumtiAllocator:
         if not len(self.sumti):
             self.pos = 1
 
+    def push_se(self, se):
+        # The constructions like 'se te klama' are possible,
+        # but we ignore this corner case
+        self.se = se
+
+    def _fix_positions(self):
+        if not self.se:
+            return
+        pos = ('none', 'se', 'te', 've', 'xe').index(self.se)
+        while pos >= len(self.sumti):
+            self.sumti.append(None)
+        new_x1 = self.sumti[pos]
+        self.sumti[pos] = self.sumti[0]
+        self.sumti[0] = new_x1
+
     def get_sumti(self):
+        self._fix_positions()
         return [node if node else SumtiAllocator.zohe for node in self.sumti]
 
 
@@ -131,7 +148,12 @@ class TransformSentence(Transformer):
     SelbriParts = collections.namedtuple('SelbriParts', 'linked spec tags v')
 
     @staticmethod
-    def group_selbri_components(selbri_list) -> list[SelbriParts]:
+    def group_selbri_components(
+            selbri_list: list[TreeNode]
+    ) -> list[SelbriParts]:
+        # left to the verb: tags, specifier
+        # right to the verb: linked arguments
+        # a flag for the new group: left-material when a verb exists
         collected = []
         linked = []
         spec = None
@@ -143,8 +165,9 @@ class TransformSentence(Transformer):
             if v or linked or spec or tags:
                 if not v:
                     print('group_selbri_component: selbri without v,',
-                          '(linked, tags, v):', (linked, tags, v),
+                          '(linked, spec, tags, v):', (linked, spec, tags, v),
                           'in the list', selbri_list, file=sys.stderr)
+                    v = ['V', '???']
                 collected.append(
                     TransformSentence.SelbriParts(linked, spec, tags, v))
             linked = []
@@ -153,6 +176,16 @@ class TransformSentence(Transformer):
             v = None
 
         for item in selbri_list:
+            # Right-verb material
+            if is_node_name(item, 'linkargs'):
+                if linked:
+                    print('group_selbri_component: duplicate linkargs:',
+                          item, 'in the list', selbri_list, file=sys.stderr)
+                linked = item[1:]
+                continue
+            # Left-verb material, maybe should start a new group
+            if v:
+                commit()
             if is_node_name(item, '#specifier'):
                 if spec:
                     print('group_selbri_component: duplicate spec:',
@@ -167,13 +200,6 @@ class TransformSentence(Transformer):
             if is_node_name(item, 'tag'):
                 tags.append(item)
                 continue
-            if is_node_name(item, 'linkargs'):
-                if linked:
-                    print('group_selbri_component: duplicate linkargs:',
-                          item, 'in the list', selbri_list, file=sys.stderr)
-                linked = item[1:]
-                continue
-            commit()
             v = item
 
         commit()
@@ -194,6 +220,10 @@ class TransformSentence(Transformer):
         sumti.push_selbri()
         for node in sumti_after_selbri:
             sumti.push(node)
+
+        for tag in tags:
+            if len(tag) == 3 and tag[1] == 'se':
+                sumti.push_se(tag[2])
 
         (node_name, *node_compl) = verb_node
         if node_name == 'N':
@@ -494,7 +524,7 @@ class TransformVerbWithSpecifier(Transformer):
             return kids
         if not is_verb_with_specifier(verb_node[-1]):
             return kids
-        return [verb_node, ['#specifier', spec_node]]
+        return [['#specifier', spec_node], verb_node]
 
 
 def is_verb_with_specifier(name):
@@ -510,6 +540,21 @@ class TransformQuantifier(Transformer):
         if not kids:
             return []
         return [['#specifier', kids[0]]]
+
+
+class TransformSeTag(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
+        if len(kids) != 1:
+            print('TransformSeTag: exactly one child is expected, got:',
+                  kids, file=sys.stderr)
+        if not kids:
+            return []
+        se_tag = kids[0]
+        if not isinstance(se_tag, str):
+            print('TransformSeTag: the child should be a string, got:',
+                  kids, file=sys.stderr)
+        return [['tag', 'se', se_tag]]
 
 
 class TransformCmevla(Transformer):
@@ -612,6 +657,8 @@ def camxes_to_lcs(tree) -> list:
     rule_quantifier = Rule(MatchName('quantifier'), TransformQuantifier())
     drop_boi = Rule(MatchName('BOI'), Drop())
     drop_vau = Rule(MatchName('VAU'), Drop())
+    rule_se = Rule(MatchName('SE'), TransformWord())
+    rule_se_clause = Rule(MatchName('SE_clause'), TransformSeTag())
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
@@ -640,6 +687,7 @@ def camxes_to_lcs(tree) -> list:
         drop_gehu, rule_goi,
         drop_me_clause, drop_mehu, drop_vau,
         rule_quantifier, drop_boi,
+        rule_se, rule_se_clause,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]

@@ -163,9 +163,12 @@ def load_frame(
     return XBarFrame(xhead, *ls_compl)
 
 
-def prefix_to_type(elem_name):
+def prefix_to_type(elem_name) -> typing.Optional[str]:
     letter = elem_name[0]
-    return XType[letter]
+    try:
+        return XType[letter]
+    except KeyError:
+        return None
 
 
 def lexp_to_tree(le: TreeNode
@@ -177,6 +180,9 @@ def lexp_to_tree(le: TreeNode
         return le
     if 1 == len(head):
         type_ = prefix_to_type(head)
+        if not type_:
+            print(f'lexp_to_tree: unknown type: "{type_}"', file=sys.stderr)
+            return None
         return load_head(type_, le[1:])
     kids = list(map(lexp_to_tree, le[1:]))
     if head.endswith('-BAR'):
