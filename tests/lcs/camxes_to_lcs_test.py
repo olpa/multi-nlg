@@ -325,6 +325,20 @@ class CamxesToLcsTest(unittest.TestCase):
                 ['N-BAR', ['N', 'prenu']]]]]]
         ))
 
+    @staticmethod
+    def test_quantifier_in_adjunct():
+        tree = CamxesToLcsTest.trees['re_sutra_klama']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            ['fragment',
+             ['N-MAX',
+              ['N-MAX', ['N-BAR', ['N', 're']]],
+              ['N-BAR', ['N', 'sutra']]],
+             ['N-BAR', ['N', 'klama']]]
+        ))
+
 
 class SumtiAllocatorTest(unittest.TestCase):
     n1 = ['N-MAX', ['N-BAR', ['N', 'n1_N']]]

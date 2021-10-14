@@ -272,18 +272,8 @@ def inject_tag(tag: list, node: TreeNode) -> TreeNode:
 class TransformSumti(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         kids = apply_templates(rules, node[1:])
-        if len(kids) != 2:
-            return kids
-        spec, node = kids
-        if not is_node_name(spec, '#specifier'):
-            print('TransformSumti: for two children, the first one should',
-                  'be a specifier, got:', spec)
-            return kids
-
-        x_type = node[0][0]
-        node = to_bar_node(node)
-        spec = to_max_node(extract_specifier(spec))
-        return [[f'{x_type}-MAX', spec, node]]
+        kids = list(attach_specifiers_to_sumti(kids))
+        return kids
 
 
 class TransformSumti6(Transformer):
@@ -294,7 +284,7 @@ class TransformSumti6(Transformer):
                   file=sys.stderr)
             return []
         if any(map(lambda kid: is_node_name(kid, '#specifier'), kids)):
-            kids = list(TransformSumti6.attach_specifiers(kids))
+            kids = list(attach_specifiers_to_sumti(kids))
         if len(kids) > 2:
             print('TransformSumti: at most 2 kids are expected, got:',
                   kids, file=sys.stderr)
@@ -323,26 +313,26 @@ class TransformSumti6(Transformer):
 
         return [dmax or xmax]
 
-    @staticmethod
-    def attach_specifiers(kids: list[TreeNode]) -> list[TreeNode]:
-        it = iter(kids)
-        try:
-            while spec := next(it):
-                if not is_node_name(spec, '#specifier'):
-                    yield spec
-                    continue
-                spec = to_max_node(extract_specifier(spec))
-                node = next(it)
-                node = to_bar_node(node)
-                if not is_bar_node(node):
-                    print('TransformSumti6.attach_specifier: need an',
-                          'x-bar node, got:', node, file=sys.stderr)
-                else:
-                    x_type = node[0][0]
-                    node = [f'{x_type}-MAX', spec, node]
-                yield node
-        except StopIteration:
-            pass
+
+def attach_specifiers_to_sumti(kids: list[TreeNode]) -> list[TreeNode]:
+    it = iter(kids)
+    try:
+        while spec := next(it):
+            if not is_node_name(spec, '#specifier'):
+                yield spec
+                continue
+            spec = to_max_node(extract_specifier(spec))
+            node = next(it)
+            node = to_bar_node(node)
+            if not is_bar_node(node):
+                print('TransformSumti6.attach_specifier: need an',
+                      'x-bar node, got:', node, file=sys.stderr)
+            else:
+                x_type = node[0][0]
+                node = [f'{x_type}-MAX', spec, node]
+            yield node
+    except StopIteration:
+        pass
 
 
 class TransformSumti2(Transformer):
