@@ -296,6 +296,35 @@ class CamxesToLcsTest(unittest.TestCase):
                              ['N-MAX', ['N-BAR', ['N', 'sutra']]]]]]]
             )))
 
+    @staticmethod
+    def test_quantifier():
+        tree = CamxesToLcsTest.trees['re_prenu']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            ['fragment',
+             ['N-MAX',
+              ['N-MAX', ['N-BAR', ['N', 're']]],
+              ['N-BAR', ['N', 'prenu']]]]
+        ))
+
+    @staticmethod
+    def test_quantifier_in_lo():
+        tree = CamxesToLcsTest.trees['lo_re_prenu']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            ['fragment',
+             ['D-MAX',
+              ['D-BAR',
+               ['D', ['tag', 'lo']],
+               ['N-MAX',
+                ['N-MAX', ['N-BAR', ['N', 're']]],
+                ['N-BAR', ['N', 'prenu']]]]]]
+        ))
+
 
 class SumtiAllocatorTest(unittest.TestCase):
     n1 = ['N-MAX', ['N-BAR', ['N', 'n1_N']]]

@@ -162,7 +162,7 @@ class TransformSentence(Transformer):
                           'only one node:', item, 'in the list',
                           selbri_list, file=sys.stderr)
                 if len(item) > 1:
-                    spec = item[1]
+                    spec = extract_specifier(item)
                 continue
             if is_node_name(item, 'tag'):
                 tags.append(item)
@@ -231,17 +231,31 @@ def is_bar_node(node: TreeNode) -> bool:
 
 
 def to_max_node(node: TreeNode) -> TreeNode:
-    if is_bar_node(node):
-        max_name = f'{node[0][0]}-MAX'
-        node = [max_name, node]
-    return node
+    if is_max_node(node):
+        return node
+    node = to_bar_node(node)
+    x_type = node[0][0]
+    return [f'{x_type}-MAX', node]
 
 
 def to_bar_node(node: TreeNode) -> TreeNode:
     if is_bar_node(node) or is_max_node(node):
         return node
-    bar_name = f'{node[0][0]}-BAR'
-    return [bar_name, node]
+    x_type = node[0][0]
+    if x_type == '#':  # processing instructions
+        return node
+    return [f'{x_type}-BAR', node]
+
+
+def extract_specifier(spec: TreeNode) -> TreeNode:
+    if not is_node_name(spec, '#specifier'):
+        print('extract_specifier: should be a specifier node, got:',
+              spec, file=sys.stderr)
+        return spec
+    spec = spec[1]
+    if is_bar_node(spec):
+        spec = spec[1]
+    return spec
 
 
 def inject_tag(tag: list, node: TreeNode) -> TreeNode:
@@ -258,35 +272,77 @@ def inject_tag(tag: list, node: TreeNode) -> TreeNode:
 class TransformSumti(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         kids = apply_templates(rules, node[1:])
+        if len(kids) != 2:
+            return kids
+        spec, node = kids
+        if not is_node_name(spec, '#specifier'):
+            print('TransformSumti: for two children, the first one should',
+                  'be a specifier, got:', spec)
+            return kids
+
+        x_type = node[0][0]
+        node = to_bar_node(node)
+        spec = to_max_node(extract_specifier(spec))
+        return [[f'{x_type}-MAX', spec, node]]
+
+
+class TransformSumti6(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
         if not kids:
             print('TransformSumti: no kids after transformation',
                   file=sys.stderr)
             return []
+        if any(map(lambda kid: is_node_name(kid, '#specifier'), kids)):
+            kids = list(TransformSumti6.attach_specifiers(kids))
         if len(kids) > 2:
             print('TransformSumti: at most 2 kids are expected, got:',
                   kids, file=sys.stderr)
             kids = kids[:2]
 
-        nbar = kids.pop()
-        if not is_node_name(nbar, 'N-BAR'):
-            print('TransformSumti: after transform,',
-                  'the last kid should be N-BAR, got:',
-                  nbar, file=sys.stderr)
-            return []
-        nmax = ['N-MAX', nbar]
+        xmax = kids.pop()
+        if not is_max_node(xmax):
+            if not is_bar_node(xmax):
+                print('TransformSumti: after transform,',
+                      'the last kid should be X-MAX or X-BAR, got:',
+                      xmax, file=sys.stderr)
+                return []
+            x_type = xmax[0][0]
+            xmax = [f'{x_type}-MAX', xmax]
 
         dmax = None
         if kids:
             det = kids[0]
             if is_node_name(det, 'D'):
                 det = ['D', ['tag', det[1]]]
-                dmax = ['D-MAX', ['D-BAR', det, nmax]]
+                dmax = ['D-MAX', ['D-BAR', det, xmax]]
             else:
                 print('TransformSumti: after transform,',
                       'the first kid should be D-BAR, got:',
                       kids[0], file=sys.stderr)
 
-        return [dmax or nmax]
+        return [dmax or xmax]
+
+    @staticmethod
+    def attach_specifiers(kids: list[TreeNode]) -> list[TreeNode]:
+        it = iter(kids)
+        try:
+            while spec := next(it):
+                if not is_node_name(spec, '#specifier'):
+                    yield spec
+                    continue
+                spec = to_max_node(extract_specifier(spec))
+                node = next(it)
+                node = to_bar_node(node)
+                if not is_bar_node(node):
+                    print('TransformSumti6.attach_specifier: need an',
+                          'x-bar node, got:', node, file=sys.stderr)
+                else:
+                    x_type = node[0][0]
+                    node = [f'{x_type}-MAX', spec, node]
+                yield node
+        except StopIteration:
+            pass
 
 
 class TransformSumti2(Transformer):
@@ -455,6 +511,17 @@ def is_verb_with_specifier(name):
     return name in ('moi',)
 
 
+class TransformQuantifier(Transformer):
+    def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
+        kids = apply_templates(rules, node[1:])
+        if len(kids) != 1:
+            print('TransformQuantifier: exactly one child is expected, got:',
+                  kids, file=sys.stderr)
+        if not kids:
+            return []
+        return [['#specifier', kids[0]]]
+
+
 class TransformCmevla(Transformer):
     def transform(self, rules: list['Rule'], node: TreeNode) -> NodeSet:
         word = next(iter(project_children(node)), '???')
@@ -487,9 +554,10 @@ def camxes_to_lcs(tree) -> list:
                                    TransformChildren())
     skip_time = Rule(match_name_begin('time'), TransformChildren())
     rule_pu = Rule(MatchName('PU_clause'), Replace([['tag', 'pu']]))
-    rule_sumti = Rule(MatchName('sumti_6'), TransformSumti())
+    rule_sumti = Rule(MatchName('sumti'), TransformSumti())
+    rule_sumti6 = Rule(MatchName('sumti_6'), TransformSumti6())
     rule_sumti2 = Rule(MatchName('sumti_2'), TransformSumti2())
-    skip_sumti = Rule(match_name_begin('sumti'), TransformChildren())
+    skip_sumti = Rule(match_name_begin('sumti_'), TransformChildren())
     rule_la = Rule(MatchName('LA_clause'), TransformChildren())
     drop_la = Rule(MatchName('LA'), Drop())
     rule_le = Rule(MatchName('LE_clause'), TransformRename('D'))
@@ -551,13 +619,16 @@ def camxes_to_lcs(tree) -> list:
     drop_gehu = Rule(MatchName('GEhU'), Drop())
     drop_me_clause = Rule(MatchName('ME_clause'), Drop())
     drop_mehu = Rule(MatchName('MEhU'), Drop())
+    rule_quantifier = Rule(MatchName('quantifier'), TransformQuantifier())
+    drop_boi = Rule(MatchName('BOI'), Drop())
+    drop_vau = Rule(MatchName('VAU'), Drop())
 
     s_tree = apply_templates([
         skip_text, skip_paragraph, skip_statement, rule_sentence,
         skip_tag, skip_tense_modal, skip_simple_tense_modal,
         skip_time, rule_pu,
         rule_sumti_tail_with_relative, rule_sumti_5_with_relative,
-        rule_sumti, rule_sumti2, skip_sumti, rule_la,
+        rule_sumti, rule_sumti6, rule_sumti2, skip_sumti, rule_la,
         drop_la, rule_le,
         drop_le, drop_ku,
         rule_brivla, skip_brivla,
@@ -577,7 +648,8 @@ def camxes_to_lcs(tree) -> list:
         skip_linkargs_n,
         skip_links, drop_beho, drop_bei, drop_be_clause,
         drop_gehu, rule_goi,
-        drop_me_clause, drop_mehu,
+        drop_me_clause, drop_mehu, drop_vau,
+        rule_quantifier, drop_boi,
     ], tree)
     assert len(s_tree) == 1
     return s_tree[0]
