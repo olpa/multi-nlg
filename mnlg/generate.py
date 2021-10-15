@@ -1,6 +1,6 @@
+import enum
 import os
 import typing
-
 import camxes_py
 import pgf
 
@@ -13,8 +13,29 @@ from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.dtree.rules_zh import RULES as RULES_ZH
 from mnlg.lcs.camxes_to_lcs import camxes_to_lcs
 from mnlg.xbar import lexp_to_tree
+from mnlg.transform import TreeNode
 
 PgfLang = object
+
+
+class Step(enum.IntEnum):
+    # Ordered steps, +1 and -1 bring to the next and prev steps
+    lojban = 1
+    parse = 2
+    lcs = 3
+    dtree = 4
+    stree = 5
+    gf = 6
+    natural = 7
+
+
+class ConversionArtefacts(typing.NamedTuple):
+    lojban: str
+    parse: TreeNode
+    lcs: TreeNode
+    dtree: TreeNode
+    stree: TreeNode
+    natural: str
 
 
 class MnlgInit:
@@ -50,30 +71,47 @@ class MnlgInit:
         return rules[lang]
 
 
-def generate_one_sentence(mnlg: MnlgInit, interlingua: str, lang: str) -> str:
-    rules = mnlg.get_rules(lang)
-    grammar = mnlg.get_grammar(lang)
-    camxes_lexp = camxes_py.parse(interlingua)
-    lcs_lexp = camxes_to_lcs(camxes_lexp)
-    lcs = lexp_to_tree(lcs_lexp)
-    dtree_lexp = lcs_to_dtree(rules, lcs)
-    dtree = lexp_to_tree(dtree_lexp)
-    stree = dtree
-    gf = stree_to_gf_fullstop(stree)
-    s = grammar.linearize(gf)
-    if 'zh' == lang:
-        s = s.replace(' ', '')
-    else:
-        s = s[0].upper() + s[1:]
-    return s
+def generate_one_sentence(
+        mnlg: MnlgInit,
+        interlingua: typing.Union[str, TreeNode],
+        lang: str,
+        begin_step: typing.Optional[Step] = Step.lojban,
+        end_step: typing.Optional[Step] = Step.natural,
+) -> typing.Union[str, TreeNode]:
+    so_far = interlingua
+    if begin_step <= Step.parse <= end_step:
+        so_far = camxes_py.parse(so_far)
+    if begin_step <= Step.lcs <= end_step:
+        so_far = camxes_to_lcs(so_far)
+    if begin_step <= Step.dtree <= end_step:
+        rules = mnlg.get_rules(lang)
+        lcs_tree = lexp_to_tree(so_far)
+        so_far = lcs_to_dtree(rules, lcs_tree)
+    if begin_step <= Step.gf <= end_step:
+        stree = lexp_to_tree(so_far)
+        so_far = stree_to_gf_fullstop(stree)
+    if begin_step <= Step.natural <= end_step:
+        grammar = mnlg.get_grammar(lang)
+        if isinstance(so_far, str):  # input from command line
+            so_far = pgf.readExpr(so_far)
+        s = grammar.linearize(so_far)
+        if 'zh' == lang:
+            s = s.replace(' ', '')
+        else:
+            s = s[0].upper() + s[1:]
+        so_far = s
+    return so_far
 
 
 def generate(mnlg: MnlgInit, interlingua: str) -> typing.Mapping[str, str]:
-    s_en = generate_one_sentence(mnlg, interlingua, 'en')
-    s_es = generate_one_sentence(mnlg, interlingua, 'es')
-    s_de = generate_one_sentence(mnlg, interlingua, 'de')
-    s_ru = generate_one_sentence(mnlg, interlingua, 'ru')
-    s_zh = generate_one_sentence(mnlg, interlingua, 'zh')
+    lcs = generate_one_sentence(
+        mnlg, interlingua, 'ignored', Step.lojban, Step.lcs
+    )
+    s_en = generate_one_sentence(mnlg, lcs, 'en', Step.dtree)
+    s_es = generate_one_sentence(mnlg, lcs, 'es', Step.dtree)
+    s_de = generate_one_sentence(mnlg, lcs, 'de', Step.dtree)
+    s_ru = generate_one_sentence(mnlg, lcs, 'ru', Step.dtree)
+    s_zh = generate_one_sentence(mnlg, lcs, 'zh', Step.dtree)
     return {
         'en': s_en,
         'es': s_es,
