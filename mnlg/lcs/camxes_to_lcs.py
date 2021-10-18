@@ -1,8 +1,8 @@
 import collections
 import sys
 import typing
-from collections.abc import Sequence
 
+from mnlg.xbar import is_node_name, is_bar_node, is_max_node
 from mnlg.transform import MatchNameCondition, Rule, TransformChildren,\
     MatchName, TreeNode, NodeSet, select, SelectStep, DeepDive,\
     apply_templates, Transformer, Replace, apply_templates_iter,\
@@ -237,32 +237,6 @@ class TransformSentence(Transformer):
         v_bar = ['V-FRAME', v, *sumti.get_sumti()]
 
         return v_bar
-
-
-def is_node_name(node: TreeNode, name: str) -> bool:
-    if not isinstance(node, Sequence):
-        return False
-    if not node:
-        return False
-    return node[0] == name
-
-
-def _is_ending(node: TreeNode, ending: str) -> bool:
-    if not isinstance(node, Sequence):
-        return False
-    if not node:
-        return False
-    if not isinstance(node[0], str):
-        return False
-    return node[0].endswith(ending)
-
-
-def is_max_node(node: TreeNode) -> bool:
-    return _is_ending(node, '-MAX')
-
-
-def is_bar_node(node: TreeNode) -> bool:
-    return _is_ending(node, '-BAR')
 
 
 def to_max_node(node: TreeNode) -> TreeNode:

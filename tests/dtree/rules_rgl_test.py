@@ -81,27 +81,24 @@ class FunctionsTest(unittest.TestCase):
     @staticmethod
     def test_attach_adjunct_none():
         nbar = lexp_n_max[1]
-        tree = lexp_to_tree(nbar)
 
-        back = attach_adjunct(tree, None)
+        back = attach_adjunct(None, nbar, None)
 
         assert_that(back, equal_to(nbar))
 
     @staticmethod
     def test_attach_adjunct_nmax():
         base = ['V-FRAME', ['V', 'do_V']]
-        tree = lexp_to_tree(base)
 
-        back = attach_adjunct(tree, lexp_n_max)
+        back = attach_adjunct(None, base, lexp_n_max)
 
         assert_that(back, equal_to(['V-BAR', base, lexp_n_max]))
 
     @staticmethod
     def test_attach_adjunct_bar_without_adjunct():
         base = ['N-BAR', ['N', 'some_N']]
-        tree = lexp_to_tree(base)
 
-        back = attach_adjunct(tree, base)
+        back = attach_adjunct(None, base, base)
 
         assert_that(back, equal_to(base))
 
@@ -109,9 +106,8 @@ class FunctionsTest(unittest.TestCase):
     def test_attach_adjunct_bar_with_one_adjunct():
         base = ['N-BAR', ['N', 'some_N']]
         adj_bar = ['N-BAR', base, lexp_n_max]
-        tree = lexp_to_tree(base)
 
-        back = attach_adjunct(tree, adj_bar)
+        back = attach_adjunct(None, base, adj_bar)
 
         assert_that(back, equal_to(
             ['N-BAR', ['N-BAR', ['N', 'some_N']], lexp_n_max]))
@@ -126,9 +122,8 @@ class FunctionsTest(unittest.TestCase):
                      mk_max('A', 'a1_A')],
                     mk_max('A', 'a2_A')],
                    mk_max('A', 'a3_A')]
-        tree = lexp_to_tree(base)
 
-        back = attach_adjunct(tree, adj_bar)
+        back = attach_adjunct(None, base, adj_bar)
 
         assert_that(back, equal_to(
             ['N-BAR',
@@ -145,9 +140,8 @@ class FunctionsTest(unittest.TestCase):
         adj_bar = ['A-BAR',
                    ['A-BAR', ['A', 'dropped_A']],
                    mk_max('A', 'extra_A')]
-        tree = lexp_to_tree(base)
 
-        back = attach_adjunct(tree, adj_bar)
+        back = attach_adjunct(None, base, adj_bar)
 
         assert_that(back, equal_to(
             ['N-BAR',

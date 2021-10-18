@@ -6,6 +6,32 @@ from .types import XBarFrame, XSpec, XBar, isinstance_xbar, XBarRec
 from .types import XBarBase, XType, XSpecTag, XMax, XHead
 
 
+def is_node_name(node: TreeNode, name: str) -> bool:
+    if not isinstance(node, list):
+        return False
+    if not node:
+        return False
+    return node[0] == name
+
+
+def _is_ending(node: TreeNode, ending: str) -> bool:
+    if not isinstance(node, list):
+        return False
+    if not node:
+        return False
+    if not isinstance(node[0], str):
+        return False
+    return node[0].endswith(ending)
+
+
+def is_max_node(node: TreeNode) -> bool:
+    return _is_ending(node, '-MAX')
+
+
+def is_bar_node(node: TreeNode) -> bool:
+    return _is_ending(node, '-BAR') or is_node_name(node, 'V-FRAME')
+
+
 def cast_to_tag(le: object) -> str:
     if isinstance(le, list) and 2 == len(le) and 'tag' == le[0]:
         return le[1]

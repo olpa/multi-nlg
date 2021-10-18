@@ -2,7 +2,7 @@ import sys
 import typing
 
 from mnlg.xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame, XType
-from mnlg.xbar import XBar, isinstance_xbar
+from mnlg.xbar import XBar, is_bar_node, is_max_node
 from mnlg.transform import TreeNode
 
 
@@ -161,50 +161,38 @@ def tag_clitic_indirect(_: XMax,
 
 
 def attach_adjunct(
-        base: XBar, adjunct: typing.Union[None, TreeNode]
+        _lcs: XMax,
+        base: TreeNode,
+        adjunct: typing.Union[None, TreeNode]
 ) -> TreeNode:
-    base_lexp = base.to_lexp()
-    if not isinstance_xbar(base):
+    if not is_bar_node(base):
         print('attach_adjunct: the base should be X-BAR, got:',
               base, file=sys.stderr)
     if adjunct is None:
-        return base_lexp
+        return base
 
-    if not isinstance(adjunct, list):
-        print('attach_adjunct: the adjunct should be a list, got:',
-              adjunct, file=sys.stderr)
-        return base_lexp
-    if not len(adjunct):
-        print('attach_adjunct: the adjunct should be a non-empty list, got:',
-              adjunct, file=sys.stderr)
-        return base_lexp
-    adj_node_name = adjunct[0]
-    if not isinstance(adj_node_name, str):
-        print('attach_adjunct: the adjunct first element should be a'
-              'string list, got:', adjunct, file=sys.stderr)
-        return base_lexp
+    x_type = base[0][0]
+    if is_max_node(adjunct):
+        return [f'{x_type}-BAR', base, adjunct]
 
-    if adj_node_name.endswith('-MAX'):
-        return [f'{base.type}-BAR', base_lexp, adjunct]
-
-    if not adj_node_name.endswith('-BAR'):
+    if not is_bar_node(adjunct):
         print('attach_adjunct: the adjunct is not X-MAX or X-BAR but:',
               adjunct, file=sys.stderr)
-        return base_lexp
+        return base
 
     # expected: ['X-BAR', ['X-BAR', ...], ['X-MAX']]
     if len(adjunct) != 3:
-        return base_lexp
+        return base
     _, xbar_rec, x_max = adjunct
     has_child_xbar = (isinstance(xbar_rec, list)
                       and xbar_rec
                       and isinstance(xbar_rec[0], str)
                       and xbar_rec[0].endswith('-BAR'))
     if not has_child_xbar:
-        return base_lexp
+        return base
 
-    augmented_base = attach_adjunct(base, xbar_rec)
-    return [f'{base.type}-BAR', augmented_base, x_max]
+    augmented_base = attach_adjunct(_lcs, base, xbar_rec)
+    return [f'{x_type}-BAR', augmented_base, x_max]
 
 
 def top_bar(xmax: XMax) -> typing.Optional[XBar]:
