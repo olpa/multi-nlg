@@ -113,36 +113,41 @@ class TransformSentence(Transformer):
             print('TransformSentence: should extract selbri but have not,'
                   'from:', camxes_selbri)
             return []
+
         selbri_base = compound_selbri.pop()
 
         v_bar = TransformSentence.selbri_to_frame(
             selbri_base.v, selbri_base.tags, sumti_before_selbri,
             sumti_after_selbri, selbri_base.linked)
 
-        while compound_selbri:
-            adj_selbri = compound_selbri.pop()
-
-            if is_max_node(adj_selbri.v):  # J-MAX is possible
+        adjunct = None
+        for adj_selbri in compound_selbri:
+            if is_max_node(adj_selbri.v):  # nu-phrase, J-MAX
                 if adj_selbri.tags or adj_selbri.linked:
                     print('selbri_to_frame: X-MAX node can not be augmented.',
                           'Selbri components:', adj_selbri)
-                v_bar = ['V-BAR', v_bar, adj_selbri.v]
+                adjunct = attach_adjunct_to_max_node(adjunct, adj_selbri.v)
                 continue
 
-            adj_bar = TransformSentence.selbri_to_frame(
+            adj_frame = TransformSentence.selbri_to_frame(
                 adj_selbri.v, adj_selbri.tags, [], [], adj_selbri.linked
             )
             adj_spec = []
             if adj_selbri.spec:
                 adj_spec = [to_max_node(adj_selbri.spec)]
-            adj_max = ['V-MAX', *adj_spec, adj_bar]
-            v_bar = ['V-BAR', v_bar, adj_max]
+            if adjunct:
+                adjunct = ['V-MAX', *adj_spec, ['V-BAR', adj_frame, adjunct]]
+            else:
+                adjunct = ['V-MAX', *adj_spec, adj_frame]
 
         v_spec = []
         if selbri_base.spec:
             v_spec = [to_max_node(selbri_base.spec)]
 
-        v_max = ['V-MAX', *v_spec, v_bar]
+        if adjunct:
+            v_max = ['V-MAX', *v_spec, ['V-BAR', v_bar, adjunct]]
+        else:
+            v_max = ['V-MAX', *v_spec, v_bar]
         return [['I-MAX', ['I-BAR', ['I', *i_head], v_max]]]
 
     SelbriParts = collections.namedtuple('SelbriParts', 'linked spec tags v')
@@ -286,6 +291,23 @@ def extract_specifier(spec: TreeNode) -> TreeNode:
     if is_bar_node(spec):
         spec = spec[1]
     return spec
+
+
+def attach_adjunct_to_max_node(
+        adj_node: typing.Optional[TreeNode], max_node: TreeNode
+) -> TreeNode:
+    if not adj_node:
+        return max_node
+    x_type = max_node[0][0]
+    if len(max_node) == 2:
+        node_name, bar_node = max_node
+        return [node_name, [f'{x_type}-BAR', bar_node, adj_node]]
+    if len(max_node) == 3:
+        node_name, spec_node, bar_node = max_node
+        return [node_name, spec_node, [f'{x_type}-BAR', bar_node, adj_node]]
+    print('attach_adjunct_to_max_node: max-node representation'
+          'should have 2 or 3 elements, got:', max_node)
+    return max_node
 
 
 def inject_tag(tag: list, node: TreeNode) -> TreeNode:

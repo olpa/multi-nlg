@@ -88,6 +88,27 @@ class CamxesToLcsTest(unittest.TestCase):
                          ['V-MAX', ['V-FRAME', ['V', 'barda']]]]])))
 
     @staticmethod
+    def test_compound_selbri():
+        tree = CamxesToLcsTest.trees['ti_melbi_cmalu_nixli_ckule']
+
+        lcs = camxes_to_lcs(tree)
+
+        assert_that(lcs, equal_to(
+            wrap_i_max(['V-MAX',
+                        ['V-BAR',
+                         ['V-FRAME',
+                          ['V', 'ckule'],
+                          ['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'ti']]]],
+                         ['V-MAX',
+                          ['V-BAR',
+                           ['V-FRAME', ['V', 'nixli']],
+                           ['V-MAX',
+                            ['V-BAR',
+                             ['V-FRAME', ['V', 'cmalu']],
+                             ['V-MAX',
+                              ['V-FRAME', ['V', 'melbi']]]]]]]]])))
+
+    @staticmethod
     def test_selbri_moi():
         tree = CamxesToLcsTest.trees['vomoi']
 
