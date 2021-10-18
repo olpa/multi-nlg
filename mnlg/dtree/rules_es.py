@@ -114,7 +114,7 @@ dunda_V = Rule(
              ['#,', 'x3']
              ]]]],
     adj=[
-        ['#,', ['tag-clitic-indirect', ['#,', 'x2']]],
+        ['#,', 'tag-clitic-indirect', ['#,', 'x2']],
     ],
 )
 

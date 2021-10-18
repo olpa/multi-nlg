@@ -4,7 +4,7 @@ from collections import abc
 
 from .functions import to_complement, to_spec, to_x1, to_x2, to_x3
 from .functions import copy_spec, copy_x1, copy_x2, manner_x3
-from .functions import tag_clitic_indirect
+from .functions import tag_clitic_indirect, attach_adjunct, top_bar
 from .types import Rule
 from ..transform import TreeNode
 from mnlg.xbar import lexp_to_tree, XMax, XType
@@ -70,6 +70,10 @@ def eval_var(rules: list[Rule],
             func = manner_x3
         elif func == 'tag-clitic-indirect':
             func = tag_clitic_indirect
+        elif func == 'top-bar':
+            func = top_bar
+        elif func == 'adjunct':
+            func = attach_adjunct
         else:
             func = mk_todo_subst(func)
     if args:
@@ -113,20 +117,30 @@ def subst_vars(rules: list[Rule],
 
         ls_cmd_one_arg = ('#,', '#,@', '#,lcs')
         if cmd in ls_cmd_one_arg:
-            if len(node) != 2:
-                print('subst_vars: expected one and only one argument to',
+            if len(node) < 2:
+                print('subst_vars: expected at least one argument to',
                       f'''>{'<,>'.join(ls_cmd_one_arg)}<, got:''', node,
                       file=sys.stderr)
                 return 'leaf', node
-            return cmd, node[1]
+            return cmd, node[1:]
 
         return 'tree', node
 
-    def cmd_exec_iter(cmd: str, arg: TreeNode) -> typing.Iterable[TreeNode]:
+    def cmd_exec_iter(
+            cmd: str, arg: list[TreeNode]
+    ) -> typing.Iterable[TreeNode]:
         if cmd == '#,' or cmd == '#,@':
-            var_name = arg
-            var_expansion = variables.get(var_name, var_name
-                                          ) if variables else var_name
+            var_name = arg[0]
+            if variables and var_name in variables:
+                var_expansion = variables[var_name]
+                if len(arg) > 1:
+                    print('cmd_exec_iter: present both but should be',
+                          'exclusive: variable expansion and function',
+                          'arguments: expansion:', var_expansion,
+                          ', command:', arg, file=sys.stderr)
+            else:
+                var_expansion = arg
+
             if isinstance(var_expansion, list):
                 var_expansion = subst_vars(
                     rules, lcs, var_expansion, variables)
@@ -146,7 +160,13 @@ def subst_vars(rules: list[Rule],
             assert False, 'never reached: unknown command'
 
         if cmd == '#,lcs':
-            lexp = subst_vars(rules, lcs, arg, variables)
+            if len(arg) != 1:
+                print('cmd_exec_iter: only one argument expected, got:',
+                      arg, file=sys.stderr)
+            if not arg:
+                yield [cmd, arg]
+                return
+            lexp = subst_vars(rules, lcs, arg[0], variables)
             mapped_lcs = lexp_to_tree(lexp)
             if not isinstance(mapped_lcs, XMax):
                 print('subst_vars, macro >#,lcs<:',

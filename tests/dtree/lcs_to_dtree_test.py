@@ -267,7 +267,7 @@ class LcsToDtreeTest(unittest.TestCase):
         rules = [Rule(
             x=XType.N,
             head='aaa',
-            tree=['#,', ['tag-clitic-indirect', lexp_n_bbb]],
+            tree=['#,', 'tag-clitic-indirect', lexp_n_bbb],
             vars=None,
             adj=[])]
 
