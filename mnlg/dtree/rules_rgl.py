@@ -7,7 +7,7 @@ tense_rule = Rule(
     x=XType.I,
     head=None,
     tree=['I-MAX', ['I-BAR',
-                    ['I', '#,@', 'tags'], '#,@', 'compl']],
+                    ['I', ['#,@', 'tags']], ['#,@', 'compl']]],
     vars={
         'tags': to_tense_tags,
     },
@@ -21,7 +21,7 @@ le_Det = Rule(
                     ['D',
                      ['tag', 'Num', 'NumSg'],
                      ['tag', 'Quant', 'DefArt']],
-                    '#,@', 'compl']],
+                    ['#,@', 'compl']]],
     vars=None,
     adj=[],
 )
@@ -31,7 +31,7 @@ loi_Det = Rule(
     head='loi',
     tree=['D-MAX', ['D-BAR',
                     ['D', ['tag', 'mass']],
-                    '#,@', 'compl']],
+                    ['#,@', 'compl']]],
     vars=None,
     adj=[],
 )

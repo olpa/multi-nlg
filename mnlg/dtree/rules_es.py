@@ -17,7 +17,7 @@ tense_rule = Rule(
     x=XType.I,
     head=None,
     tree=['I-MAX', ['I-BAR',
-                    ['I', '#,@', 'tags'], '#,@', 'compl']],
+                    ['I', ['#,@', 'tags']], ['#,@', 'compl']]],
     vars={
         'tags': to_tense_tags_es,
     },
@@ -28,17 +28,17 @@ gutnerkla_V = Rule(
     x=XType.V,
     head='gutnerkla',
     tree=['#,lcs',
-          'V-MAX',
-          ['V-FRAME',
-           ['V', 'bapli'],
-           '#,', 'copy-x1',
-           ['D-MAX',
-            ['D-BAR',
-             ['D', 'le'],
-             ['N-MAX',
-              ['N-BAR',
-               ['N', 'nerkla'],
-               '#,', 'copy-x2']]]]]],
+          ['V-MAX',
+           ['V-FRAME',
+            ['V', 'bapli'],
+            ['#,', 'copy-x1'],
+            ['D-MAX',
+             ['D-BAR',
+              ['D', 'le'],
+              ['N-MAX',
+               ['N-BAR',
+                ['N', 'nerkla'],
+                ['#,', 'copy-x2']]]]]]]],
     vars=None,
     adj=[],
 )
@@ -48,8 +48,8 @@ bapli_V = Rule(
     head='bapli',
     vars=None,
     tree=['V-MAX',
-          ['V-SPEC', '#,', 'x1'],
-          ['V-BAR', ['V', 'force_V'], '#,', 'x2']],
+          ['V-SPEC', ['#,', 'x1']],
+          ['V-BAR', ['V', 'force_V'], ['#,', 'x2']]],
     adj=[],
 )
 
@@ -63,7 +63,7 @@ nerkla_N = Rule(
         ['P-MAX',
          ['P-BAR',
           ['P', 'to_Prep'],
-          '#,', 'x1']]
+          ['#,', 'x1']]]
     ],
 )
 
@@ -89,13 +89,13 @@ darxi_V = Rule(
     head='darxi',
     vars=None,
     tree=['#,lcs',
-          'V-MAX',
-          ['V-FRAME',
-           ['V', 'dunda'],
-           '#,', 'copy-x1',
-           '#,', 'copy-x2',
-           '#,', 'manner-x3',
-           ]],
+          ['V-MAX',
+           ['V-FRAME',
+            ['V', 'dunda'],
+            ['#,', 'copy-x1'],
+            ['#,', 'copy-x2'],
+            ['#,', 'manner-x3'],
+            ]]],
     adj=[],
 )
 
@@ -104,17 +104,17 @@ dunda_V = Rule(
     head='dunda',
     vars=None,
     tree=['V-MAX',
-          ['V-SPEC', '#,', 'x1'],
+          ['V-SPEC', ['#,', 'x1']],
           ['V-BAR',
            ['V', 'give_V3'],
            ['V-MAX',
-            ['V-SPEC', '#,', 'x2'],
+            ['V-SPEC', ['#,', 'x2']],
             ['V-BAR',
              ['V', ['tag', 'trace']],
-             '#,', 'x3'
+             ['#,', 'x3']
              ]]]],
     adj=[
-        ['#,@', ['tag-clitic-indirect', ['#,@', 'x2']]],
+        ['#,', ['tag-clitic-indirect', ['#,', 'x2']]],
     ],
 )
 

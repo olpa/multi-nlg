@@ -1,4 +1,6 @@
+import sys
 import typing
+from collections import abc
 
 from .functions import to_complement, to_spec, to_x1, to_x2, to_x3
 from .functions import copy_spec, copy_x1, copy_x2, manner_x3
@@ -97,52 +99,83 @@ def subst_vars(rules: list[Rule],
                lcs: XMax,
                tree: TreeNode,
                variables: dict[str, TreeNode]) -> TreeNode:
-    def level_to_iter(level: list[TreeNode]) -> typing.Iterable[TreeNode]:
-        level = iter(level)
-        try:
-            while True:
-                el = next(level)
-                if el == '#,' or el == '#,@':
-                    var_name = next(level)
-                    var_expansion = variables.get(var_name, var_name
-                                                  ) if variables else var_name
-                    if isinstance(var_expansion, list):
-                        var_expansion = subst_vars(
-                            rules, lcs, var_expansion, variables)
-                if el == '#,':
-                    val = eval_var(rules, lcs, var_expansion)
-                    if val is not None:
-                        yield val
-                elif el == '#,@':
-                    val = eval_var(rules, lcs, var_expansion)
-                    if val is not None:
-                        yield from val
-                elif el == '#,lcs':
-                    rest = list(level)
-                    lexp = subst_vars(rules, lcs, rest, variables)
-                    mapped_lcs = lexp_to_tree(lexp)
-                    if not isinstance(mapped_lcs, XMax):
-                        print('subst_vars, macro >#,lcs<:',
-                              'the mapped type should be XMax, got:',
-                              type(mapped_lcs))
-                    else:
-                        mapped_tree = lcs_to_dtree(rules, mapped_lcs)
-                        level = iter(mapped_tree)
-                else:
-                    yield el
-        except StopIteration:
-            pass
 
-    def copy_or_deep(node: TreeNode) -> TreeNode:
-        if isinstance(node, list):
-            return subst_rec(node)
-        else:
-            return node
+    def to_cmd(
+            node: TreeNode
+    ) -> typing.Tuple[str, typing.Union[TreeNode, list[TreeNode]]]:
+        if isinstance(node, str):
+            return 'leaf', node
+        if not isinstance(node, abc.Sequence):
+            return 'leaf', node
+        if not node:
+            return 'leaf', []
+        cmd = node[0]
 
-    def subst_rec(node: TreeNode) -> TreeNode:
-        return list(map(copy_or_deep, level_to_iter(node)))
+        ls_cmd_one_arg = ('#,', '#,@', '#,lcs')
+        if cmd in ls_cmd_one_arg:
+            if len(node) != 2:
+                print('subst_vars: expected one and only one argument to',
+                      f'''>{'<,>'.join(ls_cmd_one_arg)}<, got:''', node,
+                      file=sys.stderr)
+                return 'leaf', node
+            return cmd, node[1]
 
-    return subst_rec(tree)
+        return 'tree', node
+
+    def cmd_exec_iter(cmd: str, arg: TreeNode) -> typing.Iterable[TreeNode]:
+        if cmd == '#,' or cmd == '#,@':
+            var_name = arg
+            var_expansion = variables.get(var_name, var_name
+                                          ) if variables else var_name
+            if isinstance(var_expansion, list):
+                var_expansion = subst_vars(
+                    rules, lcs, var_expansion, variables)
+
+            if cmd == '#,':
+                val = eval_var(rules, lcs, var_expansion)
+                if val is not None:
+                    yield val
+                return
+
+            if cmd == '#,@':
+                val = eval_var(rules, lcs, var_expansion)
+                if val is not None:
+                    yield from val
+                return
+
+            assert False, 'never reached: unknown command'
+
+        if cmd == '#,lcs':
+            lexp = subst_vars(rules, lcs, arg, variables)
+            mapped_lcs = lexp_to_tree(lexp)
+            if not isinstance(mapped_lcs, XMax):
+                print('subst_vars, macro >#,lcs<:',
+                      'the mapped type should be XMax, got:',
+                      type(mapped_lcs))
+            else:
+                mapped_tree = lcs_to_dtree(rules, mapped_lcs)
+                yield mapped_tree
+            return
+
+        assert False, 'never reached: unknown command'
+
+    def subst_rec_iter(node: TreeNode) -> typing.Iterable[TreeNode]:
+        for kid in node:
+            cmd, arg = to_cmd(kid)
+            if cmd == 'leaf':
+                yield kid
+            elif cmd.startswith('#'):
+                yield from cmd_exec_iter(cmd, arg)
+            elif cmd == 'tree':
+                yield list(subst_rec_iter(arg))
+            else:
+                assert False, f'never reached: unknown command `{cmd}`'
+
+    processed = list(subst_rec_iter([tree]))
+    if len(processed) != 1:
+        print('subst_vars: resulting node-set should be of length 1,',
+              f'got length {len(processed)}')
+    return processed[0] if processed else tree
 
 
 def adjunct(rules: list[Rule],

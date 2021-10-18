@@ -79,7 +79,7 @@ class LcsToDtreeTest(unittest.TestCase):
         subst_rule = Rule(
             x=XType.N,
             head='aaa',
-            tree=['expect-bbb', '#,@', 'spec'],
+            tree=['expect-bbb', ['#,', 'spec']],
             vars=None,
             adj=[],)
         n_max = ['N-MAX', ['N-BAR', ['N', 'bbb']]]
@@ -89,14 +89,14 @@ class LcsToDtreeTest(unittest.TestCase):
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(['expect-bbb', 'some-bbb']))
+        assert_that(dtree, equal_to(['expect-bbb', ['some-bbb']]))
 
     @classmethod
     def test_subst_x1(cls):
         subst_rule = Rule(
             x=XType.V,
             head='aaa',
-            tree=['expect-bbb', '#,@', 'x1'],
+            tree=['expect-bbb', ['#,', 'x1']],
             vars=None,
             adj=[],)
         n_max = ['N-MAX', ['N-BAR', ['N', 'bbb']]]
@@ -105,7 +105,7 @@ class LcsToDtreeTest(unittest.TestCase):
 
         dtree = lcs_to_dtree(rules, lcs)
 
-        assert_that(dtree, equal_to(['expect-bbb', 'some-bbb']))
+        assert_that(dtree, equal_to(['expect-bbb', ['some-bbb']]))
 
     @classmethod
     def test_copy_spec_and_x(cls):
@@ -118,7 +118,7 @@ class LcsToDtreeTest(unittest.TestCase):
             x=XType.V,
             head='v-test',
             vars=None,
-            tree=[['a', '#,', 'copy-spec'], ['b', '#,', 'copy-x2']],
+            tree=[['a', ['#,', 'copy-spec']], ['b', ['#,', 'copy-x2']]],
             adj=[],
         )
 
@@ -134,15 +134,15 @@ class LcsToDtreeTest(unittest.TestCase):
             x=XType.N,
             head='name',
             vars=None,
-            tree=['#,lcs', 'N-MAX', '#,',
-                  'copy-spec', ['N-BAR', ['N', 'name2']]],
+            tree=['#,lcs', ['N-MAX',
+                  ['#,', 'copy-spec'], ['N-BAR', ['N', 'name2']]]],
             adj=[],
         )
         subst_rule = Rule(
             x=XType.N,
             head='name2',
             vars=None,
-            tree=['#,@', 'copy-spec'],
+            tree=['#,', 'copy-spec'],
             adj=[],
         )
 
@@ -156,13 +156,13 @@ class LcsToDtreeTest(unittest.TestCase):
             ['N-MAX', ['N-SPEC', ['tag', 'from-spec']],
              ['N-BAR', ['N', 'aaa']]])
 
-        def subst_func(lcs):
-            return ['subst', ['#,@', 'copy-spec']]
+        def subst_func(_lcs):
+            return ['subst', ['#,', 'copy-spec']]
 
         subst_rule = Rule(
             x=XType.N,
             head='aaa',
-            tree=['#,@', 'subst-func'],
+            tree=['#,', 'subst-func'],
             vars={'subst-func': subst_func},
             adj=[],
         )
@@ -196,7 +196,7 @@ class LcsToDtreeTest(unittest.TestCase):
         x=XType.V,
         head='do',
         vars=None,
-        tree=['#,@', 'manner-x3'],
+        tree=['#,', 'manner-x3'],
         adj=[],
     )
 
@@ -267,7 +267,7 @@ class LcsToDtreeTest(unittest.TestCase):
         rules = [Rule(
             x=XType.N,
             head='aaa',
-            tree=['#,@', ['tag-clitic-indirect', lexp_n_bbb]],
+            tree=['#,', ['tag-clitic-indirect', lexp_n_bbb]],
             vars=None,
             adj=[])]
 
@@ -288,9 +288,9 @@ class LcsToDtreeTest(unittest.TestCase):
         rules = [Rule(
             x=XType.N,
             head='aaa',
-            tree=['#,@', 'function'],
+            tree=['#,', 'function'],
             vars={
-                'function': [function, '#,@', 'spec'],
+                'function': [function, ['#,', 'spec']],
             },
             adj=[],
         )]
@@ -300,7 +300,7 @@ class LcsToDtreeTest(unittest.TestCase):
 
         lcs_to_dtree(rules, lcs)
 
-        assert_that(seen_by_function, equal_to(['tag', 'name', 'value']))
+        assert_that(seen_by_function, equal_to([['tag', 'name', 'value']]))
 
 
 class LcsToDtreeExamplesTest(unittest.TestCase):
