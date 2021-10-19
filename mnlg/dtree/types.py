@@ -3,7 +3,6 @@ import typing
 from mnlg.transform import TreeNode
 from mnlg.xbar import XType, XMax
 
-
 CallableFunction = typing.Callable[[XMax], TreeNode]
 CallableFunctionWithArgs = list[typing.Union[
     # Function should be the first element, the rest
@@ -22,3 +21,9 @@ class Rule(typing.NamedTuple):
                                CallableFunction,
                                CallableFunctionWithArgs]]]
     adj: list[TreeNode]
+
+
+class LcsToDtreeContext(typing.NamedTuple):
+    rules: list[Rule]
+    lcs_to_dtree: typing.Callable[
+        [list[Rule], XMax, typing.Optional[XType]], TreeNode]

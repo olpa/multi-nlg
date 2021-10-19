@@ -302,6 +302,36 @@ class LcsToDtreeTest(unittest.TestCase):
 
         assert_that(seen_by_function, equal_to([['tag', 'name', 'value']]))
 
+    @staticmethod
+    def test_adj_bar_to_adj():
+        rules = [
+            Rule(
+                x=XType.N,
+                head='aaa',
+                tree=['#,', 'lcs-adj-bar'],
+                vars=None,
+                adj=[]),
+            Rule(
+                x=XType.A,
+                head='bbb',
+                tree=['X-MAX', 'as_adj'],
+                vars=None,
+                adj=[])
+        ]
+        tree = lexp_to_tree(
+            ['N-MAX',
+             ['N-BAR',
+              ['N-BAR',
+               ['N-BAR', ['N', 'aaa']],
+               lexp_n_bbb],
+              lexp_n_bbb]])
+
+        dtree = lcs_to_dtree(rules, tree)
+
+        assert_that(dtree, equal_to(
+            ['X-BAR', ['X-BAR', ['X-BAR'],
+                       ['X-MAX', 'as_adj']], ['X-MAX', 'as_adj']]))
+
 
 class LcsToDtreeExamplesTest(unittest.TestCase):
     @classmethod

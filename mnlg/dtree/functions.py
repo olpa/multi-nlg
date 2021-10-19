@@ -2,8 +2,10 @@ import sys
 import typing
 
 from mnlg.xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame, XType
-from mnlg.xbar import XBar, is_bar_node, is_max_node
+from mnlg.xbar import XBar, XBarRec, is_bar_node, is_max_node
 from mnlg.transform import TreeNode
+
+from .types import LcsToDtreeContext
 
 
 def dict_to_tags(d: dict) -> list[list[str]]:
@@ -195,9 +197,23 @@ def attach_adjunct(
     return [f'{x_type}-BAR', augmented_base, x_max]
 
 
-def top_bar(xmax: XMax) -> typing.Optional[XBar]:
+def lcs_adj_bar(
+        xmax: XMax, context: LcsToDtreeContext
+) -> typing.Optional[TreeNode]:
     if not xmax:
         return None
     if not isinstance(xmax, XMax):
         return None
-    return xmax.xbar
+
+    def adj_rec(xbar: XBar) -> typing.Optional[TreeNode]:
+        if not isinstance(xbar, XBarRec):
+            return None
+        dtree_adj = context.lcs_to_dtree(context.rules, xbar.adj, XType.A)
+        if not is_max_node(dtree_adj):
+            print('lcs_adj_bar: after conversion, an adjunct node should'
+                  'be X-MAX, got:', dtree_adj, 'for lcs adj node:',
+                  xbar.adj, file=sys.stderr)
+        kid_bar = adj_rec(xbar.bar)
+        return ['X-BAR', kid_bar if kid_bar else ['X-BAR'], dtree_adj]
+
+    return adj_rec(xmax.xbar)

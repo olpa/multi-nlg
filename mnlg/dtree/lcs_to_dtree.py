@@ -4,20 +4,25 @@ from collections import abc
 
 from .functions import to_complement, to_spec, to_x1, to_x2, to_x3
 from .functions import copy_spec, copy_x1, copy_x2, manner_x3
-from .functions import tag_clitic_indirect, attach_adjunct, top_bar
-from .types import Rule
+from .functions import tag_clitic_indirect, attach_adjunct, lcs_adj_bar
+from .types import Rule, LcsToDtreeContext
 from ..transform import TreeNode
 from mnlg.xbar import lexp_to_tree, XMax, XType
 
 
-def find_rule(rules: list[Rule], xmax: XMax) -> typing.Optional[Rule]:
-    type_ = xmax.type
+def find_rule(
+        rules: list[Rule],
+        xmax: XMax,
+        xtype: typing.Optional[XType] = None
+) -> typing.Optional[Rule]:
+    if xtype is None:
+        xtype = xmax.type
     xhead = xmax.to_head()
     head = (xhead and xhead.s) or None
     if '???' == head:
         head = None
     return next((rule for rule in rules
-                 if rule.x == type_ and rule.head == head), None)
+                 if rule.x == xtype and rule.head == head), None)
 
 
 def make_manner_rule(xmax: XMax) -> typing.Optional[Rule]:
@@ -41,15 +46,16 @@ def eval_var(rules: list[Rule],
              var_expansion: typing.Union[
                  str, typing.Callable[[TreeNode], TreeNode]]
              ) -> typing.Optional[TreeNode]:
-    def mk_todo_subst(func_name):
+    def mk_todo_subst(subst_func_name):
         def todo_subst(*_):
-            return [f'TODO({func_name})']
+            return [f'TODO({subst_func_name})']
         return todo_subst
     func = var_expansion
     args = None
     if isinstance(func, list):
         func, *args = func
-    if isinstance(func, str):
+    func_name = func if isinstance(func, str) else ''
+    if func_name:
         if func == '#complement' or func == 'compl':
             func = to_complement
         elif func == 'spec':
@@ -70,12 +76,16 @@ def eval_var(rules: list[Rule],
             func = manner_x3
         elif func == 'tag-clitic-indirect':
             func = tag_clitic_indirect
-        elif func == 'top-bar':
-            func = top_bar
+        elif func == 'lcs-adj-bar':
+            func = lcs_adj_bar
         elif func == 'adjunct':
             func = attach_adjunct
         else:
             func = mk_todo_subst(func)
+    if func_name.startswith('lcs-'):
+        if not args:
+            args = []
+        args.append(LcsToDtreeContext(rules, lcs_to_dtree))
     if args:
         val = func(lcs, *args)
     else:
@@ -255,8 +265,12 @@ def adjunct(rules: list[Rule],
     return [lexp_xmax[0], lexp_bar]
 
 
-def lcs_to_dtree(rules: list[Rule], lcs: XMax) -> TreeNode:
-    rule = find_rule(rules, lcs)
+def lcs_to_dtree(
+        rules: list[Rule],
+        lcs: XMax,
+        xtype: typing.Optional[XType] = None
+) -> TreeNode:
+    rule = find_rule(rules, lcs, xtype)
     if rule is None:
         rule = make_manner_rule(lcs)
     if rule is None:
