@@ -42,9 +42,9 @@ def main():
     grammar_name = os.path.splitext(os.path.basename(args.pgf))[0]
     mnlg_init = MnlgInit(grammar_dir, grammar_name)
 
-    need_step = Step[args.begin] or Step.lojban
+    need_step = Step[args.begin] if args.begin else Step.lojban
     begin_step = need_step + 1
-    end_step = Step[args.end] or Step.natural
+    end_step = Step[args.end] if args.end else Step.natural
 
     if sys.stdin.isatty():
         import readline  # noqa: F401

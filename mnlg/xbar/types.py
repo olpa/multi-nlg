@@ -46,6 +46,9 @@ class XHead:
               *map(str_tag, self.tags or {})]
         return f'{self.type}-HEAD<{",".join(ls)}>'
 
+    def __repr__(self):
+        return self.__str__()
+
     def to_lexp(self):
         return [self.type.name, *tags_to_list(self.tags), self.s]
 
@@ -61,6 +64,9 @@ class XBarBase:
 
     def __str__(self) -> str:
         return f'{self.type}-BAR<{self.head}{",..." if self.compl else ""}>'
+
+    def __repr__(self):
+        return self.__str__()
 
     def to_lexp(self) -> list:
         ls = [f'{self.type}-BAR', self.head.to_lexp()]
@@ -81,6 +87,9 @@ class XBarFrame:
     def __str__(self) -> str:
         return f'{self.type}-FRAME<{self.head},...>'
 
+    def __repr__(self):
+        return self.__str__()
+
     def to_lexp(self) -> list:
         return [f'{self.type}-FRAME',
                 self.head.to_lexp(),
@@ -95,6 +104,9 @@ class XBarRec:
 
     def __str__(self) -> str:
         return f'{self.type}-BAR-REC<{self.adj.to_head()},...>'
+
+    def __repr__(self):
+        return self.__str__()
 
     def to_lexp(self) -> list:
         return [f'{self.type}-BAR',
@@ -117,6 +129,9 @@ class XSpecTag:
     def __str__(self):
         tag_map = self.tags.items() if self.tags else []
         return f'XSpecTag<{",".join(map(str_tag, tag_map))}>'
+
+    def __repr__(self):
+        return self.__str__()
 
     def __eq__(self, other):
         if isinstance(other, XSpecTag):
@@ -144,6 +159,9 @@ class XMax:
         head = self.to_head()
         s = head.s if head else ''
         return f'{self.type}-MAX<{s}>'
+
+    def __repr__(self):
+        return self.__str__()
 
     def to_lexp(self):
         ls = [f'{self.type}-MAX']

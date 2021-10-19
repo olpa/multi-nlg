@@ -2,7 +2,7 @@ import sys
 import typing
 
 from mnlg.xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame, XType
-from mnlg.xbar import XBar, XBarRec, is_bar_node, is_max_node
+from mnlg.xbar import XBar, XBarRec, is_bar_node, is_max_node, is_head_node
 from mnlg.transform import TreeNode
 
 from .types import LcsToDtreeContext
@@ -182,19 +182,43 @@ def attach_adjunct(
               adjunct, file=sys.stderr)
         return base
 
-    # expected: ['X-BAR', ['X-BAR', ...], ['X-MAX']]
-    if len(adjunct) != 3:
-        return base
-    _, xbar_rec, x_max = adjunct
-    has_child_xbar = (isinstance(xbar_rec, list)
-                      and xbar_rec
-                      and isinstance(xbar_rec[0], str)
-                      and xbar_rec[0].endswith('-BAR'))
-    if not has_child_xbar:
+    # possible cases:
+    # 1. ['X-BAR', ['X-BAR', ...], ['X-MAX']]
+    #    an adjunct bar, with a child bar
+    # 2. ['X-BAR', ['X-MAX']]
+    #    an adjunct bar, without children
+    # 3. ['X-BAR', ['X', ...], ...optional complements...]
+    #    head and complement bar
+    if len(adjunct) == 2:
+        xbar_rec = None
+        _, x_max = adjunct
+    elif len(adjunct) == 3:
+        _, xbar_rec, x_max = adjunct
+    else:
+        return base  # case 3
+
+    if (xbar_rec and is_head_node(xbar_rec)) or is_head_node(x_max):  # case 3
         return base
 
+    if not is_max_node(x_max):
+        print('attach_adjunct: expected to get X-MAX, but got:',
+              x_max, 'in adjunct', adjunct, file=sys.stderr)
+        return base
+
+    if not xbar_rec:  # case 2
+        return [f'{x_type}-BAR', base, x_max]
+
+    if xbar_rec and not is_bar_node(xbar_rec):
+        print('attach_adjunct: expected to get a recursive X-BAR, but got:',
+              xbar_rec, 'in adjunct', adjunct, file=sys.stderr)
+        return base
+
+    # case 1
     augmented_base = attach_adjunct(_lcs, base, xbar_rec)
     return [f'{x_type}-BAR', augmented_base, x_max]
+
+    if not xbar_rec:  # case 2
+        return [f'{x_type}-BAR', x_max]
 
 
 def lcs_adj_bar(
@@ -214,6 +238,8 @@ def lcs_adj_bar(
                   'be X-MAX, got:', dtree_adj, 'for lcs adj node:',
                   xbar.adj, file=sys.stderr)
         kid_bar = adj_rec(xbar.bar)
-        return ['X-BAR', kid_bar if kid_bar else ['X-BAR'], dtree_adj]
+        if kid_bar:
+            return ['A-BAR', kid_bar, dtree_adj]
+        return ['A-BAR', dtree_adj]
 
     return adj_rec(xmax.xbar)

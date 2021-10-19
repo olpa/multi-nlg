@@ -14,22 +14,37 @@ def is_node_name(node: TreeNode, name: str) -> bool:
     return node[0] == name
 
 
-def _is_ending(node: TreeNode, ending: str) -> bool:
+def get_node_name(node: TreeNode) -> typing.Optional[str]:
     if not isinstance(node, list):
-        return False
+        return None
     if not node:
-        return False
-    if not isinstance(node[0], str):
-        return False
-    return node[0].endswith(ending)
+        return None
+    name = node[0]
+    if not isinstance(name, str):
+        return None
+    return name
 
 
 def is_max_node(node: TreeNode) -> bool:
-    return _is_ending(node, '-MAX')
+    name = get_node_name(node)
+    return name and name.endswith('-MAX')
+
+
+def is_spec_node(node: TreeNode) -> bool:
+    name = get_node_name(node)
+    return name and name.endswith('-SPEC')
 
 
 def is_bar_node(node: TreeNode) -> bool:
-    return _is_ending(node, '-BAR') or is_node_name(node, 'V-FRAME')
+    name = get_node_name(node)
+    return name and (name.endswith('-BAR')
+                     or name.endswith('-FRAME')
+                     or name.endswith('-BAR-REC'))
+
+
+def is_head_node(node: TreeNode) -> bool:
+    name = get_node_name(node)
+    return name and len(name) == 1
 
 
 def cast_to_tag(le: object) -> str:

@@ -1,8 +1,9 @@
+import json
 import unittest
 from hamcrest import assert_that, equal_to
 
-from mnlg.dtree.rules_rgl import tense_rule
-from mnlg.dtree.rules_en import RULES as RULES_EN
+from mnlg.dtree.rules_rgl import tense_rule, empty_J, je_J
+from mnlg.dtree.rules_en import RULES as RULES_EN, jdini_A, kulnu_A, canja_A
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
@@ -303,6 +304,31 @@ class LcsToDtreeTest(unittest.TestCase):
         assert_that(seen_by_function, equal_to([['tag', 'name', 'value']]))
 
     @staticmethod
+    def test_nested_adjunct():
+        rules = [Rule(
+            x=XType.N,
+            head='aaa',
+            tree=['N-MAX',
+                  ['#,', 'adjunct',
+                   ['#,', 'adjunct',
+                    ['N-BAR', ['N', 'in_nested_N']],
+                    lexp_n_aaa],
+                   lexp_n_bbb]],
+            vars=None,
+            adj=[])]
+
+        dtree = lcs_to_dtree(rules, lexp_to_tree(lexp_n_aaa))
+
+        assert_that(dtree, equal_to(
+            ['N-MAX',
+             ['N-BAR',
+              ['N-BAR',
+               ['N-BAR',
+                ['N', 'in_nested_N']],
+               lexp_n_aaa],
+              lexp_n_bbb]]))
+
+    @staticmethod
     def test_adj_bar_to_adj():
         rules = [
             Rule(
@@ -329,8 +355,26 @@ class LcsToDtreeTest(unittest.TestCase):
         dtree = lcs_to_dtree(rules, tree)
 
         assert_that(dtree, equal_to(
-            ['X-BAR', ['X-BAR', ['X-BAR'],
-                       ['X-MAX', 'as_adj']], ['X-MAX', 'as_adj']]))
+            ['A-BAR', ['A-BAR', ['X-MAX', 'as_adj']], ['X-MAX', 'as_adj']]))
+
+    @staticmethod
+    def test_regression_j_with_adjunct():
+        # kulnu je canja je jdini
+        s_lexp_tree = '''["J-MAX", ["J-BAR", ["J-BAR", ["J-BAR", ["J", ""],
+        ["N-MAX", ["N-BAR", ["N", "kulnu"]]]], ["J-MAX", ["J-BAR", ["J",
+        "je"], ["N-MAX", ["N-BAR", ["N", "canja"]]]]]], ["J-MAX", ["J-BAR",
+         ["J", "je"], ["N-MAX", ["N-BAR", ["N", "jdini"]]]]]]]'''
+        tree = lexp_to_tree(json.loads(s_lexp_tree))
+        rules = [empty_J, je_J, kulnu_A, canja_A, jdini_A]
+
+        dtree = lcs_to_dtree(rules, tree)
+
+        s_dtree = '''["J-MAX", ["J-BAR", ["J-BAR", ["J-BAR", ["J", ""],
+        ["A-MAX", ["A-BAR", ["A", "kulnu_A"]]]], ["J-MAX", ["J-BAR", ["J",
+        "je"], ["A-MAX", ["A-BAR", ["A", "canja_A"]]]]]], ["J-MAX", ["J-BAR",
+         ["J", "je"], ["A-MAX", ["A-BAR", ["A", "jdini_A"]]]]]]]'''
+        expected_dtree = json.loads(s_dtree)
+        assert_that(dtree, equal_to(expected_dtree))
 
 
 class LcsToDtreeExamplesTest(unittest.TestCase):

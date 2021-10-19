@@ -44,9 +44,27 @@ mi_Pron = Rule(
     adj=[],
 )
 
+empty_J = Rule(
+    x=XType.J,
+    head=None,
+    tree=['J-MAX', ['J-BAR', ['J', ''], ['#,@', 'compl']]],
+    vars=None,
+    adj=[['#,', 'lcs-adj-bar']],
+)
+
+je_J = Rule(
+    x=XType.J,
+    head='je',
+    tree=['J-MAX', ['J-BAR', ['J', 'je'], ['#,@', 'compl']]],
+    vars=None,
+    adj=[['#,', 'lcs-adj-bar']],
+)
+
 RULES_RGL = [
     tense_rule,
     le_Det,
     loi_Det,
     mi_Pron,
+    empty_J,
+    je_J,
 ]

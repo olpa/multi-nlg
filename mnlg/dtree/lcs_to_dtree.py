@@ -8,6 +8,7 @@ from .functions import tag_clitic_indirect, attach_adjunct, lcs_adj_bar
 from .types import Rule, LcsToDtreeContext
 from ..transform import TreeNode
 from mnlg.xbar import lexp_to_tree, XMax, XType
+from mnlg.xbar import is_max_node, is_bar_node, is_spec_node
 
 
 def find_rule(
@@ -15,7 +16,7 @@ def find_rule(
         xmax: XMax,
         xtype: typing.Optional[XType] = None
 ) -> typing.Optional[Rule]:
-    if xtype is None:
+    if xtype is None or xmax.type == XType.J:
         xtype = xmax.type
     xhead = xmax.to_head()
     head = (xhead and xhead.s) or None
@@ -91,16 +92,17 @@ def eval_var(rules: list[Rule],
     else:
         val = func(lcs)
     if (isinstance(val, list) or isinstance(val, tuple)) and len(val):
+        xtype = XType.A if lcs.type == XType.J else None
         if val[0] == 'none':
             val = None
         elif val[0] == 'node':
             val = val[1]
         elif val[0] == 'map':
             map_lcs = lexp_to_tree(val[1])
-            val = lcs_to_dtree(rules, map_lcs)
+            val = lcs_to_dtree(rules, map_lcs, xtype)
         elif val[0] == 'mapls':
             val = list(map(
-                lambda node: lcs_to_dtree(rules, node),
+                lambda node: lcs_to_dtree(rules, node, xtype),
                 val[1]
             ))
         elif val[0] == 'subst':
@@ -202,6 +204,8 @@ def subst_vars(rules: list[Rule],
                 assert False, f'never reached: unknown command `{cmd}`'
 
     processed = list(subst_rec_iter([tree]))
+    if not processed:
+        return None
     if len(processed) != 1:
         print('subst_vars: resulting node-set should be of length 1,',
               f'got length {len(processed)}')
@@ -222,43 +226,40 @@ def adjunct(rules: list[Rule],
         _, lexp_spec, lexp_bar = lexp_xmax
     else:
         print('lcs_to_dtree.adjunct: the xmax lexp should be',
-              'of length 2 or 3, got:', len(lexp_xmax), lexp_xmax)
+              'of length 2 or 3, got:', len(lexp_xmax), lexp_xmax,
+              file=sys.stderr)
         return lexp_xmax
 
-    def assert_name(node: TreeNode, name: str) -> bool:
-        if not isinstance(node, list):
-            print(f'lcs_to_dtree.adjunct: `{name}` check: node is not a list')
-            return False
-        if not len(node):
-            print(f'lcs_to_dtree.adjunct: `{name}` check: node list is empty')
-            return False
-        node_name = node[0]
-        if not isinstance(node_name, str):
-            print(f'lcs_to_dtree.adjunct: `{name}` check:',
-                  'node first element is not a string')
-            return False
-        if not node_name.endswith(name):
-            if name == '-BAR' and not node_name.endswith('-FRAME'):
-                print(f'lcs_to_dtree.adjunct: `{name}` check:',
-                      f'does not match the node name `{node_name}`')
-                return False
-        return True
-
-    if not assert_name(lexp_xmax, '-MAX'):
+    if not is_max_node(lexp_xmax):
+        print('lcs_to_dtree.adjunct: X-MAX is expected, got:', lexp_xmax,
+              file=sys.stderr)
         return lexp_xmax
-    if not assert_name(lexp_bar, '-BAR'):
+    if not is_bar_node(lexp_bar):
+        print('lcs_to_dtree.adjunct: X-BAR is expected, got:', lexp_bar,
+              file=sys.stderr)
         return lexp_xmax
-    if lexp_spec and not assert_name(lexp_spec, '-SPEC'):
+    if lexp_spec and not is_spec_node(lexp_spec):
+        print('lcs_to_dtree.adjunct: X-SPEC is expected, got:', lexp_spec,
+              file=sys.stderr)
         return lexp_xmax
 
     bar_name = f'{lexp_xmax[0][0]}-BAR'
     for adj in rule.adj:
         expanded_adj = subst_vars(rules, lcs, adj, rule.vars)
-        if not assert_name(expanded_adj, '-MAX'):
-            print(f'lcs_to_dtree.adjunct: adj before: `{adj}`,',
-                  f'adj after rewrite: `{expanded_adj}`')
+        if expanded_adj is None:
             continue
-        lexp_bar = [bar_name, lexp_bar, expanded_adj]
+
+        if is_max_node(expanded_adj):
+            lexp_bar = [bar_name, lexp_bar, expanded_adj]
+            continue
+
+        if not is_bar_node(expanded_adj):
+            print('lcs_to_dtree.adjunct: X-MAX or X-BAR is expected after'
+                  f'rewrite, adj before: `{adj}`, adj after rewrite:'
+                  f'`{expanded_adj}`', file=sys.stderr)
+            continue
+
+        lexp_bar = attach_adjunct(lcs, lexp_bar, expanded_adj)
 
     if lexp_spec:
         return [lexp_xmax[0], lexp_spec, lexp_bar]
@@ -274,6 +275,8 @@ def lcs_to_dtree(
     if rule is None:
         rule = make_manner_rule(lcs)
     if rule is None:
-        return [f'TODO(no_rule_{lcs})']
+        print_type = f'{xtype}_'if xtype and xtype != lcs.type else ''
+        return [f'TODO(no_rule_{print_type}{lcs})']
     base = subst_vars(rules, lcs, rule.tree, rule.vars)
-    return adjunct(rules, lcs, rule, base)
+    augmented = adjunct(rules, lcs, rule, base)
+    return augmented
