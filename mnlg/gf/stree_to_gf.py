@@ -8,10 +8,19 @@ from mnlg.xbar import XMax, XType, XHead, XBar, XBarRec, XBarBase
 PgfExpr = object
 
 
-def adjunct_np_one(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
-    if xmax.type != XType.P:
-        print('adjunct_np_one: only P-MAX is supported', file=sys.stderr)
-        return gf_np
+def adjunct_one_to_np(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
+    if xmax.type == XType.P:
+        return adjunct_pmax_to_np(xmax, gf_np)
+
+    if (xmax.type == XType.A) or (xmax.type == XType.J):
+        return adjunct_amax_to_np(xmax, gf_np)
+
+    print('adjunct_np_one: only P-MAX and A-MAX are supported',
+          file=sys.stderr)
+    return gf_np
+
+
+def adjunct_pmax_to_np(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
     gf_pp = pmax_to_gf(xmax)
     if not gf_pp:
         print('adjunct_np_one: P-MAX is not converted', file=sys.stderr)
@@ -19,9 +28,25 @@ def adjunct_np_one(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
     return pgf.Expr('AdvCN', [gf_np, gf_pp])
 
 
+def adjunct_amax_to_np(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
+    if xmax.type == XType.A:
+        gf_ap = amax_to_gf(xmax)
+    elif xmax.type == XType.J:
+        gf_ap = jmax_to_gf_cons(xmax)
+    else:
+        print('adjunct_np_one: should never happen', file=sys.stderr)
+        return None
+    if not gf_ap:
+        print('adjunct_np_one: A-MAX is not converted', file=sys.stderr)
+        return gf_np
+    return pgf.Expr('AdjCN', [gf_ap, gf_np])
+
+
 def adjunct_np(nmax: XMax, gf_np: PgfExpr) -> PgfExpr:
-    for adj in nmax.to_adj():
-        gf_np = adjunct_np_one(adj, gf_np)
+    adjuncts = nmax.to_adj()
+    adjuncts.reverse()
+    for adj in adjuncts:
+        gf_np = adjunct_one_to_np(adj, gf_np)
     return gf_np
 
 

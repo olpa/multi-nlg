@@ -200,6 +200,46 @@ class StreeToGfTest(unittest.TestCase):
 
         assert_that(str(e), equal_to(expected_gf))
 
+    @staticmethod
+    def test_noun_with_adjective():
+        lexp = ["N-MAX", ["N-BAR",
+                          ["N-BAR", ["N", "city_N"]],
+                          ["A-MAX", ["A-BAR", ["A", "nice_A"]]]]]
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        expected_gf = 'AdjCN (PositA nice_A) (UseN city_N)'
+        assert_that(str(e), equal_to(expected_gf))
+
+    @staticmethod
+    def test_noun_with_and():
+        kulnu = ["J-BAR", ["J", ""], ["A-MAX", ["A-BAR", ["A", "kulnu_A"]]]]
+        canja = ["J-MAX", ["J-BAR", ["J", "je"],
+                           ["A-MAX", ["A-BAR", ["A", "canja_A"]]]]]
+        lexp = ["N-MAX", ["N-BAR",
+                          ["N-BAR", ["N", "city_N"]],
+                          ["J-MAX", ["J-BAR", kulnu, canja]]]]
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        expected_gf = 'AdjCN (ConjAP and_Conj (BaseAP (PositA kulnu_A) ' \
+                      '(PositA canja_A))) (UseN city_N)'
+        assert_that(str(e), equal_to(expected_gf))
+
+    @staticmethod
+    def test_noun_with_adjunct_recursive():
+        lexp = ["N-MAX", ["N-BAR",
+                          ["N-BAR",
+                           ["N-BAR", ["N", "thing_N"]],
+                           ["A-MAX", ["A-BAR", ["A", "blue_A"]]]],
+                          ["A-MAX", ["A-BAR", ["A", "red_A"]]]]]
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        expected_gf = 'AdjCN (PositA red_A) ' \
+                      '(AdjCN (PositA blue_A) (UseN thing_N))'
+        assert_that(str(e), equal_to(expected_gf))
+
 
 class StreeToGfExamplesTest(unittest.TestCase):
     @classmethod
