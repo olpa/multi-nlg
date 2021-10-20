@@ -3,7 +3,7 @@ import typing
 
 import pgf
 
-from mnlg.xbar import XMax, XType, XHead
+from mnlg.xbar import XMax, XType, XHead, XBar, XBarRec, XBarBase
 
 PgfExpr = object
 
@@ -257,6 +257,74 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
 
     return pgf.Expr('PredVP', [gf_spec, gf_adj_vp])
 
+# --
+
+
+def amax_to_gf(amax: XMax) -> PgfExpr:
+    head = amax.to_head()
+    s_head = (head and head.s) or 'none_A'
+    return pgf.Expr('PositA', [pgf.Expr(s_head, [])])
+
+
+# --
+
+# J-conversion: two modes:
+# 1. cons-mode: build gf conjunction construction
+# 2. branch-mode: bring a link to the cons-mode
+
+
+def jmax_to_gf_cons(jmax: XMax) -> PgfExpr:
+    tag, gf = jbar_to_gf_cons(jmax.xbar)
+    if tag != 'je':
+        print(f'jbar_to_gf_cons_rec: unsupported conjunction {tag}',
+              file=sys.stderr)
+    else:
+        gf = pgf.Expr('ConjAP', [pgf.Expr('and_Conj', []), gf])
+    return gf
+
+
+def jbar_to_gf_cons(jbar: XBar) -> typing.Tuple[str, PgfExpr]:
+    if isinstance(jbar, XBarRec):
+        return jbar_to_gf_cons_rec(jbar)
+    return jbar_to_gf(jbar)
+
+
+def jbar_to_gf_cons_rec(jbar: XBarRec) -> typing.Tuple[str, PgfExpr]:
+    tag_base, gf_base = jbar_to_gf_cons(jbar.bar)
+    if not isinstance(jbar.adj, XMax) or jbar.adj.type != XType.J:
+        print('jbar_to_gf_cons_rec: the complement should be J-MAX, got:',
+              jbar.adj, file=sys.stderr)
+        return tag_base, gf_base
+    tag_branch, gf_branch = jmax_to_gf_branch(jbar.adj)
+    if (tag_base != '') and (tag_base != tag_branch):
+        print('jbar_to_gf_cons_rec: unsupported conjunction combination:',
+              f'tag base: {tag_base}, tag branch: {tag_branch}',
+              file=sys.stderr)
+        return tag_base, gf_base
+    cons_cmd = 'ConsAP' if tag_base else 'BaseAP'
+    return tag_branch, pgf.Expr(cons_cmd, [gf_base, gf_branch])
+
+
+def jmax_to_gf_branch(jmax: XMax) -> typing.Tuple[str, PgfExpr]:
+    if not isinstance(jmax.xbar, XBarBase):
+        print('jmax_to_gf_branch: branch J-MAX should have a bar',
+              'of the base type, got:', type(jmax.xbar), file=sys.stderr)
+        return '', pgf.Expr('none_A', [])
+    return jbar_to_gf(jmax.xbar)
+
+
+def jbar_to_gf(jbar: XBarBase) -> typing.Tuple[str, PgfExpr]:
+    head = jbar.head
+    s_head = (head and head.s) or ''
+    gf_compl = stree_to_gf(jbar.compl)
+    if not gf_compl:
+        print('jbar_to_gf_cons_base: a complement is required',
+              file=sys.stderr)
+        gf_compl = pgf.Expr('none_A', [])
+    return s_head, gf_compl
+
+
+# --
 
 def stree_to_gf(stree: typing.Optional[XMax]) -> typing.Optional[PgfExpr]:
     if stree is None:
@@ -272,6 +340,10 @@ def stree_to_gf(stree: typing.Optional[XMax]) -> typing.Optional[PgfExpr]:
             return dmax_to_gf(stree)
         if stree.type == XType.P:
             return pmax_to_gf(stree)
+        if stree.type == XType.A:
+            return amax_to_gf(stree)
+        if stree.type == XType.J:
+            return jmax_to_gf_cons(stree)
         print('stree_to_gf: TODO: unsupported X-MAX:', stree, file=sys.stderr)
         return None
     print('stree_to_gf: TODO: other than X-MAX:', stree, file=sys.stderr)

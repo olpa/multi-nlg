@@ -185,6 +185,21 @@ class StreeToGfTest(unittest.TestCase):
 
         assert_that(str(e), equal_to(expected_gf))
 
+    @staticmethod
+    def test_adjective_and():
+        kulnu = ["J-BAR", ["J", ""], ["A-MAX", ["A-BAR", ["A", "kulnu_A"]]]]
+        canja = ["J-MAX", ["J-BAR", ["J", "je"],
+                           ["A-MAX", ["A-BAR", ["A", "canja_A"]]]]]
+        jdini = ["J-MAX", ["J-BAR", ["J", "je"],
+                           ["A-MAX", ["A-BAR", ["A", "jdini_A"]]]]]
+        lexp = ["J-MAX", ["J-BAR", ["J-BAR", kulnu, canja], jdini]]
+        expected_gf = 'ConjAP and_Conj (ConsAP (BaseAP (PositA kulnu_A) ' \
+                      '(PositA canja_A)) (PositA jdini_A))'
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        assert_that(str(e), equal_to(expected_gf))
+
 
 class StreeToGfExamplesTest(unittest.TestCase):
     @classmethod
