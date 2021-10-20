@@ -92,6 +92,16 @@ class StreeToGfTest(unittest.TestCase):
         assert_that(str(e), equal_to(f'PredVP {d_np} (UseV pred_V)'))
 
     @staticmethod
+    def test_verb_be():
+        stree = lexp_to_tree(
+            ['V-MAX', ['V-SPEC', d_max], ['V-BAR', ['V', 'be_V'], d_max]])
+
+        e = stree_to_gf(stree)
+
+        assert_that(str(e), equal_to(
+            f'PredVP {d_np} (UseComp (CompNP {d_np}))'))
+
+    @staticmethod
     def test_verb_with_complement():
         stree = lexp_to_tree(['V-MAX',
                               ['V-SPEC', d_max],

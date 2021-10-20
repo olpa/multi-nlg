@@ -103,6 +103,8 @@ def dmax_to_gf(dmax: XMax) -> PgfExpr:
     e_det = pgf.Expr('DetQuant', [pgf.Expr(quant, []), pgf.Expr(num, [])])
     return pgf.Expr('DetCN', [e_det, gf_compl])
 
+# -
+
 
 def pmax_to_gf(pmax: XMax) -> PgfExpr:
     gf_compl = stree_to_gf(pmax.to_complement())
@@ -117,6 +119,9 @@ def pmax_to_gf(pmax: XMax) -> PgfExpr:
         print('pmax_to_gf: head is required in p-max:', pmax, file=sys.stderr)
 
     return pgf.Expr('PrepNP', [pgf.Expr(s_head, []), gf_compl])
+
+
+# -
 
 
 def imax_to_gf(imax: XMax) -> PgfExpr:
@@ -270,6 +275,10 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
         if not gf_compl:
             gf_head = head_to_gf_v(head)
             gf_vp = pgf.Expr('UseV', [gf_head])
+            break
+
+        if head and head.s == 'be_V':
+            gf_vp = pgf.Expr('UseComp', [pgf.Expr('CompNP', [gf_compl])])
             break
 
         gf_head = head_to_gf_v2(head)
