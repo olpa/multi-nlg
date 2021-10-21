@@ -55,10 +55,10 @@ kumfa_N = Rule(
 
 
 RULES = [
-    *RULES_RGL,
     darxi_V,
     gutnerkla_V,
     djan_N,
     dakfu_N,
     kumfa_N,
+    *RULES_RGL,
 ]

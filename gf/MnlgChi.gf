@@ -27,12 +27,22 @@ lin
   hit_V = mkV "击" ; -- ji1
   stab_V2 = mkV2 "刺伤" ; -- ci4 shang1
 
-  darxi_dakfu_CN = mkN "刀伤" "处" ; --dao1 shang1
+  center_N = mkN "中心" ; -- zhong1 xin1
   entrance_N = mkN "入口" ;
   knife_N = mkN "刀" "把" ;
   room_N = mkN "房间";
 
+  darxi_dakfu_CN = mkN "刀伤" "处" ; -- dao1 shang1
+
+  san_francisco_PN = mkPN "旧金山" ; -- jiu4 jin1 shan1
+  north_california_PN = mkPN "北 加州" ; --  bei3 jia1 zhou1
+
+  commercial_A = mkA "商业" ; -- shang1 ye4
+  cultural_A = mkA "文化" ; -- wen2 hua4
+  financial_A = mkA "金融" ; -- jin1 rong2
+
+  ins_Prep = mkPrep "把" ;
   into_Prep = to_Prep ;
   no_Prep =  emptyPrep ;
-  ins_Prep = mkPrep "把" ;
+  of_Prep = possess_Prep ;
 }

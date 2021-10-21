@@ -120,7 +120,6 @@ dunda_V = Rule(
 
 RULES = [
     tense_rule,
-    *RULES_RGL,
     gutnerkla_V,
     bapli_V,
     darxi_V,
@@ -128,4 +127,5 @@ RULES = [
     nerkla_N,
     kumfa_N,
     djan_N,
+    *RULES_RGL,
 ]

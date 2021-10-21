@@ -10,7 +10,7 @@ concrete MnlgRus of Mnlg =
 in
 {
 lin
-  CastVtoV2 v = mkV2 (v ** { lock_V=<> });
+  CastVtoV2 v = mkV2 (v ** { lock_V=<> }) ;
   CastV2toV v2 = v2 ** { lock_V2=<> } ;
   CastV3toV v3 = v3 ** { lock_V3=<> } ;
 
@@ -27,12 +27,27 @@ lin
   force_V = mkV perfective transitive "заставить" "заставлю" "заставит" "4a" ;
   hit_V = mkV perfective transitive "ударить" "ударю" "ударит" "4a" ;
 
-  darxi_dakfu_CN = AdjCN (PositA (mkA "ножевой" (Z.ZA 1 Z.No Z.B_ Z.NoC))) (UseN (mkN "рана" Fem Inanimate (Z.parseIndex "1a"))) ;
+  center_N = mkN "центр" Masc Inanimate (Z.parseIndex "1a") ;
   entrance_N = mkN "вход" Masc Inanimate (Z.parseIndex "1a") ;
   knife_N = mkN "нож" Masc Inanimate (Z.ZN 4 Z.No Z.B Z.NoC) ;
   room_N = mkN "комната" Fem Inanimate (Z.parseIndex "1a") ;
 
+  darxi_dakfu_CN = AdjCN (PositA (mkA "ножевой" (Z.ZA 1 Z.No Z.B_ Z.NoC))) (UseN (mkN "рана" Fem Inanimate (Z.parseIndex "1a"))) ;
+
+  north_california_PN =
+    let north_A : A = mkA "Северный" (Z.parseAdjIndex "1*a") in
+    let california_NP : PN = mkPN "Калифорния" feminine inanimate in
+    mkCompoundN (makeNFFromAF north_A feminine inanimate) " " california_NP ;
+
+  san_francisco_PN = mkPN "Сан-Франциско" masculine inanimate ;
+
+  commercial_A = mkA "коммерческий" ;
+  cultural_A = mkA "культурный" ;
+  financial_A = mkA "финансовый" ;
+
+
+  ins_Prep = E.ins_Prep ;
   into_Prep = E.to2_Prep ;
   no_Prep = E.obj_no_Prep ;
-  ins_Prep = E.ins_Prep ;
+  of_Prep = mkPrep "" ParadigmsRus.genitive ;
 }

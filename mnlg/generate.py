@@ -99,6 +99,8 @@ def generate_one_sentence(
             s = s.replace(' ', '')
         else:
             s = s[0].upper() + s[1:]
+        if 'es' == lang:
+            s = s.replace(' de el ', ' del ')
         so_far = s
     return so_far
 

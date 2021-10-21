@@ -34,12 +34,22 @@ lin
   force_V = I.forzar_V ;
   hit_V = mkV "pegar" ;
 
+  center_N = mkN "centro" ;
   entrance_N = mkN "entrada" ;
   knife_N = mkN "cuchillo" ;
   room_N = mkN "cuarto" ;
+
   darxi_dakfu_CN = UseN (mkN "puñalada") ;
 
+  north_california_PN = mkPN "el Norte de California" ;
+  san_francisco_PN = mkPN "San Francisco" ;
+
+  commercial_A = mkA "comercial" ;
+  cultural_A = mkA "cultural" ;
+  financial_A = mkA "financiero" ;
+
+  ins_Prep = with_Prep ;
   into_Prep = in_Prep ;
   no_Prep = C.noPrep ;
-  ins_Prep = with_Prep ;
+  of_Prep = ParadigmsSpa.mkPrep "" ParadigmsSpa.genitive ;
 }

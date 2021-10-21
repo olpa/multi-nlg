@@ -60,6 +60,68 @@ je_J = Rule(
     adj=[['#,', 'lcs-adj-bar']],
 )
 
+midju_V = Rule(
+    x=XType.V,
+    head='midju',
+    tree=['V-MAX',
+          ['V-SPEC', ['#,', 'x1']],
+          ['V-BAR', ['V', 'be_V'],
+           ['D-MAX',
+            ['D-BAR',
+             ['D', ['tag', 'Quant', 'DefArt'], 'le'],
+             ['N-MAX',
+              ['#,', 'adjunct',
+               ['#,', 'adjunct',
+                ['N-BAR', ['N', 'center_N']],
+                ['#,', 'lcs-adj-bar']],
+               ['P-MAX',
+                ['P-BAR',
+                 ['P', 'of_Prep'],
+                 ['#,', 'x2']]]]]]]]],
+    vars=None,
+    adj=[]
+)
+
+san_francisco_PN = Rule(
+    x=XType.N,
+    head='sanfransiskos',
+    tree=['N-MAX', ['N-BAR', ['N', 'san_francisco_PN']]],
+    vars=None,
+    adj=[],
+)
+
+north_california_PN = Rule(
+    x=XType.N,
+    head='nosenkalifornos',
+    tree=['N-MAX', ['N-BAR', ['N', 'north_california_PN']]],
+    vars=None,
+    adj=[],
+)
+
+kulnu_A = Rule(
+    x=XType.A,
+    head='kulnu',
+    tree=['A-MAX', ['A-BAR', ['A', 'cultural_A']]],
+    vars=None,
+    adj=[],
+)
+
+canja_A = Rule(
+    x=XType.A,
+    head='canja',
+    tree=['A-MAX', ['A-BAR', ['A', 'commercial_A']]],
+    vars=None,
+    adj=[],
+)
+
+jdini_A = Rule(
+    x=XType.A,
+    head='jdini',
+    tree=['A-MAX', ['A-BAR', ['A', 'financial_A']]],
+    vars=None,
+    adj=[],
+)
+
 RULES_RGL = [
     tense_rule,
     le_Det,
@@ -67,4 +129,10 @@ RULES_RGL = [
     mi_Pron,
     empty_J,
     je_J,
+    midju_V,
+    san_francisco_PN,
+    north_california_PN,
+    kulnu_A,
+    canja_A,
+    jdini_A,
 ]

@@ -18,7 +18,7 @@ class Example(unittest.TestCase):
         cls.mnlg = MnlgInit('../gf/dist', 'Mnlg')
 
     def test_break_forzar(self):
-        s_in = "la djan. pu gutnerkla le kumfa"
+        s_in = 'la djan. pu gutnerkla le kumfa'
         expected_translations = {
                 'de': 'Johann brach ins Zimmer ein.',
                 'en': 'John broke into the room.',
@@ -30,7 +30,7 @@ class Example(unittest.TestCase):
         assert_example(self.mnlg, s_in, expected_translations)
 
     def test_stab_dar(self):
-        s_in = "mi pu darxi la djan. le dakfu"
+        s_in = 'mi pu darxi la djan. le dakfu'
         expected_translations = {
                 'de': 'Ich stach Johann.',
                 'en': 'I stabbed John.',
@@ -41,22 +41,22 @@ class Example(unittest.TestCase):
 
         assert_example(self.mnlg, s_in, expected_translations)
 
-    @staticmethod
-    def xtest_san_francisco_sent1():
-        s_in = "la sanfransiskos goi ko'a cu kulnu je" \
-               "canja je jdini midju la nosenkalifornos"
+    def test_san_francisco_sent1(self):
+        s_in = "la sanfransiskos goi ko'a cu kulnu je " \
+               'canja je jdini midju la nosenkalifornos'
         expected_translations = {
             'de': 'San Francisco ist das kulturelle, kommerzielle und '
                   'finanzielle Zentrum Nordkaliforniens.',
-            'en': 'San Francisco is the cultural, commercial, and financial '
+            'en': 'San Francisco is the cultural, commercial and financial '
                   'center of Northern California.',
             'es': 'San Francisco es el centro cultural, comercial y '
-                  'financiero del norte de California.',
-            'ru': 'Сан-Франциско - культурный, коммерческий и финансовый '
-                  'центр Северной Калифорнии.',
-            'zh': '旧金山是北加州的文化、商业和金融中心。',
+                  'financiero del Norte de California.',
+            'ru': 'Сан-Франциско является культурным, коммерческим и '
+                  'финансовым центром Северной Калифорнии.',
+            'zh': '旧金山是北加州的文化、商业而金融中心。',
         }
-        print(s_in, expected_translations)
+
+        assert_example(self.mnlg, s_in, expected_translations)
 
     @staticmethod
     def xtest_san_francisco_sent2():

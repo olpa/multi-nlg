@@ -25,12 +25,22 @@ lin
   force_V = mkV "force" ;
   hit_V = I.hit_V ;
 
+  center_N = mkN "center" ;
   entrance_N = mkN "entrance" "entrances" ;
   knife_N = mkN "knife" "knives" ;
   room_N = mkN "room" "rooms" ;
+
   darxi_dakfu_CN = UseN (mkN "stab" "stabs");
 
+  north_california_PN = mkPN "Northern California" ;
+  san_francisco_PN = mkPN "San Francisco" ;
+
+  commercial_A = mkA "commercial" ;
+  cultural_A = mkA "cultural" ;
+  financial_A = mkA "financial" ;
+
+  ins_Prep = with_Prep ;
   into_Prep = mkPrep "into" ;
   no_Prep = noPrep ;
-  ins_Prep = with_Prep ;
+  of_Prep = mkPrep "of" ;
 }

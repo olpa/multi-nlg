@@ -16,24 +16,26 @@ fun
 
   TPasseSimple : Tense ;
 
-  -- i_Pron : Pron ;
-
-  -- john_PN : PN ;
-
-  -- break_V2: V2 ;
-  -- stab_V2: V2 ;
-
   break_into_V : V ;
   force_V : V ;
   hit_V : V ;
 
-  darxi_dakfu_CN : CN ;
+  center_N : N ;
   entrance_N : N ;
   knife_N : N ;
   room_N : N ;
 
-  into_Prep : Prep ;
-  -- to_prep : Prep ;
-  no_Prep : Prep ;
+  darxi_dakfu_CN : CN ;
+
+  north_california_PN : PN ;
+  san_francisco_PN : PN ;
+
+  commercial_A : A ;
+  cultural_A : A ;
+  financial_A : A ;
+
   ins_Prep : Prep ;
+  into_Prep : Prep ;
+  no_Prep : Prep ;
+  of_Prep : Prep ;
 }

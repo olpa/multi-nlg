@@ -308,35 +308,45 @@ def amax_to_gf(amax: XMax) -> PgfExpr:
 
 
 def jmax_to_gf_cons(jmax: XMax) -> PgfExpr:
-    tag, gf = jbar_to_gf_cons(jmax.xbar)
+    tag, ls_gf = jbar_to_gf_cons(jmax.xbar)
     if tag != 'je':
         print(f'jbar_to_gf_cons_rec: unsupported conjunction {tag}',
               file=sys.stderr)
-    else:
-        gf = pgf.Expr('ConjAP', [pgf.Expr('and_Conj', []), gf])
+        return None
+    if len(ls_gf) < 2:
+        print('jbar_to_gf_cons_rec: at least two branches are expected',
+              file=sys.stderr)
+        return None
+    it = reversed(ls_gf)
+    gf_base1 = next(it)
+    gf_base2 = next(it)
+    gf = pgf.Expr('BaseAP', [gf_base2, gf_base1])
+    for gf_next in it:
+        gf = pgf.Expr('ConsAP', [gf_next, gf])
+    gf = pgf.Expr('ConjAP', [pgf.Expr('and_Conj', []), gf])
     return gf
 
 
-def jbar_to_gf_cons(jbar: XBar) -> typing.Tuple[str, PgfExpr]:
+def jbar_to_gf_cons(jbar: XBar) -> typing.Tuple[str, list[PgfExpr]]:
     if isinstance(jbar, XBarRec):
         return jbar_to_gf_cons_rec(jbar)
-    return jbar_to_gf(jbar)
+    tag, gf = jbar_to_gf(jbar)
+    return tag, [gf]
 
 
-def jbar_to_gf_cons_rec(jbar: XBarRec) -> typing.Tuple[str, PgfExpr]:
-    tag_base, gf_base = jbar_to_gf_cons(jbar.bar)
+def jbar_to_gf_cons_rec(jbar: XBarRec) -> typing.Tuple[str, list[PgfExpr]]:
+    tag_base, ls_gf_base = jbar_to_gf_cons(jbar.bar)
     if not isinstance(jbar.adj, XMax) or jbar.adj.type != XType.J:
         print('jbar_to_gf_cons_rec: the complement should be J-MAX, got:',
               jbar.adj, file=sys.stderr)
-        return tag_base, gf_base
+        return tag_base, ls_gf_base
     tag_branch, gf_branch = jmax_to_gf_branch(jbar.adj)
     if (tag_base != '') and (tag_base != tag_branch):
         print('jbar_to_gf_cons_rec: unsupported conjunction combination:',
               f'tag base: {tag_base}, tag branch: {tag_branch}',
               file=sys.stderr)
-        return tag_base, gf_base
-    cons_cmd = 'ConsAP' if tag_base else 'BaseAP'
-    return tag_branch, pgf.Expr(cons_cmd, [gf_base, gf_branch])
+        return tag_branch, ls_gf_base
+    return tag_branch, [*ls_gf_base, gf_branch]
 
 
 def jmax_to_gf_branch(jmax: XMax) -> typing.Tuple[str, PgfExpr]:

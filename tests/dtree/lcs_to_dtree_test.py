@@ -2,8 +2,9 @@ import json
 import unittest
 from hamcrest import assert_that, equal_to
 
-from mnlg.dtree.rules_rgl import tense_rule, empty_J, je_J
-from mnlg.dtree.rules_en import RULES as RULES_EN, jdini_A, kulnu_A, canja_A
+from mnlg.dtree.rules_rgl import tense_rule, empty_J, je_J, \
+    jdini_A, kulnu_A, canja_A
+from mnlg.dtree.rules_en import RULES as RULES_EN
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
@@ -370,9 +371,10 @@ class LcsToDtreeTest(unittest.TestCase):
         dtree = lcs_to_dtree(rules, tree)
 
         s_dtree = '''["J-MAX", ["J-BAR", ["J-BAR", ["J-BAR", ["J", ""],
-        ["A-MAX", ["A-BAR", ["A", "kulnu_A"]]]], ["J-MAX", ["J-BAR", ["J",
-        "je"], ["A-MAX", ["A-BAR", ["A", "canja_A"]]]]]], ["J-MAX", ["J-BAR",
-         ["J", "je"], ["A-MAX", ["A-BAR", ["A", "jdini_A"]]]]]]]'''
+        ["A-MAX", ["A-BAR", ["A", "cultural_A"]]]], ["J-MAX", ["J-BAR",
+        ["J", "je"], ["A-MAX", ["A-BAR", ["A", "commercial_A"]]]]]],
+        ["J-MAX", ["J-BAR", ["J", "je"], ["A-MAX", ["A-BAR", ["A",
+        "financial_A"]]]]]]]'''
         expected_dtree = json.loads(s_dtree)
         assert_that(dtree, equal_to(expected_dtree))
 
