@@ -251,6 +251,25 @@ class StreeToGfTest(unittest.TestCase):
                       '(AdjCN (PositA blue_A) (UseN thing_N))'
         assert_that(str(e), equal_to(expected_gf))
 
+    @staticmethod
+    def test_noun_with_relative_phrase():
+        lexp_is_big = ['V-MAX', ['V-FRAME',
+                                 ['V', 'be_V'],
+                                 ['A-MAX', ['A-BAR', ['A', 'big_A']]]]]
+        lexp_which = ['C-MAX',
+                      ['C-BAR', ['C', 'IdRP'],
+                                ['I-MAX', ['I-BAR', ['I'], lexp_is_big]]]]
+        lexp = ['N-MAX', ['N-BAR',
+                          ['N-BAR', ['N', ['tag', 'pron'], 'i_Pron']],
+                          lexp_which]]
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        rcl = '(UseRCl (TTAnt TPres ASimul) PPos (RelVP'
+        expected_gf = f'RelNP (UsePron i_Pron) {rcl} IdRP ' \
+                      f'(UseComp (CompAP (PositA big_A)))))'
+        assert_that(str(e), equal_to(expected_gf))
+
 
 class StreeToGfExamplesTest(unittest.TestCase):
     @classmethod

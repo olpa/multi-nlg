@@ -1,3 +1,5 @@
+import collections.abc
+import dataclasses
 import sys
 import typing
 
@@ -8,6 +10,11 @@ from mnlg.xbar import XMax, XType, XHead, XBar, XBarRec, XBarBase
 PgfExpr = object
 
 
+@dataclasses.dataclass
+class Context:
+    sentence_tags: typing.Optional[dict[str, str]] = None
+
+
 def adjunct_one_to_np(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
     if xmax.type == XType.P:
         return adjunct_pmax_to_np(xmax, gf_np)
@@ -15,8 +22,11 @@ def adjunct_one_to_np(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
     if (xmax.type == XType.A) or (xmax.type == XType.J):
         return adjunct_amax_to_np(xmax, gf_np)
 
-    print('adjunct_np_one: only P-MAX and A-MAX are supported',
-          file=sys.stderr)
+    if xmax.type == XType.C:
+        return adjunct_cmax_to_np(xmax, gf_np)
+
+    print('adjunct_np_one: only P-, A- and C-MAX are supported,',
+          'got: ', xmax, file=sys.stderr)
     return gf_np
 
 
@@ -40,6 +50,22 @@ def adjunct_amax_to_np(xmax: XMax, gf_np: PgfExpr) -> PgfExpr:
         print('adjunct_np_one: A-MAX is not converted', file=sys.stderr)
         return gf_np
     return pgf.Expr('AdjCN', [gf_ap, gf_np])
+
+
+def adjunct_cmax_to_np(cmax: XMax, gf_np: PgfExpr) -> PgfExpr:
+    imax = cmax.to_complement()
+    if not imax or imax.type != XType.I:
+        print('adjunct_imax_to_np: C-MAX complement should be I-MAX, got:',
+              imax, file=sys.stderr)
+        return gf_np
+
+    ctx = Context(sentence_tags={'+relative': '+relative'})
+    gf_cl = imax_to_gf(imax, ctx)
+    if not gf_cl:
+        print('adjunct_imax_to_np: I-MAX is not converted', file=sys.stderr)
+        return gf_np
+
+    return pgf.Expr('RelNP', [gf_np, gf_cl])
 
 
 def adjunct_np(nmax: XMax, gf_np: PgfExpr) -> PgfExpr:
@@ -123,10 +149,20 @@ def pmax_to_gf(pmax: XMax) -> PgfExpr:
 
 # -
 
+def is_relative(
+        sentence_tags: typing.Optional[dict[str, str]],
+        context_tags: typing.Optional[dict[str, str]]
+) -> bool:
+    if context_tags and '+relative' in context_tags:
+        return True
+    if sentence_tags and '+relative' in sentence_tags:
+        return True
+    return False
 
-def imax_to_gf(imax: XMax) -> PgfExpr:
+
+def imax_to_gf(imax: XMax, ctx: Context) -> PgfExpr:
     head = imax.to_head()
-    tags = head.tags if head or head.tags else {}
+    tags = head.tags if head and head.tags else {}
     tense = tags.get('Tense', 'TPres')
     ant = tags.get('Ant', 'ASimul')
     pos = 'PPos'
@@ -134,10 +170,11 @@ def imax_to_gf(imax: XMax) -> PgfExpr:
     usecl = [pgf.Expr('TTAnt', [pgf.Expr(tense, []), pgf.Expr(ant, [])]),
              pgf.Expr(pos, [])]
     if compl:
-        gf_compl = stree_to_gf(compl)
+        gf_compl = stree_to_gf(compl, ctx)
         if gf_compl:
             usecl.append(gf_compl)
-    return pgf.Expr('UseCl', usecl)
+    cmd = 'UseRCl' if is_relative(tags, ctx.sentence_tags) else 'UseCl'
+    return pgf.Expr(cmd, usecl)
 
 
 def is_lower_vp_shell(xmax: typing.Optional[XMax]) -> bool:
@@ -250,25 +287,30 @@ def adjunct_vp(vmax: XMax, gf_vp: PgfExpr) -> PgfExpr:
     return gf_vp
 
 
-def vmax_to_gf(vmax: XMax) -> PgfExpr:
+def vmax_to_gf(vmax: XMax, ctx: Context) -> PgfExpr:
     gf_spec = stree_to_gf(vmax.to_spec())
     if not gf_spec:
-        print('vmax_to_gf: spec is required in v-max:', vmax, file=sys.stderr)
-        gf_spec = pgf.Expr('UseN', [pgf.Expr('none_N', [])])
+        if is_relative(ctx.sentence_tags, None):
+            gf_spec = pgf.Expr('IdRP', [])
+        else:
+            print('vmax_to_gf: spec is required in v-max:',
+                  vmax, file=sys.stderr)
 
     head = vmax.to_head()
     if not head:
         print('vmax_to_gf: head is required in v-max:', vmax, file=sys.stderr)
 
-    compl = vmax.to_complement()
-    while True:
+    ls_compl = vmax.to_complement()
+    if not isinstance(ls_compl, collections.abc.Iterable):
+        ls_compl = [ls_compl]
+    for compl in ls_compl:
         if is_lower_vp_shell(compl):
             gf_vp = vp_shell_to_gf(head, compl.to_spec(), compl)
             break
 
         gf_compl = stree_to_gf(compl)
         if gf_compl:
-            if compl.type != XType.D and compl.type != XType.N:
+            if compl.type not in (XType.D, XType.N, XType.A):
                 print('vmax_to_gf: complement should be D/N-MAX in v-max',
                       vmax, file=sys.stderr)
 
@@ -278,18 +320,18 @@ def vmax_to_gf(vmax: XMax) -> PgfExpr:
             break
 
         if head and head.s == 'be_V':
-            gf_vp = pgf.Expr('UseComp', [pgf.Expr('CompNP', [gf_compl])])
+            comp_cmd = 'CompAP' if compl.type == XType.A else 'CompNP'
+            gf_vp = pgf.Expr('UseComp', [pgf.Expr(comp_cmd, [gf_compl])])
             break
 
         gf_head = head_to_gf_v2(head)
         sv = pgf.Expr('SlashV2a', [gf_head])
         gf_vp = pgf.Expr('ComplSlash', [sv, gf_compl])
 
-        break
-
     gf_adj_vp = adjunct_vp(vmax, gf_vp)
 
-    return pgf.Expr('PredVP', [gf_spec, gf_adj_vp])
+    cmd = 'RelVP' if is_relative(ctx.sentence_tags, None) else 'PredVP'
+    return pgf.Expr(cmd, [gf_spec, gf_adj_vp])
 
 # --
 
@@ -370,16 +412,21 @@ def jbar_to_gf(jbar: XBarBase) -> typing.Tuple[str, PgfExpr]:
 
 # --
 
-def stree_to_gf(stree: typing.Optional[XMax]) -> typing.Optional[PgfExpr]:
+def stree_to_gf(
+        stree: typing.Optional[XMax],
+        ctx: typing.Optional[Context] = None
+) -> typing.Optional[PgfExpr]:
     if stree is None:
         return None
+    if ctx is None:
+        ctx = Context()
     if isinstance(stree, XMax):
         if stree.type == XType.N:
             return nmax_to_gf(stree)
         if stree.type == XType.I:
-            return imax_to_gf(stree)
+            return imax_to_gf(stree, ctx)
         if stree.type == XType.V:
-            return vmax_to_gf(stree)
+            return vmax_to_gf(stree, ctx)
         if stree.type == XType.D:
             return dmax_to_gf(stree)
         if stree.type == XType.P:
