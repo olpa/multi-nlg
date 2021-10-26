@@ -1,7 +1,9 @@
 import unittest
 from hamcrest import assert_that, equal_to, instance_of, all_of, has_length
 
+from mnlg.dtree.types import LcsToDtreeContext
 from mnlg.dtree.functions import tag_clitic_indirect, to_spec, attach_adjunct
+from mnlg.dtree.functions import lcs_adj_bar
 from mnlg.dtree.rules_rgl import to_tense_tags
 from mnlg.xbar import lexp_to_tree
 
@@ -149,6 +151,37 @@ class FunctionsTest(unittest.TestCase):
               ['N-BAR', ['N', 'some_N']],
               mk_max('A', 'own_A')],
              mk_max('A', 'extra_A')]))
+
+    # -
+
+    lcs_to_dtree_context = LcsToDtreeContext(
+        lcs_to_dtree=lambda _rules, tree, _xtype: tree.to_lexp(),
+        rules=[],
+    )
+
+    @staticmethod
+    def test_get_adj_bar():
+        in_bar = ['A-MAX', ['A-BAR', ['A', 'red_A']]]
+        lexp = ['N-MAX', ['N-BAR',
+                          ['N-BAR', ['N', 'some_N']],
+                          in_bar]]
+
+        back = lcs_adj_bar(lexp_to_tree(lexp),
+                           FunctionsTest.lcs_to_dtree_context)
+
+        assert_that(back, equal_to(['A-BAR', in_bar]))
+
+    @staticmethod
+    def test_get_adj_bar_skip_imax():
+        in_bar = ['A-MAX', ['A-BAR', ['A', 'red_A']]]
+        lexp = ['N-MAX', ['N-BAR',
+                          ['N-BAR', ['N', 'some_N']],
+                          ['I-MAX', ['I-BAR', ['I'], in_bar]]]]
+
+        back = lcs_adj_bar(lexp_to_tree(lexp),
+                           FunctionsTest.lcs_to_dtree_context)
+
+        assert_that(back, equal_to(['A-BAR', in_bar]))
 
 
 if '__main__' == __name__:

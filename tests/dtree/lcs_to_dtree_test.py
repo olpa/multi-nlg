@@ -5,6 +5,7 @@ from hamcrest import assert_that, equal_to
 from mnlg.dtree.rules_rgl import tense_rule, empty_J, je_J, \
     jdini_A, kulnu_A, canja_A
 from mnlg.dtree.rules_en import RULES as RULES_EN
+from mnlg.dtree.rules_rgl import RULES_RGL
 from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
@@ -377,6 +378,21 @@ class LcsToDtreeTest(unittest.TestCase):
         "financial_A"]]]]]]]'''
         expected_dtree = json.loads(s_dtree)
         assert_that(dtree, equal_to(expected_dtree))
+
+    @staticmethod
+    def test_self_lcs_rescan():
+        tree = lexp_to_tree(['V-MAX', ['V-FRAME', ['V', 'xunre']]])
+        rescan_rule = Rule(
+            x=XType.V,
+            head='xunre',
+            vars=None,
+            tree=['#,lcs', ['#,', 'self'], 'A'],
+            adj=[],
+        )
+
+        dtree = lcs_to_dtree([rescan_rule, *RULES_RGL], tree)
+
+        assert_that(dtree, equal_to(['A-MAX', ['A-BAR', ['A', 'red_A']]]))
 
 
 class LcsToDtreeExamplesTest(unittest.TestCase):

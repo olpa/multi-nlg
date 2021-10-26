@@ -47,6 +47,28 @@ def is_head_node(node: TreeNode) -> bool:
     return name and len(name) == 1
 
 
+def lexp_to_complement(node: TreeNode) -> typing.Optional[TreeNode]:
+    """ from X-MAX to the complement """
+    if len(node) != 2:
+        print('lexp_to_complement: X-MAX should consist of the node name'
+              ' and a bar node, got:', node, file=sys.stderr)
+        return None
+    _, bar_node = node
+    while len(bar_node) and is_bar_node(bar_node[0]):
+        bar_node = bar_node[0]
+    if not is_bar_node(bar_node):
+        print('lexp_to_complement: descent to bar-node. Got not a bar node:',
+              bar_node, file=sys.stderr)
+        return None
+    compl_node = bar_node[-1]
+    if is_max_node(compl_node):
+        return compl_node
+    if not is_head_node(compl_node):
+        print('lexp_to_complement: the last child of the bar-node should'
+              ' be X-MAX or X-HEAD:', bar_node, file=sys.stderr)
+    return None
+
+
 def cast_to_tag(le: object) -> str:
     if isinstance(le, list) and 2 == len(le) and 'tag' == le[0]:
         return le[1]

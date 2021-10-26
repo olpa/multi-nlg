@@ -122,6 +122,32 @@ jdini_A = Rule(
     adj=[],
 )
 
+xunre_V = Rule(
+    x=XType.V,
+    head='xunre',
+    vars=None,
+    tree=['V-MAX', ['V-SPEC', ['#,', 'x1']],
+          ['V-BAR', ['V', 'be_V'],
+           ['#,lcs', ['#,', 'self'], 'A']]],
+    adj=[],
+)
+
+xunre_A = Rule(
+    x=XType.A,
+    head='xunre',
+    vars=None,
+    tree=['A-MAX', ['A-BAR', ['A', 'red_A']]],
+    adj=[['#,', 'lcs-adj-bar']],
+)
+
+blanu_A = Rule(
+    x=XType.A,
+    head='blanu',
+    vars=None,
+    tree=['A-MAX', ['A-BAR', ['A', 'blue_A']]],
+    adj=[['#,', 'lcs-adj-bar']],
+)
+
 RULES_RGL = [
     tense_rule,
     le_Det,
@@ -135,4 +161,7 @@ RULES_RGL = [
     kulnu_A,
     canja_A,
     jdini_A,
+    xunre_V,
+    xunre_A,
+    blanu_A,
 ]

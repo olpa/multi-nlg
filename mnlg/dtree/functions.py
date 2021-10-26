@@ -217,9 +217,6 @@ def attach_adjunct(
     augmented_base = attach_adjunct(_lcs, base, xbar_rec)
     return [f'{x_type}-BAR', augmented_base, x_max]
 
-    if not xbar_rec:  # case 2
-        return [f'{x_type}-BAR', x_max]
-
 
 def lcs_adj_bar(
         xmax: XMax, context: LcsToDtreeContext
@@ -232,7 +229,10 @@ def lcs_adj_bar(
     def adj_rec(xbar: XBar) -> typing.Optional[TreeNode]:
         if not isinstance(xbar, XBarRec):
             return None
-        dtree_adj = context.lcs_to_dtree(context.rules, xbar.adj, XType.A)
+        lcs_adj = xbar.adj
+        if isinstance(lcs_adj, XMax) and lcs_adj.type == XType.I:
+            lcs_adj = lcs_adj.to_complement()
+        dtree_adj = context.lcs_to_dtree(context.rules, lcs_adj, XType.A)
         if not is_max_node(dtree_adj):
             print('lcs_adj_bar: after conversion, an adjunct node should'
                   'be X-MAX, got:', dtree_adj, 'for lcs adj node:',
@@ -243,3 +243,7 @@ def lcs_adj_bar(
         return ['A-BAR', dtree_adj]
 
     return adj_rec(xmax.xbar)
+
+
+def copy_self(xmax: XMax) -> XMax:
+    return xmax

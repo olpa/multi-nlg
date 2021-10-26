@@ -3,7 +3,7 @@ import typing
 from collections import abc
 
 from .functions import to_complement, to_spec, to_x1, to_x2, to_x3
-from .functions import copy_spec, copy_x1, copy_x2, manner_x3
+from .functions import copy_spec, copy_x1, copy_x2, manner_x3, copy_self
 from .functions import tag_clitic_indirect, attach_adjunct, lcs_adj_bar
 from .types import Rule, LcsToDtreeContext
 from ..transform import TreeNode
@@ -81,6 +81,8 @@ def eval_var(rules: list[Rule],
             func = lcs_adj_bar
         elif func == 'adjunct':
             func = attach_adjunct
+        elif func == 'self':
+            func = copy_self
         else:
             func = mk_todo_subst(func)
     if func_name.startswith('lcs-'):
@@ -136,7 +138,7 @@ def subst_vars(rules: list[Rule],
                 return 'leaf', node
             return cmd, node[1:]
 
-        return 'tree', node
+        return 'rescan_tree', node
 
     def cmd_exec_iter(
             cmd: str, arg: list[TreeNode]
@@ -172,20 +174,29 @@ def subst_vars(rules: list[Rule],
             assert False, 'never reached: unknown command'
 
         if cmd == '#,lcs':
-            if len(arg) != 1:
+            if len(arg) == 1:
+                rescan_tree, rescan_type = arg[0], None
+            elif len(arg) == 2:
+                rescan_tree, rescan_type = arg
+                try:
+                    rescan_type = XType[rescan_type]
+                except KeyError:
+                    print('cmd_exec_iter: unknown XType in rescan:',
+                          rescan_type, file=sys.stderr)
+                    rescan_type = None
+            else:
                 print('cmd_exec_iter: only one argument expected, got:',
                       arg, file=sys.stderr)
-            if not arg:
                 yield [cmd, arg]
                 return
-            lexp = subst_vars(rules, lcs, arg[0], variables)
+            lexp = subst_vars(rules, lcs, rescan_tree, variables)
             mapped_lcs = lexp_to_tree(lexp)
             if not isinstance(mapped_lcs, XMax):
                 print('subst_vars, macro >#,lcs<:',
                       'the mapped type should be XMax, got:',
                       type(mapped_lcs))
             else:
-                mapped_tree = lcs_to_dtree(rules, mapped_lcs)
+                mapped_tree = lcs_to_dtree(rules, mapped_lcs, rescan_type)
                 yield mapped_tree
             return
 
@@ -198,7 +209,7 @@ def subst_vars(rules: list[Rule],
                 yield kid
             elif cmd.startswith('#'):
                 yield from cmd_exec_iter(cmd, arg)
-            elif cmd == 'tree':
+            elif cmd == 'rescan_tree':
                 yield list(subst_rec_iter(arg))
             else:
                 assert False, f'never reached: unknown command `{cmd}`'

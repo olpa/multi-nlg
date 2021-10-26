@@ -295,6 +295,7 @@ def vmax_to_gf(vmax: XMax, ctx: Context) -> PgfExpr:
         else:
             print('vmax_to_gf: spec is required in v-max:',
                   vmax, file=sys.stderr)
+            gf_spec = pgf.Expr('UsePron', [pgf.Expr('it_Pron', [])])
 
     head = vmax.to_head()
     if not head:
