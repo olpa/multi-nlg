@@ -53,34 +53,30 @@ class Example(unittest.TestCase):
                   'financiero del Norte de California.',
             'ru': 'Сан-Франциско является культурным, коммерческим и '
                   'финансовым центром Северной Калифорнии.',
-            'zh': '旧金山是北加州的文化、商业而金融中心。',
+            'zh': '旧金山是北加州的文化、商业和金融中心。',
         }
 
         assert_example(self.mnlg, s_in, expected_translations)
 
-    @staticmethod
-    def xtest_san_francisco_sent2():
-        accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
-        determiner = f"ke ka {accidental} ke'e vomoi fi le nilxa'ugri"
+    def xtest_san_francisco_sent2(self):
+        accidental = "la losangeles ce'o la sandi'egos ce'o la sanjoses lidne"
+        determiner = f"ke ka {accidental} ke'e vomoi fi le xa'ugri"
         s_in = f"ko'a ke ka {determiner} ke'e tcadu la kalifornos"
         expected_translations = {
             'de': 'Es ist die viertgrößte Stadt in Kalifornien, nach Los '
                   'Angeles, San Diego und San Jose.',
-            'en': 'It is the fourth-most populous city in California, after '
+            'en': 'It is fourth city of California by population, after '
                   'Los Angeles, San Diego and San Jose.',
-            'es': 'Es la cuarta ciudad más poblada de California, después '
+            'es': 'Es la cuarta ciudad de California por población, después '
                   'de Los Ángeles, San Diego y San José.',
             'ru': 'Это четвертый по численности населения город в Калифорнии '
                   'после Лос-Анджелеса, Сан-Диего и Сан-Хосе.',
             'zh': '它是加利福尼亚州人口第四大的城市， 仅次于洛杉矶，圣地亚哥和圣何塞。',
         }
-        print(s_in, expected_translations)
+        assert_example(self.mnlg, s_in, expected_translations)
 
-    @staticmethod
-    def xtest_marie_curie():
-        accidental = "la sandi'egos ce'o la sandi'egos ce'o la sanjoses lidne"
-        determiner = f"vomoi be zo'e noi {accidental} fi le nilxa'ugri"
-        s_in = f"ko'a tcadu be zo'e poi {determiner} la kalifornos"
+    def xtest_marie_curie(self):
+        s_in = ''
         expected_translations = {
             'de': '',
             'en': 'Marie Curie was the only person to receive the Nobel '
@@ -89,7 +85,7 @@ class Example(unittest.TestCase):
             'ru': '',
             'zh': '',
         }
-        print(s_in, expected_translations)
+        assert_example(self.mnlg, s_in, expected_translations)
 
 
 if '__main__' == __name__:

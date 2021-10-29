@@ -108,7 +108,12 @@ def nmax_to_gf(nmax: XMax) -> PgfExpr:
     return gf_cn
 
 
-def dmax_to_gf(dmax: XMax) -> PgfExpr:
+def dmax_to_gf(
+        dmax: XMax,
+        elide_article: typing.Optional[bool] = False
+) -> PgfExpr:
+    if dmax is None:
+        return None
     gf_compl = stree_to_gf(dmax.to_complement())
     if not gf_compl:
         print('dmax_to_gf: complement is required in d-max:',
@@ -119,6 +124,10 @@ def dmax_to_gf(dmax: XMax) -> PgfExpr:
     if not head:
         print('dmax_to_gf: head is required in d-max:', dmax, file=sys.stderr)
     tags = (dmax.to_head().tags if head else {}) or {}
+
+    if elide_article:
+        gf_mass = pgf.Expr('MassNP', [gf_compl])
+        return gf_mass
 
     if 'mass' in tags:
         gf_mass = pgf.Expr('MassLoi', [gf_compl])
@@ -133,16 +142,24 @@ def dmax_to_gf(dmax: XMax) -> PgfExpr:
 
 
 def pmax_to_gf(pmax: XMax) -> PgfExpr:
-    gf_compl = stree_to_gf(pmax.to_complement())
-    if not gf_compl:
-        print('pmax_to_gf: complement is required in p-max:',
-              pmax, file=sys.stderr)
-        gf_compl = dmax_to_gf(None)
-
     head = pmax.to_head()
     s_head = head and head.s
     if not s_head:
         print('pmax_to_gf: head is required in p-max:', pmax, file=sys.stderr)
+        s_head = 'none_Prep'
+
+    tags = head.tags or {}
+    elide_article = 'elide_article' in tags
+
+    dtree_compl = pmax.to_complement()
+    if dtree_compl and elide_article and dtree_compl.type == XType.D:
+        gf_compl = dmax_to_gf(dtree_compl, elide_article=True)
+    else:
+        gf_compl = stree_to_gf(dtree_compl)
+    if not gf_compl:
+        print('pmax_to_gf: complement is required in p-max:',
+              pmax, file=sys.stderr)
+        gf_compl = pgf.Expr('UsePron', [pgf.Expr('it_Pron', [])])
 
     return pgf.Expr('PrepNP', [pgf.Expr(s_head, []), gf_compl])
 
@@ -340,8 +357,34 @@ def vmax_to_gf(vmax: XMax, ctx: Context) -> PgfExpr:
 def amax_to_gf(amax: XMax) -> PgfExpr:
     head = amax.to_head()
     s_head = (head and head.s) or 'none_A'
-    return pgf.Expr('PositA', [pgf.Expr(s_head, [])])
+    gf_ap = pgf.Expr('PositA', [pgf.Expr(s_head, [])])
+    gf_ap = adjunct_ap(amax, gf_ap)
+    return gf_ap
 
+
+def adjunct_ap(amax: XMax, gf_ap: PgfExpr) -> PgfExpr:
+    adjuncts = amax.to_adj()
+    adjuncts.reverse()
+    for adj in adjuncts:
+        gf_ap = adjunct_one_to_ap(adj, gf_ap)
+    return gf_ap
+
+
+def adjunct_one_to_ap(xmax: XMax, gf_ap: PgfExpr) -> PgfExpr:
+    if xmax.type == XType.P:
+        return adjunct_pmax_to_ap(xmax, gf_ap)
+
+    print('adjunct_np_one: only P-max is supported,',
+          'got: ', xmax, file=sys.stderr)
+    return gf_ap
+
+
+def adjunct_pmax_to_ap(xmax: XMax, gf_ap: PgfExpr) -> PgfExpr:
+    gf_pp = pmax_to_gf(xmax)
+    if not gf_pp:
+        print('adjunct_ap_one: P-MAX is not converted', file=sys.stderr)
+        return gf_ap
+    return pgf.Expr('AdvAP', [gf_ap, gf_pp])
 
 # --
 
@@ -352,10 +395,11 @@ def amax_to_gf(amax: XMax) -> PgfExpr:
 
 def jmax_to_gf_cons(jmax: XMax) -> PgfExpr:
     tag, ls_gf = jbar_to_gf_cons(jmax.xbar)
-    if tag != 'je':
+    if tag not in ('je', "ce'o"):
         print(f'jbar_to_gf_cons_rec: unsupported conjunction {tag}',
               file=sys.stderr)
         return None
+    xtype = 'A' if tag == 'je' else 'N'
     if len(ls_gf) < 2:
         print('jbar_to_gf_cons_rec: at least two branches are expected',
               file=sys.stderr)
@@ -363,10 +407,10 @@ def jmax_to_gf_cons(jmax: XMax) -> PgfExpr:
     it = reversed(ls_gf)
     gf_base1 = next(it)
     gf_base2 = next(it)
-    gf = pgf.Expr('BaseAP', [gf_base2, gf_base1])
+    gf = pgf.Expr(f'Base{xtype}P', [gf_base2, gf_base1])
     for gf_next in it:
-        gf = pgf.Expr('ConsAP', [gf_next, gf])
-    gf = pgf.Expr('ConjAP', [pgf.Expr('and_Conj', []), gf])
+        gf = pgf.Expr(f'Cons{xtype}P', [gf_next, gf])
+    gf = pgf.Expr(f'Conj{xtype}P', [pgf.Expr('and_Conj', []), gf])
     return gf
 
 

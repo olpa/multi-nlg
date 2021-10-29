@@ -5,6 +5,7 @@ from collections import abc
 from .functions import to_complement, to_spec, to_x1, to_x2, to_x3
 from .functions import copy_spec, copy_x1, copy_x2, manner_x3, copy_self
 from .functions import tag_clitic_indirect, attach_adjunct, lcs_adj_bar
+from .functions import to_tags
 from .types import Rule, LcsToDtreeContext
 from ..transform import TreeNode
 from mnlg.xbar import lexp_to_tree, XMax, XType
@@ -47,10 +48,6 @@ def eval_var(rules: list[Rule],
              var_expansion: typing.Union[
                  str, typing.Callable[[TreeNode], TreeNode]]
              ) -> typing.Optional[TreeNode]:
-    def mk_todo_subst(subst_func_name):
-        def todo_subst(*_):
-            return [f'TODO({subst_func_name})']
-        return todo_subst
     func = var_expansion
     args = None
     if isinstance(func, list):
@@ -83,8 +80,14 @@ def eval_var(rules: list[Rule],
             func = attach_adjunct
         elif func == 'self':
             func = copy_self
+        elif func == 'tags':
+            func = to_tags
         else:
-            func = mk_todo_subst(func)
+            func = None
+    if not func:
+        print('eval_var: no such function:', func_name, file=sys.stderr)
+        return ['#', *var_expansion]
+
     if func_name.startswith('lcs-'):
         if not args:
             args = []
@@ -94,7 +97,20 @@ def eval_var(rules: list[Rule],
     else:
         val = func(lcs)
     if (isinstance(val, list) or isinstance(val, tuple)) and len(val):
-        xtype = XType.A if lcs.type == XType.J else None
+        xtype = next(
+            filter(lambda sy: isinstance(sy, str) and len(sy) == 1,
+                   iter(val)),
+            None)
+        if xtype:
+            try:
+                xtype = XType[xtype]
+            except KeyError:
+                print('eval_var: unsupported scan type:',
+                      xtype, file=sys.stderr)
+                xtype = None
+        if lcs.type == XType.J and not xtype:
+            xtype = XType.A
+
         if val[0] == 'none':
             val = None
         elif val[0] == 'node':

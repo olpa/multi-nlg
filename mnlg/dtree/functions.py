@@ -22,13 +22,21 @@ def to_tense_tags(xmax: XMax) -> list[list[str, str]]:
     })
 
 
-def to_complement(xmax: XMax) -> typing.Tuple[str, list[XMax]]:
+def to_tags(xmax: XMax) -> list[list[str, str]]:
+    tags = xmax.to_head().tags or {}
+    return dict_to_tags(tags)
+
+
+def to_complement(
+        xmax: XMax,
+        xtype: typing.Optional[str] = None
+) -> typing.Tuple[str, list[XMax], str]:
     compl = xmax.to_complement()
     if not compl:
-        return 'mapls', []
+        return 'mapls', [], xtype
     if not isinstance(compl, list) and not isinstance(compl, tuple):
         compl = [compl]
-    return 'mapls', compl or []
+    return 'mapls', compl or [], xtype
 
 
 def to_spec(xmax: XMax
@@ -42,19 +50,19 @@ def to_spec(xmax: XMax
 
 
 def to_x1(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
-    func, compl = to_complement(xmax)
+    func, compl, _ = to_complement(xmax)
     if func == 'mapls' and compl:
         return 'map', compl[0]
 
 
 def to_x2(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
-    func, compl = to_complement(xmax)
+    func, compl, _ = to_complement(xmax)
     if func == 'mapls' and len(compl) >= 2:
         return 'map', compl[1]
 
 
 def to_x3(xmax: XMax) -> typing.Tuple[str, typing.Optional[XMax]]:
-    func, compl = to_complement(xmax)
+    func, compl, _ = to_complement(xmax)
     if func == 'mapls' and len(compl) >= 3:
         return 'map', compl[2]
 
@@ -219,8 +227,33 @@ def attach_adjunct(
 
 
 def lcs_adj_bar(
-        xmax: XMax, context: LcsToDtreeContext
+        xmax: XMax,
+        *args: list
 ) -> typing.Optional[TreeNode]:
+    xtype: typing.Union[None, str, XType] = None
+    context: LcsToDtreeContext
+    if len(args) == 1:
+        context = args[0]
+    elif len(args) == 2:
+        xtype, context = args
+    else:
+        print('lcs_adj_bar: wrong number of arguments. Expected 2 or 3, '
+              f'got: {[xmax, *args]}', file=sys.stderr)
+        return None
+    if not isinstance(context, LcsToDtreeContext):
+        print('lcs_adj_bar: context is required, got',
+              context, file=sys.stderr)
+        return None
+
+    if xtype:
+        try:
+            xtype = XType[xtype]
+        except KeyError:
+            print('lcs_adj_bar: unknown re-scan type:', xtype, file=sys.stderr)
+            xtype = None
+    if not xtype:
+        xtype = XType.A
+
     if not xmax:
         return None
     if not isinstance(xmax, XMax):
@@ -232,15 +265,16 @@ def lcs_adj_bar(
         lcs_adj = xbar.adj
         if isinstance(lcs_adj, XMax) and lcs_adj.type == XType.I:
             lcs_adj = lcs_adj.to_complement()
-        dtree_adj = context.lcs_to_dtree(context.rules, lcs_adj, XType.A)
+        dtree_adj = context.lcs_to_dtree(context.rules, lcs_adj, xtype)
         if not is_max_node(dtree_adj):
             print('lcs_adj_bar: after conversion, an adjunct node should'
                   'be X-MAX, got:', dtree_adj, 'for lcs adj node:',
                   xbar.adj, file=sys.stderr)
         kid_bar = adj_rec(xbar.bar)
+        bar_name = f'{xtype}-BAR'
         if kid_bar:
-            return ['A-BAR', kid_bar, dtree_adj]
-        return ['A-BAR', dtree_adj]
+            return [bar_name, kid_bar, dtree_adj]
+        return [bar_name, dtree_adj]
 
     return adj_rec(xmax.xbar)
 

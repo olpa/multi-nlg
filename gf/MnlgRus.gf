@@ -30,22 +30,26 @@ lin
   center_N = mkN "центр" Masc Inanimate (Z.parseIndex "1a") ;
   entrance_N = mkN "вход" Masc Inanimate (Z.parseIndex "1a") ;
   knife_N = mkN "нож" Masc Inanimate (Z.ZN 4 Z.No Z.B Z.NoC) ;
+  population_N = mkN "население" Neut Inanimate (Z.parseIndex "7a") ;
   room_N = mkN "комната" Fem Inanimate (Z.parseIndex "1a") ;
 
   darxi_dakfu_CN = AdjCN (PositA (mkA "ножевой" (Z.ZA 1 Z.No Z.B_ Z.NoC))) (UseN (mkN "рана" Fem Inanimate (Z.parseIndex "1a"))) ;
 
+  california_PN = mkPN "Калифорния" feminine inanimate ;
+  los_angeles_PN = mkPN "Лос-Анджелес" masculine inanimate ;
   north_california_PN =
     let north_A : A = mkA "Северный" (Z.parseAdjIndex "1*a") in
-    let california_NP : PN = mkPN "Калифорния" feminine inanimate in
-    mkCompoundN (makeNFFromAF north_A feminine inanimate) " " california_NP ;
-
+    mkCompoundN (makeNFFromAF north_A feminine inanimate) " " california_PN ;
+  san_diego_PN = mkPN "Сан-Диего" masculine inanimate Z.ZN0 ;
+  san_jose_PN = mkPN "Сан-Хосе" masculine inanimate Z.ZN0 ;
   san_francisco_PN = mkPN "Сан-Франциско" masculine inanimate ;
 
   commercial_A = mkA "коммерческий" ;
   cultural_A = mkA "культурный" ;
   financial_A = mkA "финансовый" ;
+  fourth_A = mkA "четвёртый" ;
 
-
+  by_Prep = mkPrep "по" ParadigmsRus.dative ;
   ins_Prep = E.ins_Prep ;
   into_Prep = E.to2_Prep ;
   no_Prep = E.obj_no_Prep ;

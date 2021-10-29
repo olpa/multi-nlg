@@ -198,12 +198,12 @@ class StreeToGfTest(unittest.TestCase):
     @staticmethod
     def test_adjective_and():
         # kulnu je canja je jdini
-        kulnu = ["J-BAR", ["J", ""], ["A-MAX", ["A-BAR", ["A", "kulnu_A"]]]]
-        canja = ["J-MAX", ["J-BAR", ["J", "je"],
-                           ["A-MAX", ["A-BAR", ["A", "canja_A"]]]]]
-        jdini = ["J-MAX", ["J-BAR", ["J", "je"],
-                           ["A-MAX", ["A-BAR", ["A", "jdini_A"]]]]]
-        lexp = ["J-MAX", ["J-BAR", ["J-BAR", kulnu, canja], jdini]]
+        kulnu = ['J-BAR', ['J', 'je'], ['A-MAX', ['A-BAR', ['A', 'kulnu_A']]]]
+        canja = ['J-MAX', ['J-BAR', ['J', 'je'],
+                           ['A-MAX', ['A-BAR', ['A', 'canja_A']]]]]
+        jdini = ['J-MAX', ['J-BAR', ['J', 'je'],
+                           ['A-MAX', ['A-BAR', ['A', 'jdini_A']]]]]
+        lexp = ['J-MAX', ['J-BAR', ['J-BAR', kulnu, canja], jdini]]
         expected_gf = 'ConjAP and_Conj (ConsAP (PositA kulnu_A) ' \
                       '(BaseAP (PositA canja_A) (PositA jdini_A)))'
 
@@ -213,9 +213,9 @@ class StreeToGfTest(unittest.TestCase):
 
     @staticmethod
     def test_noun_with_adjective():
-        lexp = ["N-MAX", ["N-BAR",
-                          ["N-BAR", ["N", "city_N"]],
-                          ["A-MAX", ["A-BAR", ["A", "nice_A"]]]]]
+        lexp = ['N-MAX', ['N-BAR',
+                          ['N-BAR', ['N', 'city_N']],
+                          ['A-MAX', ['A-BAR', ['A', 'nice_A']]]]]
 
         e = stree_to_gf(lexp_to_tree(lexp))
 
@@ -224,12 +224,12 @@ class StreeToGfTest(unittest.TestCase):
 
     @staticmethod
     def test_noun_with_and():
-        kulnu = ["J-BAR", ["J", ""], ["A-MAX", ["A-BAR", ["A", "kulnu_A"]]]]
-        canja = ["J-MAX", ["J-BAR", ["J", "je"],
-                           ["A-MAX", ["A-BAR", ["A", "canja_A"]]]]]
-        lexp = ["N-MAX", ["N-BAR",
-                          ["N-BAR", ["N", "city_N"]],
-                          ["J-MAX", ["J-BAR", kulnu, canja]]]]
+        kulnu = ['J-BAR', ['J', 'je'], ['A-MAX', ['A-BAR', ['A', 'kulnu_A']]]]
+        canja = ['J-MAX', ['J-BAR', ['J', 'je'],
+                           ['A-MAX', ['A-BAR', ['A', 'canja_A']]]]]
+        lexp = ['N-MAX', ['N-BAR',
+                          ['N-BAR', ['N', 'city_N']],
+                          ['J-MAX', ['J-BAR', kulnu, canja]]]]
 
         e = stree_to_gf(lexp_to_tree(lexp))
 
@@ -239,11 +239,11 @@ class StreeToGfTest(unittest.TestCase):
 
     @staticmethod
     def test_noun_with_adjunct_recursive():
-        lexp = ["N-MAX", ["N-BAR",
-                          ["N-BAR",
-                           ["N-BAR", ["N", "thing_N"]],
-                           ["A-MAX", ["A-BAR", ["A", "blue_A"]]]],
-                          ["A-MAX", ["A-BAR", ["A", "red_A"]]]]]
+        lexp = ['N-MAX', ['N-BAR',
+                          ['N-BAR',
+                           ['N-BAR', ['N', 'thing_N']],
+                           ['A-MAX', ['A-BAR', ['A', 'blue_A']]]],
+                          ['A-MAX', ['A-BAR', ['A', 'red_A']]]]]
 
         e = stree_to_gf(lexp_to_tree(lexp))
 
@@ -268,6 +268,28 @@ class StreeToGfTest(unittest.TestCase):
         rcl = '(UseRCl (TTAnt TPres ASimul) PPos (RelVP'
         expected_gf = f'RelNP (UsePron i_Pron) {rcl} IdRP ' \
                       f'(UseComp (CompAP (PositA big_A)))))'
+        assert_that(str(e), equal_to(expected_gf))
+
+    @staticmethod
+    def test_adjective_with_adjunct():
+        lexp = ['A-MAX', ['A-BAR',
+                          ['A-BAR', ['A', 'blue_A']],
+                          ['P-MAX', ['P-BAR', ['P', 'some_Prep'], d_max]]]]
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        expected_gf = f'AdvAP (PositA blue_A) (PrepNP some_Prep {d_np})'
+        assert_that(str(e), equal_to(expected_gf))
+
+    @staticmethod
+    def test_elide_article():
+        lexp = ['P-MAX', ['P-BAR',
+                          ['P', ['tag', 'elide_article'], 'some_Prep'],
+                          d_max]]
+
+        e = stree_to_gf(lexp_to_tree(lexp))
+
+        expected_gf = 'PrepNP some_Prep (MassNP (UseN word_N))'
         assert_that(str(e), equal_to(expected_gf))
 
 

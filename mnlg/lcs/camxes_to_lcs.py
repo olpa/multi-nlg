@@ -365,7 +365,14 @@ class TransformSumti2(Transformer):
         kids = apply_templates(rules, node[1:])
         if not any(is_node_name(node, 'J') for node in kids):
             return kids
-        kids.insert(0, ['J', ''])
+
+        j_name = ''
+        if len(kids) > 1:
+            inner_j = kids[1]
+            if is_node_name(inner_j, 'J'):
+                j_name = inner_j[1]
+
+        kids.insert(0, ['J', ['tag', 'elide'], j_name])
         if len(kids) % 2:
             print('With conjunction, should have even number of nodes:',
                   'pairs of (conj,x-max), got:', kids, file=sys.stderr)

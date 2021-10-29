@@ -171,7 +171,7 @@ class CamxesToLcsTest(unittest.TestCase):
                 ['J-MAX', ['J-BAR',
                            ['J-BAR',
                             ['J-BAR',
-                             ['J', ''],
+                             ['J', ['tag', 'elide'], "ce'o"],
                              ['N-MAX', ['N-BAR',
                                         ['N', ['tag', 'pron'], 'mi']]]],
                             j_do],
@@ -210,7 +210,7 @@ class CamxesToLcsTest(unittest.TestCase):
                    ['J-BAR',
                     ['J-BAR',
                      ['J-BAR',
-                      ['J', ''],
+                      ['J', ['tag', 'elide'], 'je'],
                       wrap_n_max('kulnu')],
                      ['J-MAX', ['J-BAR', ['J', 'je'], wrap_n_max('canja')]]],
                     ['J-MAX', ['J-BAR', ['J', 'je'], wrap_n_max('jdini')]]

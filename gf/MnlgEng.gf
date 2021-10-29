@@ -28,17 +28,24 @@ lin
   center_N = mkN "center" ;
   entrance_N = mkN "entrance" "entrances" ;
   knife_N = mkN "knife" "knives" ;
+  population_N = mkN "population" ;
   room_N = mkN "room" "rooms" ;
 
   darxi_dakfu_CN = UseN (mkN "stab" "stabs");
 
+  california_PN = mkPN "California" ;
+  los_angeles_PN = mkPN "Los Angeles" ;
   north_california_PN = mkPN "Northern California" ;
+  san_diego_PN = mkPN "San Diego" ;
+  san_jose_PN = mkPN "San Jose" ;
   san_francisco_PN = mkPN "San Francisco" ;
 
   commercial_A = mkA "commercial" ;
   cultural_A = mkA "cultural" ;
   financial_A = mkA "financial" ;
+  fourth_A = mkA "fourth" ;
 
+  by_Prep = mkPrep "by" ;
   ins_Prep = with_Prep ;
   into_Prep = mkPrep "into" ;
   no_Prep = noPrep ;
