@@ -87,6 +87,18 @@ class Example(unittest.TestCase):
         }
         assert_example(self.mnlg, s_in, expected_translations)
 
+    def test_love(self):
+        s_in = 'mi prami do'
+        expected_translations = {
+                'de': 'Ich liebe dich.',
+                'en': 'I stabbed John.',
+                'es': 'Ti amo.',
+                'ru': 'Я люблю тебя.',
+                'zh': '我愛你。',
+                }
+
+        assert_example(self.mnlg, s_in, expected_translations)
+
 
 if '__main__' == __name__:
     unittest.main()
