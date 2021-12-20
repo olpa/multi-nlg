@@ -91,10 +91,10 @@ class Example(unittest.TestCase):
         s_in = 'mi prami do'
         expected_translations = {
                 'de': 'Ich liebe dich.',
-                'en': 'I stabbed John.',
-                'es': 'Ti amo.',
+                'en': 'I love you.',
+                'es': 'Yo te amo.',
                 'ru': 'Я люблю тебя.',
-                'zh': '我愛你。',
+                'zh': '我爱你。',
                 }
 
         assert_example(self.mnlg, s_in, expected_translations)
