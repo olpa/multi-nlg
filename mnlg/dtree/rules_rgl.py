@@ -44,6 +44,14 @@ mi_Pron = Rule(
     adj=[],
 )
 
+do_Pron = Rule(
+    x=XType.N,
+    head='do',
+    tree=['N-MAX', ['N-BAR', ['N', ['tag', 'pron'], 'youSg_Pron']]],
+    vars=None,
+    adj=[],
+)
+
 je_J = Rule(
     x=XType.J,
     head='je',
@@ -250,11 +258,22 @@ tcadu_V = Rule(
     adj=[]
 )
 
+prami_V = Rule(
+    x=XType.V,
+    head='prami',
+    tree=['V-MAX',
+          ['V-SPEC', ['#,', 'x1']],
+          ['V-BAR', ['V', 'love_V2'], ['#,', 'x2']]],
+    vars=None,
+    adj=[],
+)
+
 RULES_RGL = [
     tense_rule,
     le_Det,
     loi_Det,
     mi_Pron,
+    do_Pron,
     je_J,
     ceho_J,
     koha_N,
@@ -276,4 +295,5 @@ RULES_RGL = [
     lidne_A,
     xahugri_N,
     tcadu_V,
+    prami_V,
 ]
