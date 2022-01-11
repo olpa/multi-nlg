@@ -1,12 +1,14 @@
+from __future__ import annotations
 import typing
 
 from mnlg.transform import TreeNode
 from mnlg.xbar import XType, XMax
 
 CallableFunction = typing.Callable[[XMax], TreeNode]
-CallableFunctionWithArgs = list[typing.Union[
+CallableFunctionWithArgs = typing.List[typing.Union[
     # Function should be the first element, the rest
-    typing.Callable[[XMax, ...], TreeNode],
+    # typing.Callable[[XMax, ...], TreeNode],  # python3.9+
+    typing.Callable[..., TreeNode],  # python3.8
     # The rest is arguments
     str
 ]]

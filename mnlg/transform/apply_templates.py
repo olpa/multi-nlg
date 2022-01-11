@@ -1,3 +1,4 @@
+from __future__ import annotations
 import typing
 from .types import TreeNode, Rule, IterableNodeSet, NodeSet
 from .nodeset import to_node_set, flatten_node_sets

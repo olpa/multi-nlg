@@ -1,3 +1,4 @@
+from __future__ import annotations
 import functools
 import typing
 from .nodeset import to_node_set, flatten_node_sets,\

@@ -1,3 +1,4 @@
+from __future__ import annotations
 import sys
 import typing
 
@@ -169,7 +170,7 @@ def get_head_and_compl(
         lambda node: assert_xmax_p(
             'get_head_and_compl: complement should be X-MAX, got:', node),
         compl))
-    return xhead, typing.cast(list[XMax], compl)
+    return xhead, typing.cast(typing.List[XMax], compl)
 
 
 def lsstr(ls: list) -> list:

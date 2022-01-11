@@ -1,3 +1,4 @@
+from __future__ import annotations
 from abc import ABC
 
 from .apply_templates import apply_templates_iter

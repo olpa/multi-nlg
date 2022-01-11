@@ -1,3 +1,4 @@
+from __future__ import annotations
 import typing
 from abc import abstractmethod, ABC
 
@@ -18,9 +19,9 @@ from abc import abstractmethod, ABC
 # of a node which is just a string.
 #
 
-TreeNode = typing.Union[str, list[typing.Union[str, 'TreeNode']]]
+TreeNode = typing.Union[str, typing.List[typing.Union[str, 'TreeNode']]]
 
-NodeSet = list[TreeNode]
+NodeSet = typing.List[TreeNode]
 
 IterableNodeSet = typing.Iterable[TreeNode]
 

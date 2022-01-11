@@ -1,3 +1,4 @@
+from __future__ import annotations
 from mnlg.xbar import XType, XMax
 from . import Rule
 from .functions import dict_to_tags
