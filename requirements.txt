@@ -1,0 +1,5 @@
+https://github.com/lojban/camxes-py/archive/refs/tags/v0.10.0.zip
+pgf
+flake8
+pyhamcrest
+
