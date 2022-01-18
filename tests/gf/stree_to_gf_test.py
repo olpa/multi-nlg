@@ -5,7 +5,7 @@ from hamcrest import assert_that, equal_to
 from mnlg.gf.stree_to_gf import stree_to_gf, stree_to_gf_fullstop
 from mnlg.xbar import lexp_to_tree, XMax
 from tests.util.fixture import load_stree, load_gf
-from mnlg.transform import TreeNode
+from lxslt import TreeNode
 
 
 n_max = ['N-MAX', ['N-BAR', ['N', 'word_N']]]

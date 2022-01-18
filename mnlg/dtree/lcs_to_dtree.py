@@ -8,7 +8,7 @@ from .functions import copy_spec, copy_x1, copy_x2, manner_x3, copy_self
 from .functions import tag_clitic_indirect, attach_adjunct, lcs_adj_bar
 from .functions import to_tags
 from .types import Rule, LcsToDtreeContext
-from ..transform import TreeNode
+from lxslt import TreeNode
 from mnlg.xbar import lexp_to_tree, XMax, XType
 from mnlg.xbar import is_max_node, is_bar_node, is_spec_node
 

@@ -4,7 +4,7 @@ import sys
 import typing
 
 from mnlg.xbar import is_node_name, is_bar_node, is_max_node
-from mnlg.transform import MatchNameCondition, Rule, TransformChildren,\
+from lxslt import MatchNameCondition, Rule, TransformChildren,\
     MatchName, TreeNode, NodeSet, select, SelectStep, DeepDive,\
     apply_templates, Transformer, Replace, apply_templates_iter,\
     project_children, Drop, flatten_node_sets,\

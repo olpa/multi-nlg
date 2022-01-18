@@ -1,7 +1,7 @@
 from __future__ import annotations
 import typing
 
-from mnlg.transform import TreeNode
+from lxslt import TreeNode
 from mnlg.xbar import XType, XMax
 
 CallableFunction = typing.Callable[[XMax], TreeNode]

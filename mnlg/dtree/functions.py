@@ -4,7 +4,7 @@ import typing
 
 from mnlg.xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame, XType
 from mnlg.xbar import XBar, XBarRec, is_bar_node, is_max_node, is_head_node
-from mnlg.transform import TreeNode
+from lxslt import TreeNode
 
 from .types import LcsToDtreeContext
 

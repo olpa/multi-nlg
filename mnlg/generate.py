@@ -3,6 +3,7 @@ import os
 import typing
 import camxes_py
 import pgf
+from lxslt import TreeNode
 
 from mnlg.gf.stree_to_gf import stree_to_gf_fullstop
 from mnlg.dtree import lcs_to_dtree
@@ -13,7 +14,6 @@ from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.dtree.rules_zh import RULES as RULES_ZH
 from mnlg.lcs.camxes_to_lcs import camxes_to_lcs
 from mnlg.xbar import lexp_to_tree
-from mnlg.transform import TreeNode
 
 PgfLang = object
 

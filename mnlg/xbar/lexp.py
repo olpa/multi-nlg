@@ -2,7 +2,7 @@ from __future__ import annotations
 import sys
 import typing
 
-from ..transform import TreeNode
+from lxslt import TreeNode
 from .types import XBarFrame, XSpec, XBar, isinstance_xbar, XBarRec
 from .types import XBarBase, XType, XSpecTag, XMax, XHead
 
