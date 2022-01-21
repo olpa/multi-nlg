@@ -1,6 +1,6 @@
 from .functions import to_tense_tags
 from .types import Rule
-from mnlg.xbar import XType
+from lojban_xbar import XType
 
 
 tense_rule = Rule(

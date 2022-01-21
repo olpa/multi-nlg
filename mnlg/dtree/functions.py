@@ -2,8 +2,8 @@ from __future__ import annotations
 import sys
 import typing
 
-from mnlg.xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame, XType
-from mnlg.xbar import XBar, XBarRec, is_bar_node, is_max_node, is_head_node
+from lojban_xbar import XMax, XSpecTag, XSpec, XBarBase, XBarFrame, XType
+from lojban_xbar import XBar, XBarRec, is_bar_node, is_max_node, is_head_node
 from lxslt import TreeNode
 
 from .types import LcsToDtreeContext

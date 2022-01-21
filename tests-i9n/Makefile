@@ -1,6 +1,6 @@
 test: test-examples
 
-export PYTHONPATH=..
+export PYTHONPATH:=..:${PYTHONPATH}
 
 test-examples:
 	env | grep PY

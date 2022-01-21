@@ -2,7 +2,7 @@ from __future__ import annotations
 import typing
 
 from lxslt import TreeNode
-from mnlg.xbar import XType, XMax
+from lojban_xbar import XType, XMax
 
 CallableFunction = typing.Callable[[XMax], TreeNode]
 CallableFunctionWithArgs = typing.List[typing.Union[

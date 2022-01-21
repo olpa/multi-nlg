@@ -11,7 +11,7 @@ from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.dtree.rules_zh import RULES as RULES_ZH
 from mnlg.dtree import lcs_to_dtree, Rule
-from mnlg.xbar import lexp_to_tree, XType, XMax
+from lojban_xbar import lexp_to_tree, XType, XMax
 from tests.util.fixture import load_lcs, load_dtree
 
 lexp_n_aaa = ['N-MAX', ['N-BAR', ['N', 'aaa']]]

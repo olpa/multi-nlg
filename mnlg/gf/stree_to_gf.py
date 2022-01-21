@@ -4,9 +4,9 @@ import dataclasses
 import sys
 import typing
 
+from lojban_xbar import XMax, XType, XHead, XBar, XBarRec, XBarBase
 import pgf
 
-from mnlg.xbar import XMax, XType, XHead, XBar, XBarRec, XBarBase
 
 PgfExpr = object
 

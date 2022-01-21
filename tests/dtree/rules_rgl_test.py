@@ -5,7 +5,7 @@ from mnlg.dtree.types import LcsToDtreeContext
 from mnlg.dtree.functions import tag_clitic_indirect, to_spec, attach_adjunct
 from mnlg.dtree.functions import lcs_adj_bar
 from mnlg.dtree.rules_rgl import to_tense_tags
-from mnlg.xbar import lexp_to_tree
+from lojban_xbar import lexp_to_tree
 
 
 def mk_max(xtype: str, name: str):

@@ -12,8 +12,7 @@ from mnlg.dtree.rules_es import RULES as RULES_ES
 from mnlg.dtree.rules_de import RULES as RULES_DE
 from mnlg.dtree.rules_ru import RULES as RULES_RU
 from mnlg.dtree.rules_zh import RULES as RULES_ZH
-from mnlg.lcs.camxes_to_lcs import camxes_to_lcs
-from mnlg.xbar import lexp_to_tree
+from lojban_xbar import camxes_to_xbar, lexp_to_tree
 
 PgfLang = object
 
@@ -82,7 +81,7 @@ def generate_one_sentence(
     if begin_step <= Step.parse <= end_step:
         so_far = camxes_py.parse(so_far)
     if begin_step <= Step.lcs <= end_step:
-        so_far = camxes_to_lcs(so_far)
+        so_far = camxes_to_xbar(so_far)
     if begin_step <= Step.dtree <= end_step:
         rules = mnlg.get_rules(lang)
         lcs_tree = lexp_to_tree(so_far)

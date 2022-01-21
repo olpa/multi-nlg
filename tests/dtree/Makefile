@@ -1,6 +1,6 @@
 all: lcs_to_dtree rules_rgl
 
-export PYTHONPATH=../..:../..
+export PYTHONPATH:=../..:../..:${PYTHONPATH}
 
 lcs_to_dtree:
 	python3 lcs_to_dtree_test.py

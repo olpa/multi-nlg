@@ -1,4 +1,4 @@
-from mnlg.xbar import XType
+from lojban_xbar import XType
 from . import Rule
 from .rules_rgl import RULES_RGL
 

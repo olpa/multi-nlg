@@ -34,10 +34,6 @@ def load_file(file_name: str) -> Mapping[str, object]:
     return parses
 
 
-def load_camxes_parses() -> Mapping[str, object]:
-    return load_file('camxes_parse.txt')
-
-
 def load_lcs() -> Mapping[str, object]:
     return load_file('lcs.txt')
 

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from mnlg.xbar import XType, XMax
+from lojban_xbar import XType, XMax
 from . import Rule
 from .functions import dict_to_tags
 from .rules_rgl import RULES_RGL

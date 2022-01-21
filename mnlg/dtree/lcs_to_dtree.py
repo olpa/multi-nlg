@@ -9,8 +9,8 @@ from .functions import tag_clitic_indirect, attach_adjunct, lcs_adj_bar
 from .functions import to_tags
 from .types import Rule, LcsToDtreeContext
 from lxslt import TreeNode
-from mnlg.xbar import lexp_to_tree, XMax, XType
-from mnlg.xbar import is_max_node, is_bar_node, is_spec_node
+from lojban_xbar import lexp_to_tree, XMax, XType
+from lojban_xbar import is_max_node, is_bar_node, is_spec_node
 
 
 def find_rule(
