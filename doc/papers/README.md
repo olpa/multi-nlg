@@ -6,14 +6,14 @@ The presentation: <http://verbs.colorado.edu/~mpalmer/Ling7800/MachineTranslatio
 The paper: <https://www.researchgate.net/publication/238691215>, local copy: [MachineTranslationInterlingual-paper-Dorr-Hover-Levin.pdf](MachineTranslationInterlingual-paper-Dorr-Hover-Levin.pdf)
 
 
-**Creating Linguistic Resources with the Grammatical Framework**, by Aarne Ranta
-
-<http://grammaticalframework.org/doc/gf-lrec-2010.pdf>, local copy: [gf-lrec-2010.pdf](gf-lrec-2010.pdf)
-
-
 **Explainable Machine Translation**, by Aarne Ranta
 
 <http://www.grammaticalframework.org/~aarne/xmt-2017.pdf>, local copy: [xmt-2017.pdf](xmt-2017.pdf)
+
+
+**Abstract Syntax as Interlingua: Scaling Up the Grammatical Framework from Controlled Languages to Robust Pipelines**, by Aarne Ranta, Krasimir Angelov, Normunds Gruzitis, Prasanth Kolachina
+
+<https://aclanthology.org/2020.cl-2.6.pdf>, local copy: [2020.cl-2.6.pdf](2020.cl-2.6.pdf)
 
 
 **Building Natural Langugage Generation Systems**, by Ehud Reiter and Robert Dale, isbn 9780511519857, <https://www.cambridge.org/core/books/building-natural-language-generation-systems/0AE70C709A9BFBDC80B349B2D22A78CD>
