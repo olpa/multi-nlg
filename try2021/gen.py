@@ -1,10 +1,13 @@
+#!/usr/bin/env python3
+
 import argparse
 import os.path
 import sys
 import json
 from json import JSONDecodeError
 
-from mnlg import MnlgInit, generate_one_sentence, Step
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+from mnlg import MnlgInit, generate_one_sentence, Step  # noqa: E402
 
 
 def parse_command_line():

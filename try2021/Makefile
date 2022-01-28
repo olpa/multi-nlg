@@ -10,3 +10,6 @@ test:
 	for mf in $(test_makefiles) ; do \
 	  make -C $$(dirname $${mf}) || exit 1 ; \
 	  done
+
+docker:
+	docker build . -t olpa/multi-nlg:try2021
