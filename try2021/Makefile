@@ -13,3 +13,6 @@ test:
 
 docker:
 	docker build . -t olpa/multi-nlg:try2021
+
+push:
+	docker push olpa/multi-nlg:try2021
